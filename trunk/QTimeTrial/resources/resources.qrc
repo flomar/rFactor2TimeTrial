@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file alias="FONT_BITWISE">fonts/Bitwise.ttf</file>
+    </qresource>
+</RCC>

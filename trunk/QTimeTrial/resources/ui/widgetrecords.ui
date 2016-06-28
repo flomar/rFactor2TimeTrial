@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WidgetRecords</class>
+ <widget class="QWidget" name="WidgetRecords">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>878</width>
+    <height>945</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Records</string>
+  </property>
+  <widget class="Line" name="lineTitle">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>35</y>
+     <width>858</width>
+     <height>10</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+    </font>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTitle">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>858</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>/ RECORDS</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelAvailableRecords">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>70</y>
+     <width>429</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Available Records:</string>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="tableWidgetAvailableRecords">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>105</y>
+     <width>858</width>
+     <height>655</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>858</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>Rank</string>
+    </property>
+    <property name="font">
+     <font>
+      <family>Bitwise</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Time</string>
+    </property>
+    <property name="font">
+     <font>
+      <family>Bitwise</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Driver</string>
+    </property>
+    <property name="font">
+     <font>
+      <family>Bitwise</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Car</string>
+    </property>
+    <property name="font">
+     <font>
+      <family>Bitwise</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>FTC</string>
+    </property>
+    <property name="font">
+     <font>
+      <family>Bitwise</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>RTC</string>
+    </property>
+    <property name="font">
+     <font>
+      <family>Bitwise</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+   </column>
+  </widget>
+  <widget class="QLabel" name="labelLimit">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>770</y>
+     <width>429</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Limit:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelDriver">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>805</y>
+     <width>429</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Driver:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelCar">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>840</y>
+     <width>429</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Car:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTrackName">
+   <property name="geometry">
+    <rect>
+     <x>439</x>
+     <y>70</y>
+     <width>429</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>[TRACK_NAME]</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelFrontTireCompound">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>875</y>
+     <width>429</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Front Tire Compound:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelRearTireCompound">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>910</y>
+     <width>429</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Rear Tire Compound:</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBoxLimit">
+   <property name="geometry">
+    <rect>
+     <x>439</x>
+     <y>770</y>
+     <width>429</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>[ALL RECORDS]</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>10</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>25</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>50</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>100</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="comboBoxDriver">
+   <property name="geometry">
+    <rect>
+     <x>439</x>
+     <y>805</y>
+     <width>429</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>[ALL DRIVERS]</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="comboBoxCar">
+   <property name="geometry">
+    <rect>
+     <x>439</x>
+     <y>840</y>
+     <width>429</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>[ALL CARS]</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="comboBoxFrontTireCompound">
+   <property name="geometry">
+    <rect>
+     <x>439</x>
+     <y>875</y>
+     <width>429</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>[ALL FRONT TIRE COMPOUNDS]</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="comboBoxRearTireCompound">
+   <property name="geometry">
+    <rect>
+     <x>439</x>
+     <y>910</y>
+     <width>429</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bitwise</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>[ALL REAR TIRE COMPOUNDS]</string>
+    </property>
+   </item>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
