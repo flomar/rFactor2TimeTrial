@@ -65,18 +65,18 @@ void WidgetDrivers::slotDoubleClickedListWidgetAvailableDrivers(QListWidgetItem 
 
 void WidgetDrivers::slotPressedPushButtonCreateDriver() {
     DialogCreateDriver dialogCreateDriver;
-    dialogCreateDriver.setGeometry(rect());
+    dialogCreateDriver.setGeometry(x(), y(), rect().width(), rect().height());
     dialogCreateDriver.exec();
 }
 
 void WidgetDrivers::slotPressedPushButtonEditDriver() {
     DialogEditDriver dialogEditDriver;
-    dialogEditDriver.setGeometry(rect());
+    dialogEditDriver.setGeometry(x(), y(), rect().width(), rect().height());
     dialogEditDriver.exec();
 }
 
 void WidgetDrivers::slotPressedPushButtonDeleteDriver() {
     DialogDeleteDriver dialogDeleteDriver;
-    dialogDeleteDriver.setGeometry(rect());
+    dialogDeleteDriver.setGeometry(x(), y(), rect().width(), rect().height());
     dialogDeleteDriver.exec();
 }
