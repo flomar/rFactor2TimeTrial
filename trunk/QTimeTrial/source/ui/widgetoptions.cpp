@@ -16,16 +16,6 @@ WidgetOptions::WidgetOptions(QWidget *_parent) :
     connect(ui->checkBoxAutoDeleteSessions, SIGNAL(toggled(bool)), this, SLOT(slotToggledCheckBoxAutoDeleteSessions(bool)));
     connect(ui->checkBoxAutoDeleteRuns, SIGNAL(toggled(bool)), this, SLOT(slotToggledCheckBoxAutoDeleteRuns(bool)));
     connect(ui->checkBoxAutoDeleteLaps, SIGNAL(toggled(bool)), this, SLOT(slotToggledCheckBoxAutoDeleteLaps(bool)));
-    // initialize user interface
-    const QMap<int64_t, Options*> &mapOptions = ApplicationDatabase::instance().getMapOptions();
-    if(!mapOptions.isEmpty()) {
-        const Options *options = mapOptions.values().first();
-        if(options) {
-            ui->checkBoxAutoDeleteSessions->setChecked(options->autoDeleteSessions == 1);
-            ui->checkBoxAutoDeleteRuns->setChecked(options->autoDeleteRuns == 1);
-            ui->checkBoxAutoDeleteLaps->setChecked(options->autoDeleteLaps == 1);
-        }
-    }
 }
 
 WidgetOptions::~WidgetOptions() {
@@ -38,6 +28,19 @@ WidgetOptions::~WidgetOptions() {
 
 void WidgetOptions::update() {
     Widget::update();
+    updateCheckBoxes();
+}
+
+void WidgetOptions::updateCheckBoxes() {
+    const QMap<int64_t, Options*> &mapOptions = ApplicationDatabase::instance().getMapOptions();
+    if(!mapOptions.isEmpty()) {
+        const Options *options = mapOptions.values().first();
+        if(options) {
+            ui->checkBoxAutoDeleteSessions->setChecked(options->autoDeleteSessions == 1);
+            ui->checkBoxAutoDeleteRuns->setChecked(options->autoDeleteRuns == 1);
+            ui->checkBoxAutoDeleteLaps->setChecked(options->autoDeleteLaps == 1);
+        }
+    }
 }
 
 void WidgetOptions::slotToggledCheckBoxAutoDeleteSessions(const bool _checked) {
