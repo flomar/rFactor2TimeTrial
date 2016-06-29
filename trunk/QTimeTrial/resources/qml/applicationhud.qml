@@ -224,5 +224,38 @@ Item {
                 }
             }
         }
+        Item {
+            id: idItemLapInformation
+            anchors.centerIn: parent
+            width: 400
+            height: 300
+            visible: false
+            property real durationVisible: 3000
+            Rectangle {
+                anchors.fill: parent
+                color: Qt.rgba(1.0, 0.0, 0.0, 0.25)
+            }
+            Text {
+                id: idItemLapInformationText
+            }
+            Text {
+                id: idItemLapInformationTextAbsoluteBest
+            }
+            Text {
+                id: idItemLapInformationTextPersonalBest
+            }
+            Connections {
+                target: QTimeTrialApplicationDatabase
+                onSignalLapInformation: {
+                    // acquire signal parameters
+                    var infoLapTime = _infoLapTime
+                    var infoAbsolute = _infoAbsolute
+                    var infoPersonal = _infoPersonal
+                    var absoluteBest = _absoluteBest
+                    var personalBest = _personalBest
+                    console.log("onSignalLapInformation: " + infoLapTime + infoAbsolute + infoPersonal + absoluteBest + personalBest)
+                }
+            }
+        }
     }
 }

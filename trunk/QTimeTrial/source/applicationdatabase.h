@@ -64,6 +64,19 @@ public:
 public:
     QString getCurrentTrackName() const;
     QVector<Record> getVectorRecordsUnsortedAndUnfiltered() const;
+private:
+    // this function is called after each finished lap; after
+    // accumulating the required data, the appropriate signal is
+    // emitted to be picked up by the HUD (see below)
+    void displayLapInformation(const Lap *_lap) const;
+private:
+    // this function extracts the absolute record (if any) and the
+    // personl record (if any) for the specified lap
+    void getAbsoluteRecordAndPersonalRecord(const Lap *_lap, Record &_recordAbsolute, Record &_recordPersonal) const;
+signals:
+    // this signal is emitted after each finished lap to temporarily
+    // display some additional information to the user in the HUD
+    void signalLapInformation(const QString &_infoLapTime, const QString &_infoAbsolute, const QString &_infoPersonal, const bool _absoluteBest, const bool _personalBest) const;
 public:
     bool createDriver(const QString &_name);
     bool deleteDriver(const QString &_name);

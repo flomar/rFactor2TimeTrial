@@ -365,6 +365,8 @@ void ApplicationDatabase::processMessageUpdateTelemetry(const ClientServerMessag
             currentLap->elapsedTimeFinish = elapsedTimeLapStart;
             currentLap->time = currentLap->elapsedTimeFinish - currentLap->elapsedTimeStart;
             mapLaps.insert(currentLap->identifier, currentLap);
+            // display lap information in the HUD
+            displayLapInformation(currentLap);
             // create a new lap
             Lap *lap = new Lap();
             lap->identifier = Utilities::Containers::getSmallestAvailableIdentifier<int64_t, Lap>(mapLaps);
@@ -428,6 +430,100 @@ QVector<Record> ApplicationDatabase::getVectorRecordsUnsortedAndUnfiltered() con
         }
     }
     return vectorRecords;
+}
+
+void ApplicationDatabase::displayLapInformation(const Lap *_lap) const {
+    // acquire both the absolute record and the personal record (if existing)
+    Record recordAbsolute;
+    Record recordPersonal;
+    getAbsoluteRecordAndPersonalRecord(_lap, recordAbsolute, recordPersonal);
+    // extract the lap time
+    const QString infoLapTime = Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(_lap->time);
+    // acquire absolute values
+    bool absoluteBest = false;
+    QString infoAbsolute = QString::null;
+    if(recordAbsolute.time == -1) {
+        absoluteBest = true;
+        infoAbsolute = "ABSOLUTE BEST";
+    }
+    else {
+        const qint64 absoluteDeltaTime = recordAbsolute.time - _lap->time;
+        absoluteBest = absoluteDeltaTime >= 0;
+        infoAbsolute = absoluteBest ? "ABSOLUTE BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(absoluteDeltaTime);
+    }
+    // acquire personal values
+    bool personalBest = false;
+    QString infoPersonal = QString::null;
+    if(recordPersonal.time == -1) {
+        personalBest = true;
+        infoPersonal = "PERSONAL BEST";
+    }
+    else {
+        const qint64 personalDeltaTime = recordPersonal.time - _lap->time;
+        personalBest = personalDeltaTime >= 0;
+        infoPersonal = personalBest ? "PERSONAL BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(personalDeltaTime);
+    }
+    // emit signal to the HUD
+    emit signalLapInformation(infoLapTime, infoAbsolute, infoPersonal, absoluteBest, personalBest);
+}
+
+void ApplicationDatabase::getAbsoluteRecordAndPersonalRecord(const Lap *_lap, Record &_recordAbsolute, Record &_recordPersonal) const {
+    // acquire specified lap, specified run, specified session, and specified driver
+    const Lap *specifiedLap = _lap;
+    if(!specifiedLap) return;
+    const Run *specifiedRun = mapRuns.value(specifiedLap->identifierRun);
+    if(!specifiedRun) return;
+    const Session *specifiedSession = mapSessions.value(specifiedRun->identifierSession);
+    if(!specifiedSession) return;
+    const Driver *specifiedDriver = mapDrivers.value(specifiedRun->identifierDriver);
+    if(!specifiedDriver) return;
+    // the following is required to detect non-existing records
+    _recordAbsolute.time = -1;
+    _recordPersonal.time = -1;
+    // go through all available laps and extract all records
+    // fitting the specified criteria
+    QVector<Record> vectorRecords;
+    for(QMap<int64_t, Lap*>::const_iterator iter=mapLaps.begin(); iter!=mapLaps.end(); iter++) {
+        Lap *lap = iter.value();
+        if(lap) {
+            Run *run = mapRuns.value(lap->identifierRun);
+            if(run) {
+                // ignore runs with the wrong criteria
+                if(run->nameFrontTireCompound != specifiedRun->nameFrontTireCompound) continue;
+                if(run->nameRearTireCompound != specifiedRun->nameRearTireCompound) continue;
+                Driver *driver = mapDrivers.value(run->identifierDriver);
+                Session *session = mapSessions.value(run->identifierSession);
+                if(driver && session) {
+                    // ignore sessions with the wrong criteria
+                    if(session->nameTrack != specifiedSession->nameTrack) continue;
+                    if(session->nameCar != specifiedSession->nameCar) continue;
+                    // if we reach this point, we have a valid record
+                    // with regards to the specified criteria
+                    Record record;
+                    record.time = lap->time;
+                    record.track = session->nameTrack;
+                    record.driver = driver->name;
+                    record.car = session->nameCar;
+                    record.frontTireCompound = run->nameFrontTireCompound;
+                    record.rearTireCompound = run->nameRearTireCompound;
+                    vectorRecords.push_back(record);
+                }
+            }
+        }
+    }
+    // sort the records
+    qSort(vectorRecords.begin(), vectorRecords.end(), Record::lessThan);
+    // extract absolute best record (if any)
+    if(vectorRecords.isEmpty()) {
+        _recordAbsolute = vectorRecords.first();
+    }
+    // extract personal best record (if any)
+    foreach(const Record record, vectorRecords) {
+        if(record.driver == specifiedDriver->name) {
+            _recordPersonal = record;
+            break;
+        }
+    }
 }
 
 bool ApplicationDatabase::createDriver(const QString &_name) {
