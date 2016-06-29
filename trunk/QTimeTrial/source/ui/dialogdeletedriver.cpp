@@ -8,13 +8,16 @@
 
 #include <utilities.h>
 
-DialogDeleteDriver::DialogDeleteDriver(QWidget *_parent) :
+DialogDeleteDriver::DialogDeleteDriver(const QString &_driverName, QWidget *_parent) :
     Dialog(_parent),
-    ui(new Ui::DialogDeleteDriver) {
+    ui(new Ui::DialogDeleteDriver),
+    driverName(_driverName) {
     ui->setupUi(this);
     // connect signals and slots
     connect(ui->pushButtonOK, SIGNAL(pressed()), this, SLOT(slotPressedPushButtonOK()));
     connect(ui->pushButtonCancel, SIGNAL(pressed()), this, SLOT(slotPressedPushButtonCancel()));
+    // initialize user interface
+    ui->lineEditDriverName->setText(driverName);
 }
 
 DialogDeleteDriver::~DialogDeleteDriver() {
@@ -29,7 +32,9 @@ void DialogDeleteDriver::update() {
 }
 
 void DialogDeleteDriver::slotPressedPushButtonOK() {
-    done(QDialog::Accepted);
+    if(ApplicationDatabase::instance().deleteDriver(driverName)) {
+        done(QDialog::Accepted);
+    }
 }
 
 void DialogDeleteDriver::slotPressedPushButtonCancel() {

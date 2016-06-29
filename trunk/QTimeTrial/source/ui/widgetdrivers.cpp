@@ -66,17 +66,29 @@ void WidgetDrivers::slotDoubleClickedListWidgetAvailableDrivers(QListWidgetItem 
 void WidgetDrivers::slotPressedPushButtonCreateDriver() {
     DialogCreateDriver dialogCreateDriver;
     dialogCreateDriver.setGeometry(x(), y(), rect().width(), rect().height());
-    dialogCreateDriver.exec();
+    if(dialogCreateDriver.exec() == QDialog::Accepted) {
+        update();
+    }
 }
 
 void WidgetDrivers::slotPressedPushButtonEditDriver() {
-    DialogEditDriver dialogEditDriver;
+    if(!ui->listWidgetAvailableDrivers->currentItem()) return;
+    const QString driverName = ui->listWidgetAvailableDrivers->currentItem()->text();
+    if(driverName.isEmpty()) return;
+    DialogEditDriver dialogEditDriver(driverName);
     dialogEditDriver.setGeometry(x(), y(), rect().width(), rect().height());
-    dialogEditDriver.exec();
+    if(dialogEditDriver.exec() == QDialog::Accepted) {
+        update();
+    }
 }
 
 void WidgetDrivers::slotPressedPushButtonDeleteDriver() {
-    DialogDeleteDriver dialogDeleteDriver;
+    if(!ui->listWidgetAvailableDrivers->currentItem()) return;
+    const QString driverName = ui->listWidgetAvailableDrivers->currentItem()->text();
+    if(driverName.isEmpty()) return;
+    DialogDeleteDriver dialogDeleteDriver(driverName);
     dialogDeleteDriver.setGeometry(x(), y(), rect().width(), rect().height());
-    dialogDeleteDriver.exec();
+    if(dialogDeleteDriver.exec() == QDialog::Accepted) {
+        update();
+    }
 }

@@ -14,7 +14,7 @@ namespace Ui {
 class DialogDeleteDriver : public Dialog {
     Q_OBJECT
 public:
-    DialogDeleteDriver(QWidget *_parent = 0);
+    DialogDeleteDriver(const QString &_driverName, QWidget *_parent = 0);
     virtual ~DialogDeleteDriver();
 private:
     Ui::DialogDeleteDriver *ui;
@@ -23,6 +23,8 @@ public slots:
 private slots:
     void slotPressedPushButtonOK();
     void slotPressedPushButtonCancel();
+private:
+    const QString driverName;
 };
 
 #endif

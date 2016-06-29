@@ -29,7 +29,9 @@ void DialogCreateDriver::update() {
 }
 
 void DialogCreateDriver::slotPressedPushButtonOK() {
-    done(QDialog::Accepted);
+    if(ApplicationDatabase::instance().createDriver(ui->lineEditDriverName->text())) {
+        done(QDialog::Accepted);
+    }
 }
 
 void DialogCreateDriver::slotPressedPushButtonCancel() {

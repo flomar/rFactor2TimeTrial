@@ -64,8 +64,11 @@ public:
 public:
     QString getCurrentTrackName() const;
     QVector<Record> getVectorRecordsUnsortedAndUnfiltered() const;
+public:
+    bool createDriver(const QString &_name);
+    bool deleteDriver(const QString &_name);
 private:
-    // ATTENTIONS: these are internal variables used to find out whether
+    // ATTENTION: these are internal variables used to find out whether
     // a new lap has been started or not based on the "lapNumber" variable
     // we get from rF2 through telemetry updates; "lnc" represents the
     // current lap number, "lno" represents the old lap number, and "lns"

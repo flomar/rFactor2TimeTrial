@@ -429,3 +429,37 @@ QVector<Record> ApplicationDatabase::getVectorRecordsUnsortedAndUnfiltered() con
     }
     return vectorRecords;
 }
+
+bool ApplicationDatabase::createDriver(const QString &_name) {
+    // don't allow empty driver names
+    if(_name.isEmpty()) {
+        return false;
+    }
+    // don't allow duplicate driver names
+    foreach(const Driver *driver, mapDrivers.values()) {
+        if(driver) {
+            if(driver->name == _name) {
+                return false;
+            }
+        }
+    }
+    // create a new driver, and add it to the database
+    Driver *driver = new Driver();
+    driver->identifier = Utilities::Containers::getSmallestAvailableIdentifier<qint64, Driver>(mapDrivers);
+    driver->name = _name;
+    mapDrivers.insert(driver->identifier, driver);
+    return true;
+}
+
+bool ApplicationDatabase::deleteDriver(const QString &_name) {
+    foreach(const Driver *driver, mapDrivers.values()) {
+        if(driver) {
+            if(driver->name == _name) {
+                mapDrivers.remove(driver->identifier);
+                delete driver;
+                return true;
+            }
+        }
+    }
+    return false;
+}

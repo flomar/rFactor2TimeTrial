@@ -14,7 +14,7 @@ namespace Ui {
 class DialogEditDriver : public Dialog {
     Q_OBJECT
 public:
-    DialogEditDriver(QWidget *_parent = 0);
+    DialogEditDriver(const QString &_driverName, QWidget *_parent = 0);
     virtual ~DialogEditDriver();
 private:
     Ui::DialogEditDriver *ui;
@@ -23,6 +23,8 @@ public slots:
 private slots:
     void slotPressedPushButtonOK();
     void slotPressedPushButtonCancel();
+private:
+    const QString driverName;
 };
 
 #endif

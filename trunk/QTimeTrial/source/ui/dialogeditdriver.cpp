@@ -8,13 +8,16 @@
 
 #include <utilities.h>
 
-DialogEditDriver::DialogEditDriver(QWidget *_parent) :
+DialogEditDriver::DialogEditDriver(const QString &_driverName, QWidget *_parent) :
     Dialog(_parent),
-    ui(new Ui::DialogEditDriver) {
+    ui(new Ui::DialogEditDriver),
+    driverName(_driverName) {
     ui->setupUi(this);
     // connect signals and slots
     connect(ui->pushButtonOK, SIGNAL(pressed()), this, SLOT(slotPressedPushButtonOK()));
     connect(ui->pushButtonCancel, SIGNAL(pressed()), this, SLOT(slotPressedPushButtonCancel()));
+    // initialize user interface
+    ui->lineEditDriverName->setText(driverName);
 }
 
 DialogEditDriver::~DialogEditDriver() {
