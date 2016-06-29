@@ -11,16 +11,5 @@ This document contains the most important TODOs for the project.
 
 ## Bugs
 
+- The lap information display always shows an absolute best. That doesn't make a lot of sense, especially considering the fact that the personal best display is working.
 - The QTimeTrial application crashes upon shutdown unless the code in "ApplicationGui::~ApplicationGui" is disabled. Played around with it for a while, but got tired. Doesn't matter all that much since all memory is freed right after that destructor is called anyway.
-
-
-
-- after a lap has been finished, display a notification screen for x seconds
-  with some additional information regarding absolute/personal best
-  **ATTENTION** values should only count for the same setup... (track + car + tires)
-
-(1) DISPLAY THE LAP TIME            01:23:456
-    (a) absolute best?                 ABSOLUTE BEST (in green)
-        no?                            DISTANCE TO ABSOLUTE BEST (driver name) (red)
-    (b) personal best?                 PERSONAL BEST (in green)
-        no?                            DISTANCE TO PERSONAL BEST (driver name) (red)

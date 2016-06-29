@@ -227,22 +227,47 @@ Item {
         Item {
             id: idItemLapInformation
             anchors.centerIn: parent
-            width: 400
-            height: 300
-            visible: false
+            width: 250
+            height: 100
+            opacity: 0.0
             property real durationVisible: 3000
-            Rectangle {
-                anchors.fill: parent
-                color: Qt.rgba(1.0, 0.0, 0.0, 0.25)
-            }
             Text {
                 id: idItemLapInformationText
+                anchors.fill: parent
+                anchors.bottomMargin: parent.height * 3 / 5
+                text: "00:00:000"
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                font.family: ApplicationStyle.fontBitwise.name
+                font.pixelSize: 32
+                style: Text.Raised
+                styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }
             Text {
                 id: idItemLapInformationTextAbsoluteBest
+                anchors.fill: parent
+                anchors.topMargin: parent.height * 2 / 5
+                anchors.bottomMargin: parent.height * 1 / 5
+                text: "00:00:000"
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                font.family: ApplicationStyle.fontBitwise.name
+                font.pixelSize: 24
+                style: Text.Raised
+                styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }
             Text {
                 id: idItemLapInformationTextPersonalBest
+                anchors.fill: parent
+                anchors.topMargin: parent.height * 4 / 5
+                text: "00:00:000"
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                font.family: ApplicationStyle.fontBitwise.name
+                font.pixelSize: 24
+                style: Text.Raised
+                styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }
             Connections {
                 target: QTimeTrialApplicationDatabase
@@ -253,7 +278,31 @@ Item {
                     var infoPersonal = _infoPersonal
                     var absoluteBest = _absoluteBest
                     var personalBest = _personalBest
-                    console.log("onSignalLapInformation: " + infoLapTime + infoAbsolute + infoPersonal + absoluteBest + personalBest)
+                    // process signal parameters
+                    idItemLapInformationText.text = infoLapTime
+                    idItemLapInformationTextAbsoluteBest.text = infoAbsolute
+                    idItemLapInformationTextPersonalBest.text = infoPersonal
+                    idItemLapInformationTextAbsoluteBest.color = absoluteBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
+                    idItemLapInformationTextPersonalBest.color = personalBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
+                    idSequentialAnimation.start()
+                }
+            }
+            SequentialAnimation {
+                id: idSequentialAnimation
+                alwaysRunToEnd: true
+                PropertyAnimation {
+                    target: idItemLapInformation
+                    properties: "opacity"
+                    from: 0.0
+                    to: 1.0
+                    duration: 125
+                }
+                PropertyAnimation {
+                    target: idItemLapInformation
+                    properties: "opacity"
+                    from: 1.0
+                    to: 0.0
+                    duration: 7375
                 }
             }
         }

@@ -449,7 +449,7 @@ void ApplicationDatabase::displayLapInformation(const Lap *_lap) const {
     else {
         const qint64 absoluteDeltaTime = recordAbsolute.time - _lap->time;
         absoluteBest = absoluteDeltaTime >= 0;
-        infoAbsolute = absoluteBest ? "ABSOLUTE BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(absoluteDeltaTime);
+        infoAbsolute = absoluteBest ? "ABSOLUTE BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(absoluteDeltaTime));
     }
     // acquire personal values
     bool personalBest = false;
@@ -461,7 +461,7 @@ void ApplicationDatabase::displayLapInformation(const Lap *_lap) const {
     else {
         const qint64 personalDeltaTime = recordPersonal.time - _lap->time;
         personalBest = personalDeltaTime >= 0;
-        infoPersonal = personalBest ? "PERSONAL BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(personalDeltaTime);
+        infoPersonal = personalBest ? "PERSONAL BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(personalDeltaTime));
     }
     // emit signal to the HUD
     emit signalLapInformation(infoLapTime, infoAbsolute, infoPersonal, absoluteBest, personalBest);
