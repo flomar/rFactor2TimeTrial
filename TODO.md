@@ -11,5 +11,4 @@ This document contains the most important TODOs for the project.
 
 ## Bugs
 
-- The lap information display always shows an absolute best. That doesn't make a lot of sense, especially considering the fact that the personal best display is working.
 - The QTimeTrial application crashes upon shutdown unless the code in "ApplicationGui::~ApplicationGui" is disabled. Played around with it for a while, but got tired. Doesn't matter all that much since all memory is freed right after that destructor is called anyway.

@@ -514,7 +514,7 @@ void ApplicationDatabase::getAbsoluteRecordAndPersonalRecord(const Lap *_lap, Re
     // sort the records
     qSort(vectorRecords.begin(), vectorRecords.end(), Record::lessThan);
     // extract absolute best record (if any)
-    if(vectorRecords.isEmpty()) {
+    if(!vectorRecords.isEmpty()) {
         _recordAbsolute = vectorRecords.first();
     }
     // extract personal best record (if any)
