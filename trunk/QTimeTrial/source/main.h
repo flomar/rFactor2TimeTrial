@@ -11,6 +11,7 @@
 #include <QQuickWindow>
 #include <QWidget>
 #include <QDialog>
+#include <QMessageBox>
 #include <QDesktopWidget>
 #include <QPushButton>
 #include <QTcpServer>
