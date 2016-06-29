@@ -2,6 +2,10 @@
 
 This document contains the most important TODOs for the project.
 
+## TODOs
+
+- implement "ApplicationDatabase::autoDeleteSessionsAndRunsAndLaps", maybe find a more elegant solution than writing a 100+ line method.
+
 ## Issues
 
 - Sometimes, and I really found no way to reproduce it reliably, the QTimeTrial application does not stay on top of all other windows, and as a result you have to quit rF2 and go back to try again.

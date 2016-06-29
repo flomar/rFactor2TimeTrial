@@ -41,6 +41,9 @@ bool ApplicationDatabase::open(const QString &_fileName) {
 }
 
 bool ApplicationDatabase::close() {
+    // depending on the options we need to do some special stuff
+    // before actually writing the database
+    autoDeleteSessionsAndRunsAndLaps();
     // write data
     if(!writeOptions()) return false;
     if(!writeDrivers()) return false;
@@ -241,6 +244,29 @@ void ApplicationDatabase::deleteData() {
     mapSessions.clear();
     mapRuns.clear();
     mapLaps.clear();
+}
+
+void ApplicationDatabase::autoDeleteSessionsAndRunsAndLaps() {
+    if(!mapOptions.isEmpty()) {
+        // the order of execution is important here: first we need to
+        // auto-delete the laps, then the runs, and then the sessions,
+        // otherwise unwanted artifacts will remain in the database
+        const Options *options = mapOptions.values().first();
+        if(options) {
+            // auto-delete laps
+            if(options->autoDeleteLaps == 1) {
+                // TODO/FIXME
+            }
+            // auto-delete runs
+            if(options->autoDeleteRuns == 1) {
+                // TODO/FIXME
+            }
+            // auto-delete sessions
+            if(options->autoDeleteSessions == 1) {
+                // TODO/FIXME
+            }
+        }
+    }
 }
 
 void ApplicationDatabase::slotReceivedClientServerMessage(const ClientServerMessage &_message) {
