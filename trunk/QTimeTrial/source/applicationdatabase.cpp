@@ -32,6 +32,7 @@ bool ApplicationDatabase::open(const QString &_fileName) {
     // clear existing data
     deleteData();
     // read data
+    if(!readOptions()) return false;
     if(!readDrivers()) return false;
     if(!readSessions()) return false;
     if(!readRuns()) return false;
@@ -41,11 +42,27 @@ bool ApplicationDatabase::open(const QString &_fileName) {
 
 bool ApplicationDatabase::close() {
     // write data
+    if(!writeOptions()) return false;
     if(!writeDrivers()) return false;
     if(!writeSessions()) return false;
     if(!writeRuns()) return false;
     if(!writeLaps()) return false;
     database.close();
+    return true;
+}
+
+bool ApplicationDatabase::readOptions() {
+    QSqlQuery query("SELECT * FROM Options");
+    while(query.next()) {
+        if(!query.isValid()) return false;
+        Options *options = new Options;
+        QSqlRecord record = query.record();
+        options->identifier = record.value("Identifier").toLongLong();
+        options->autoDeleteSessions = record.value("AutoDeleteSessions").toLongLong();
+        options->autoDeleteRuns = record.value("AutoDeleteRuns").toLongLong();
+        options->autoDeleteLaps = record.value("AutoDeleteLaps").toLongLong();
+        mapOptions.insert(options->identifier, options);
+    }
     return true;
 }
 
@@ -106,6 +123,25 @@ bool ApplicationDatabase::readLaps() {
         lap->identifierRun = record.value("IdentifierRun").toLongLong();
         lap->time = record.value("Time").toLongLong();
         mapLaps.insert(lap->identifier, lap);
+    }
+    return true;
+}
+
+bool ApplicationDatabase::writeOptions() const {
+    QSqlQuery queryDelete;
+    if(!queryDelete.exec("DELETE FROM Options"))
+        return false;
+    for(QMap<int64_t, Options*>::const_iterator iter=mapOptions.begin(); iter!=mapOptions.end(); iter++) {
+        const Options *options = iter.value();
+        if(!options) return false;
+        QSqlQuery query;
+        query.prepare("INSERT INTO Options(Identifier, AutoDeleteSessions, AutoDeleteRuns, AutoDeleteLaps) VALUES(:identifier, :autoDeleteSessions, :autoDeleteRuns, :autoDeleteLaps)");
+        query.bindValue(":identifier", QVariant::fromValue(options->identifier));
+        query.bindValue(":autoDeleteSessions", QVariant::fromValue(options->autoDeleteSessions));
+        query.bindValue(":autoDeleteRuns", QVariant::fromValue(options->autoDeleteRuns));
+        query.bindValue(":autoDeleteLaps", QVariant::fromValue(options->autoDeleteLaps));
+        if(!query.exec())
+            return false;
     }
     return true;
 }

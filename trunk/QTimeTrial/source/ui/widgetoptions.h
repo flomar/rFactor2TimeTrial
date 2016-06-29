@@ -20,6 +20,10 @@ private:
     Ui::WidgetOptions *ui;
 public slots:
     void update();
+private slots:
+    void slotToggledCheckBoxAutoDeleteSessions(const bool _checked);
+    void slotToggledCheckBoxAutoDeleteRuns(const bool _checked);
+    void slotToggledCheckBoxAutoDeleteLaps(const bool _checked);
 };
 
 #endif

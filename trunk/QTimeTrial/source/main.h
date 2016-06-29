@@ -36,6 +36,14 @@
 // include client/server protocol headers
 #include "../ClientServerProtocol/clientserverprotocol.h"
 
+struct Options {
+    Options() : identifier(0), autoDeleteSessions(0), autoDeleteRuns(0), autoDeleteLaps(0) { }
+    int64_t identifier;
+    int64_t autoDeleteSessions;
+    int64_t autoDeleteRuns;
+    int64_t autoDeleteLaps;
+};
+
 struct Driver {
     Driver() : identifier(0), name(QString::null) { }
     int64_t identifier;

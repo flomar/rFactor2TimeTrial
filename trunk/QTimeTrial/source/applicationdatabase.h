@@ -16,11 +16,13 @@ public:
     bool open(const QString &_fileName);
     bool close();
 private:
+    bool readOptions();
     bool readDrivers();
     bool readSessions();
     bool readRuns();
     bool readLaps();
 private:
+    bool writeOptions() const;
     bool writeDrivers() const;
     bool writeSessions() const;
     bool writeRuns() const;
@@ -30,11 +32,13 @@ private:
 private:
     void deleteData();
 private:
+    QMap<int64_t, Options*> mapOptions;
     QMap<int64_t, Driver*> mapDrivers;
     QMap<int64_t, Session*> mapSessions;
     QMap<int64_t, Run*> mapRuns;
     QMap<int64_t, Lap*> mapLaps;
 public:
+    const QMap<int64_t, Options*> &getMapOptions() const { return mapOptions; }
     const QMap<int64_t, Driver*> &getMapDrivers() const { return mapDrivers; }
     const QMap<int64_t, Session*> &getMapSessions() const { return mapSessions; }
     const QMap<int64_t, Run*> &getMapRuns() const { return mapRuns; }

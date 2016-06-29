@@ -70,7 +70,7 @@
    <property name="title">
     <string>Database</string>
    </property>
-   <widget class="QCheckBox" name="checkBox">
+   <widget class="QCheckBox" name="checkBoxAutoDeleteSessions">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -88,7 +88,7 @@
      <string>Auto-Delete Sessions</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_3">
+   <widget class="QCheckBox" name="checkBoxAutoDeleteRuns">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -154,7 +154,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_4">
+   <widget class="QCheckBox" name="checkBoxAutoDeleteLaps">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -169,7 +169,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Store Best Laps Only</string>
+     <string>Auto-Delete Laps</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
@@ -187,7 +187,7 @@
      </font>
     </property>
     <property name="text">
-     <string>If this option is selected, only the best lap for each run will be stored in the database, and all other laps will be automatically deleted upon finishing the run.</string>
+     <string>If this option is selected, only the best lap for each run will be stored in the database, and all other laps will be automatically deleted upon closing the database.</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
