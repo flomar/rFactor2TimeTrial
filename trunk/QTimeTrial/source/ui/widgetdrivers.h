@@ -26,7 +26,7 @@ private:
 private slots:
     void slotDoubleClickedListWidgetAvailableDrivers(QListWidgetItem *_item);
     void slotPressedPushButtonCreateDriver();
-    void slotPressedPushButtonSetCurrentDriver();
+    void slotPressedPushButtonEditDriver();
     void slotPressedPushButtonDeleteDriver();
 };
 

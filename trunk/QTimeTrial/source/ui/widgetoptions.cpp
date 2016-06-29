@@ -8,8 +8,8 @@
 
 #include <utilities.h>
 
-WidgetOptions::WidgetOptions(QWidget *parent) :
-    Widget(parent),
+WidgetOptions::WidgetOptions(QWidget *_parent) :
+    Widget(_parent),
     ui(new Ui::WidgetOptions) {
     ui->setupUi(this);
 }

@@ -3,19 +3,23 @@
 #include <ui/widgetdrivers.h>
 #include "ui_widgetdrivers.h"
 
+#include <ui/dialogcreatedriver.h>
+#include <ui/dialogeditdriver.h>
+#include <ui/dialogdeletedriver.h>
+
 #include <application.h>
 #include <applicationdatabase.h>
 
 #include <utilities.h>
 
-WidgetDrivers::WidgetDrivers(QWidget *parent) :
-    Widget(parent),
+WidgetDrivers::WidgetDrivers(QWidget *_parent) :
+    Widget(_parent),
     ui(new Ui::WidgetDrivers) {
     ui->setupUi(this);
     // connect signals and slots
     connect(ui->listWidgetAvailableDrivers, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(slotDoubleClickedListWidgetAvailableDrivers(QListWidgetItem*)));
     connect(ui->pushButtonCreateDriver, SIGNAL(pressed()), this, SLOT(slotPressedPushButtonCreateDriver()));
-    connect(ui->pushButtonSetCurrentDriver, SIGNAL(pressed()), this, SLOT(slotPressedPushButtonSetCurrentDriver()));
+    connect(ui->pushButtonEditDriver, SIGNAL(pressed()), this, SLOT(slotPressedPushButtonEditDriver()));
     connect(ui->pushButtonDeleteDriver, SIGNAL(pressed()), this, SLOT(slotPressedPushButtonDeleteDriver()));
 }
 
@@ -23,7 +27,7 @@ WidgetDrivers::~WidgetDrivers() {
     // disconnect signals and slots
     disconnect(ui->listWidgetAvailableDrivers, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(slotDoubleClickedListWidgetAvailableDrivers(QListWidgetItem*)));
     disconnect(ui->pushButtonCreateDriver, SIGNAL(pressed()), this, SLOT(slotPressedPushButtonCreateDriver()));
-    disconnect(ui->pushButtonSetCurrentDriver, SIGNAL(pressed()), this, SLOT(slotPressedPushButtonSetCurrentDriver()));
+    disconnect(ui->pushButtonEditDriver, SIGNAL(pressed()), this, SLOT(slotPressedPushButtonEditDriver()));
     disconnect(ui->pushButtonDeleteDriver, SIGNAL(pressed()), this, SLOT(slotPressedPushButtonDeleteDriver()));
     delete ui;
 }
@@ -60,19 +64,19 @@ void WidgetDrivers::slotDoubleClickedListWidgetAvailableDrivers(QListWidgetItem 
 }
 
 void WidgetDrivers::slotPressedPushButtonCreateDriver() {
-    qDebug() << "TODO/FIXME: WidgetDrivers::slotPressedPushButtonCreateDriver";
+    DialogCreateDriver dialogCreateDriver;
+    dialogCreateDriver.setGeometry(rect());
+    dialogCreateDriver.exec();
 }
 
-void WidgetDrivers::slotPressedPushButtonSetCurrentDriver() {
-    if(ui->listWidgetAvailableDrivers->currentRow() != -1) {
-        const QListWidgetItem *currentItem = ui->listWidgetAvailableDrivers->currentItem();
-        if(currentItem) {
-            ApplicationDatabase::instance().setCurrentDriver(currentItem->text());
-            update();
-        }
-    }
+void WidgetDrivers::slotPressedPushButtonEditDriver() {
+    DialogEditDriver dialogEditDriver;
+    dialogEditDriver.setGeometry(rect());
+    dialogEditDriver.exec();
 }
 
 void WidgetDrivers::slotPressedPushButtonDeleteDriver() {
-    qDebug() << "TODO/FIXME: WidgetDrivers::slotPressedPushButtonDeleteDriver";
+    DialogDeleteDriver dialogDeleteDriver;
+    dialogDeleteDriver.setGeometry(rect());
+    dialogDeleteDriver.exec();
 }

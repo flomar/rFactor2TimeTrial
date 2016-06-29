@@ -10,6 +10,7 @@
 #include <QQmlContext>
 #include <QQuickWindow>
 #include <QWidget>
+#include <QDialog>
 #include <QDesktopWidget>
 #include <QPushButton>
 #include <QTcpServer>

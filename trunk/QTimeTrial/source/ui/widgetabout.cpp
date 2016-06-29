@@ -8,8 +8,8 @@
 
 #include <utilities.h>
 
-WidgetAbout::WidgetAbout(QWidget *parent) :
-    Widget(parent),
+WidgetAbout::WidgetAbout(QWidget *_parent) :
+    Widget(_parent),
     ui(new Ui::WidgetAbout) {
     ui->setupUi(this);
     // initialize user interface

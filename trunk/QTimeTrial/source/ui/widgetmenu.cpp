@@ -98,10 +98,10 @@ void WidgetMenu::paintEvent(QPaintEvent *_event) {
     const QRect rectBorder = rect();
     const QRect rectBackground = Utilities::Graphics::getRectInset(rectBorder, 0);
     // draw border
-    painter.setBrush(colorWidgetBorder);
+    painter.setBrush(colorBorder);
     painter.drawRect(rectBorder);
     // draw background
-    painter.setBrush(colorWidgetBackground);
+    painter.setBrush(colorBackground);
     painter.drawRect(rectBackground);
     // draw buttons
     foreach(const Button *button, vectorButtons) {

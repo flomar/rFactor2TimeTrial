@@ -173,7 +173,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButtonSetCurrentDriver">
+  <widget class="QPushButton" name="pushButtonEditDriver">
    <property name="geometry">
     <rect>
      <x>220</x>
@@ -189,7 +189,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Set Current Driver</string>
+    <string>Edit Driver</string>
    </property>
   </widget>
  </widget>

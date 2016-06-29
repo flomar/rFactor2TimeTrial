@@ -1,21 +1,21 @@
-// widget.cpp
+// dialog.cpp
 
-#include <ui/widget.h>
+#include <ui/dialog.h>
 
 #include <utilities.h>
 
-Widget::Widget(QWidget *_parent) :
-    QWidget(_parent) {
+Dialog::Dialog(QWidget *_parent) :
+    QDialog(_parent) {
     // initialize some stuff
     setMouseTracking(true);
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 }
 
-Widget::~Widget() {
+Dialog::~Dialog() {
 
 }
 
-void Widget::update() {
+void Dialog::update() {
     // the default implementation doesn't do anything
-    QWidget::update();
+    QDialog::update();
 }

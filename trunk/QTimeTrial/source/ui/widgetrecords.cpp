@@ -8,8 +8,8 @@
 
 #include <utilities.h>
 
-WidgetRecords::WidgetRecords(QWidget *parent) :
-    Widget(parent),
+WidgetRecords::WidgetRecords(QWidget *_parent) :
+    Widget(_parent),
     ui(new Ui::WidgetRecords) {
     ui->setupUi(this);
     // connect signals and slots
