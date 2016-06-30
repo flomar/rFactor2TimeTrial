@@ -85,14 +85,6 @@ void WidgetDrivers::slotPressedPushButtonCreateDriver() {
 }
 
 void WidgetDrivers::slotPressedPushButtonEditDriver() {
-    // TODO/FIXME
-    QMessageBox messageBox;
-    messageBox.setWindowFlags(Qt::WindowStaysOnTopHint);
-    messageBox.setWindowTitle("TODO/FIXME");
-    messageBox.setText("TODO/FIXME: MISSING FUNCTIONALITY");
-    messageBox.exec();
-    return;
-
     if(!ui->listWidgetAvailableDrivers->currentItem()) return;
     const QString driverName = ui->listWidgetAvailableDrivers->currentItem()->text();
     if(driverName.isEmpty()) return;

@@ -34,7 +34,11 @@ void DialogDeleteDriver::update() {
 void DialogDeleteDriver::initializeGui() {
     Dialog::initializeGui();
     // initialize GUI elements
-    // TODO/FIXME
+    ui->labelTitle->setFont(guiFontXL);
+    ui->groupBoxDriverName->setFont(guiFontM);
+    ui->lineEditDriverName->setFont(guiFontM);
+    ui->pushButtonOK->setFont(guiFontM);
+    ui->pushButtonCancel->setFont(guiFontM);
 }
 
 void DialogDeleteDriver::slotPressedPushButtonOK() {
