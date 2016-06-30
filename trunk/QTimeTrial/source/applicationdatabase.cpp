@@ -332,13 +332,15 @@ void ApplicationDatabase::autoDeleteLaps() {
                 }
             }
             qSort(vectorLaps.begin(), vectorLaps.end(), Lap::lessThanPointers);
-            vectorLaps.pop_front();
-            foreach(Lap *lap, vectorLaps) {
-                if(lap) {
-                    vectorLapsToBeDeleted.push_back(lap);
+            if(!vectorLaps.isEmpty()) {
+                vectorLaps.pop_front();
+                foreach(Lap *lap, vectorLaps) {
+                    if(lap) {
+                        vectorLapsToBeDeleted.push_back(lap);
+                    }
                 }
+                vectorLaps.clear();
             }
-            vectorLaps.clear();
         }
     }
     foreach(Lap *lap, vectorLapsToBeDeleted) {
