@@ -36,17 +36,14 @@ I couldn't get Qt to work with Visual Studio for the life of me, but using two d
 
 ## Run Instructions
 
+Before doing anything else, make sure you're desktop resolution is a multiple of 1920x1080, either smaller or larger, and that you run rF2 in borderless window mode. If you ignore this advice, you might see a skewed user interface or nothing at all.
+
 First you want to start QTimeTrial since it provides the server implementation. After you can see the QTimeTrial menu bar, you can safely start rFactor2.
 
 **WARNING**: For now, QTimeTrial needs to be started from within its base directory (the one containing the QtCreator project file), otherwise the underlying database will not be found.
 
-**WARNING**: I already mentioned this in the TODO list, but here it goes again. Sometimes the QTimeTrial application does not stay on top of all other windows like it is intended to. If that happens, there's no other option but to shut down the rF2 application and try again. Clicking the QTimeTrial menu bar while rF2 starts up seems to help, but unfortunately not always.
-
-**WARNING**: So far, QTimeTrial supports only one resolution, 1920x1080, and you also have to start rFactor2 in borderless window mode.
+**WARNING**: Sometimes the QTimeTrial application does not stay on top of all other windows like it is intended to. If that happens, there's no other option but to shut down both, the QTimeTrial and the rF2 applications and try again. Clicking the QTimeTrial menu bar while rF2 starts up seems to help, but unfortunately not always.
 
 You know you're good to go if you can still see the QTimeTrial menu bar hovering over the rFactor2 user interface in the main menu. Then simply deselect session settings (practice, qualifying, race) and push the race button.
 
 As soon as you're in the box (or at the monitor), click the "Drivers" button and select the desired driver. Note: **Nothing will be tracked without a valid driver.**
-
-As for the performance of both projects: My rig is two years old, but it was fairly powerful back then (i7, 32GB RAM, 6GB VIDEO, SSD). I'm sorry if you run into performance issues, I didn't optimize in every possible corner. The network code shouldn't be a problem though, the constant updates require something like 500 bytes every 50ms, so that's really not a concern. I'd rather worry about the QML-based interface which gets updated at the same frequency.
-

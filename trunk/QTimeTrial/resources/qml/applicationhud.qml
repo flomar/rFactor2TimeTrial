@@ -22,10 +22,10 @@ Item {
         }
         Item {
             id: idItemLap
-            x: 75
-            y: 6
-            width: 200
-            height: 20
+            x: 75 * gui.guiScale
+            y: 6 * gui.guiScale
+            width: 200 * gui.guiScale
+            height: 20 * gui.guiScale
             Text {
                 anchors.fill: parent
                 text: gui.stringLapTime
@@ -33,15 +33,15 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 20
+                font.pixelSize: 20 * gui.guiScale
             }
         }
         Item {
             id: idItemDriver
-            x: 760
-            y: 7
-            width: 400
-            height: 50
+            x: 760 * gui.guiScale
+            y: 7 * gui.guiScale
+            width: 400 * gui.guiScale
+            height: 50 * gui.guiScale
             Text {
                 anchors.fill: parent
                 text: gui.stringDriver
@@ -49,15 +49,15 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 32
+                font.pixelSize: 32 * gui.guiScale
             }
         }
         Item {
             id: idItemRun
-            x: 1645
-            y: 6
-            width: 200
-            height: 20
+            x: 1645 * gui.guiScale
+            y: 6 * gui.guiScale
+            width: 200 * gui.guiScale
+            height: 20 * gui.guiScale
             Text {
                 anchors.fill: parent
                 text: gui.stringRunTime
@@ -65,15 +65,15 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 20
+                font.pixelSize: 20 * gui.guiScale
             }
         }
         Item {
             id: idItemRPM
-            x: 730
-            y: 984
-            width: 160
-            height: 64
+            x: 730 * gui.guiScale
+            y: 984 * gui.guiScale
+            width: 160 * gui.guiScale
+            height: 64 * gui.guiScale
             Text {
                 anchors.fill: parent
                 text: gui.intEngineRPMCurrent
@@ -81,15 +81,15 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 40
+                font.pixelSize: 40 * gui.guiScale
             }
         }
         Item {
             id: idItemGear
-            x: 910
-            y: 966
-            width: 100
-            height: 100
+            x: 910 * gui.guiScale
+            y: 966 * gui.guiScale
+            width: 100 * gui.guiScale
+            height: 100 * gui.guiScale
             Text {
                 anchors.fill: parent
                 text: gui.stringGear
@@ -97,15 +97,15 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 50
+                font.pixelSize: 50 * gui.guiScale
             }
         }
         Item {
             id: idItemSpeed
-            x: 1030
-            y: 984
-            width: 160
-            height: 64
+            x: 1030 * gui.guiScale
+            y: 984 * gui.guiScale
+            width: 160 * gui.guiScale
+            height: 64 * gui.guiScale
             Text {
                 anchors.fill: parent
                 text: gui.intSpeed
@@ -113,15 +113,15 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 40
+                font.pixelSize: 40 * gui.guiScale
             }
         }
         Item {
             id: idItemFuelLED
-            x: 8
-            y: 1054
-            width: 20
-            height: 20
+            x: 8 * gui.guiScale
+            y: 1054 * gui.guiScale
+            width: 20 * gui.guiScale
+            height: 20 * gui.guiScale
             Image {
                 anchors.fill: parent
                 source: {
@@ -136,10 +136,10 @@ Item {
         }
         Item {
             id: idItemEngineLED
-            x: 250
-            y: 1054
-            width: 20
-            height: 20
+            x: 250 * gui.guiScale
+            y: 1054 * gui.guiScale
+            width: 20 * gui.guiScale
+            height: 20 * gui.guiScale
             Image {
                 anchors.fill: parent
                 source: {
@@ -150,10 +150,10 @@ Item {
         }
         Item {
             id: idItemRPMLimiterLED
-            x: 670
-            y: 1000
-            width: 40
-            height: 40
+            x: 670 * gui.guiScale
+            y: 1000 * gui.guiScale
+            width: 40 * gui.guiScale
+            height: 40 * gui.guiScale
             Image {
                 anchors.fill: parent
                 source: {
@@ -166,10 +166,10 @@ Item {
         }
         Item {
             id: idItemSpeedLimiterLED
-            x: 1210
-            y: 1000
-            width: 40
-            height: 40
+            x: 1210 * gui.guiScale
+            y: 1000 * gui.guiScale
+            width: 40 * gui.guiScale
+            height: 40 * gui.guiScale
             Image {
                 anchors.fill: parent
                 source: {
@@ -180,10 +180,10 @@ Item {
         }
         Item {
             id: idItemBrakesLED
-            x: 1650
-            y: 1054
-            width: 20
-            height: 20
+            x: 1650 * gui.guiScale
+            y: 1054 * gui.guiScale
+            width: 20 * gui.guiScale
+            height: 20 * gui.guiScale
             Image {
                 anchors.fill: parent
                 source: {
@@ -203,10 +203,10 @@ Item {
         }
         Item {
             id: idItemTiresLED
-            x: 1892
-            y: 1054
-            width: 20
-            height: 20
+            x: 1892 * gui.guiScale
+            y: 1054 * gui.guiScale
+            width: 20 * gui.guiScale
+            height: 20 * gui.guiScale
             Image {
                 anchors.fill: parent
                 source: {
@@ -227,8 +227,8 @@ Item {
         Item {
             id: idItemLapInformation
             anchors.centerIn: parent
-            width: 256
-            height: 128
+            width: 256 * gui.guiScale
+            height: 128 * gui.guiScale
             opacity: 0.0
             property real durationVisible: 3000
             Text {
@@ -240,7 +240,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 40
+                font.pixelSize: 40 * gui.guiScale
                 style: Text.Raised
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }
@@ -253,7 +253,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 28
+                font.pixelSize: 28 * gui.guiScale
                 style: Text.Raised
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }
@@ -265,7 +265,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 28
+                font.pixelSize: 28 * gui.guiScale
                 style: Text.Raised
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }
