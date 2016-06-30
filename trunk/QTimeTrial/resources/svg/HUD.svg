@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="HUD.svg"
-   inkscape:export-filename="C:\Users\flomar\Projects\rFactor2\QTimeTrial\resources\png\HUD.png"
+   inkscape:export-filename="C:\Users\flomar\Projects\rFactor2TimeTrial\trunk\QTimeTrial\resources\png\HUD.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -200,10 +200,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4142136"
-     inkscape:cx="949.6602"
+     inkscape:cx="868.34292"
      inkscape:cy="182.029"
      inkscape:document-units="px"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1018"
@@ -219,7 +219,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -315,6 +315,18 @@
          x="1813.9447"
          y="1072"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;font-family:Bitwise;-inkscape-font-specification:Bitwise">TIRES</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4013"
+       y="1068.7976"
+       x="841.13068"
+       style="display:inline;font-size:18.41623115999999900px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;opacity:0.5;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;font-family:Copperplate;-inkscape-font-specification:Copperplate"
+         y="1068.7976"
+         x="841.13068"
+         id="tspan4015"
+         sodipodi:role="line">Ana Perverez Solutions</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
