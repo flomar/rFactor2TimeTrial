@@ -19,10 +19,12 @@ struct Button {
 class WidgetMenu : public Widget {
     Q_OBJECT
 public:
-    WidgetMenu(QWidget *_parent = 0);
+    WidgetMenu(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
     virtual ~WidgetMenu();
 public slots:
     virtual void update();
+protected:
+    virtual void initializeGui();
 signals:
     void signalPressedButtonAbout(const Qt::MouseButton _mouseButton);
     void signalPressedButtonRecords(const Qt::MouseButton _mouseButton);

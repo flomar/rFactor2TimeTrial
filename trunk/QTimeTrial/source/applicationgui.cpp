@@ -59,6 +59,8 @@ ApplicationGui::ApplicationGui() :
     // update both properties
     setGuiSize(guiSize);
     setGuiScale(guiScale);
+    // initialize fonts
+    initializeFonts();
     // initialize widgets
     initializeWidgets();
     // update widgets
@@ -75,6 +77,15 @@ ApplicationGui &ApplicationGui::instance() {
     return applicationGui;
 }
 
+void ApplicationGui::initializeFonts() {
+    const int fontId = QFontDatabase::addApplicationFont(":/fonts/FONT_BITWISE");
+    const QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
+    guiFontXL = QFont(fontFamily, 32 * guiScale);
+    guiFontL = QFont(fontFamily, 24 * guiScale);
+    guiFontM = QFont(fontFamily, 16 * guiScale);
+    guiFontS = QFont(fontFamily, 12 * guiScale);
+}
+
 void ApplicationGui::initializeWidgets() {
     // menu widget
     const int widgetMenuX = 14 * guiScale;
@@ -82,7 +93,7 @@ void ApplicationGui::initializeWidgets() {
     const int widgetMenuW = 32 * guiScale;
     const int widgetMenuH = 945 * guiScale;
     const QRect widgetMenuRect(widgetMenuX, widgetMenuY, widgetMenuW, widgetMenuH);
-    widgetMenu = new WidgetMenu();
+    widgetMenu = new WidgetMenu(guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     widgetMenu->setGeometry(widgetMenuRect);
     // about widget
     const int widgetAboutX = 60 * guiScale;
@@ -90,7 +101,7 @@ void ApplicationGui::initializeWidgets() {
     const int widgetAboutW = 878 * guiScale;
     const int widgetAboutH = 945 * guiScale;
     const QRect widgetAboutRect(widgetAboutX, widgetAboutY, widgetAboutW, widgetAboutH);
-    widgetAbout = new WidgetAbout();
+    widgetAbout = new WidgetAbout(guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     widgetAbout->setGeometry(widgetAboutRect);
     // records widget
     const int widgetRecordsX = 60 * guiScale;
@@ -98,7 +109,7 @@ void ApplicationGui::initializeWidgets() {
     const int widgetRecordsW = 878 * guiScale;
     const int widgetRecordsH = 945 * guiScale;
     const QRect widgetRecordsRect(widgetRecordsX, widgetRecordsY, widgetRecordsW, widgetRecordsH);
-    widgetRecords = new WidgetRecords();
+    widgetRecords = new WidgetRecords(guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     widgetRecords->setGeometry(widgetRecordsRect);
     // drivers widget
     const int widgetDriversX = 60 * guiScale;
@@ -106,7 +117,7 @@ void ApplicationGui::initializeWidgets() {
     const int widgetDriversW = 878 * guiScale;
     const int widgetDriversH = 945 * guiScale;
     const QRect widgetDriversRect(widgetDriversX, widgetDriversY, widgetDriversW, widgetDriversH);
-    widgetDrivers = new WidgetDrivers();
+    widgetDrivers = new WidgetDrivers(guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     widgetDrivers->setGeometry(widgetDriversRect);
     // options widget
     const int widgetOptionsX = 60 * guiScale;
@@ -114,7 +125,7 @@ void ApplicationGui::initializeWidgets() {
     const int widgetOptionsW = 878 * guiScale;
     const int widgetOptionsH = 945 * guiScale;
     const QRect widgetOptionsRect(widgetOptionsX, widgetOptionsY, widgetOptionsW, widgetOptionsH);
-    widgetOptions = new WidgetOptions();
+    widgetOptions = new WidgetOptions(guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     widgetOptions->setGeometry(widgetOptionsRect);
     // connect signals and slots
     connect(widgetMenu, SIGNAL(signalPressedButtonAbout(Qt::MouseButton)), this, SLOT(slotWidgetMenuPressedButtonAbout(Qt::MouseButton)));

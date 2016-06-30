@@ -14,12 +14,14 @@ namespace Ui {
 class DialogCreateDriver : public Dialog {
     Q_OBJECT
 public:
-    DialogCreateDriver(QWidget *_parent = 0);
+    DialogCreateDriver(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
     virtual ~DialogCreateDriver();
 private:
     Ui::DialogCreateDriver *ui;
 public slots:
     virtual void update();
+protected:
+    virtual void initializeGui();
 private slots:
     void slotPressedPushButtonOK();
     void slotPressedPushButtonCancel();

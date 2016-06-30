@@ -8,8 +8,8 @@
 
 #include <utilities.h>
 
-WidgetRecords::WidgetRecords(QWidget *_parent) :
-    Widget(_parent),
+WidgetRecords::WidgetRecords(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
+    Widget(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
     ui(new Ui::WidgetRecords) {
     ui->setupUi(this);
     // connect signals and slots
@@ -43,16 +43,23 @@ void WidgetRecords::update() {
     trackName = ApplicationDatabase::instance().getCurrentTrackName();
     vectorRecordsUnsortedAndUnfiltered = ApplicationDatabase::instance().getVectorRecordsUnsortedAndUnfiltered();
     // update user interface
-    updateComboBoxes();
-    updateLineEditTrackName();
     updateTableViewAvailableRecords();
+    updateComboBoxes();
 }
 
-void WidgetRecords::updateLineEditTrackName() {
-    ui->labelTrackName->setText("-");
-    if(!trackName.isEmpty()) {
-        ui->labelTrackName->setText(trackName);
-    }
+void WidgetRecords::initializeGui() {
+    Widget::initializeGui();
+    // initialize GUI elements
+    ui->labelTitle->setFont(guiFontXL);
+    ui->groupBoxAvailableRecords->setFont(guiFontM);
+    ui->tableWidgetAvailableRecords->setFont(guiFontM);
+    ui->tableWidgetAvailableRecords->horizontalHeader()->setFont(guiFontM);
+    ui->groupBoxFilters->setFont(guiFontM);
+    ui->comboBoxLimit->setFont(guiFontM);
+    ui->comboBoxDriver->setFont(guiFontM);
+    ui->comboBoxCar->setFont(guiFontM);
+    ui->comboBoxFrontTireCompound->setFont(guiFontM);
+    ui->comboBoxRearTireCompound->setFont(guiFontM);
 }
 
 void WidgetRecords::updateTableViewAvailableRecords() {

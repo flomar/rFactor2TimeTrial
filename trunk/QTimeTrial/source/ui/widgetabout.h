@@ -14,12 +14,14 @@ namespace Ui {
 class WidgetAbout : public Widget {
     Q_OBJECT
 public:
-    WidgetAbout(QWidget *_parent = 0);
+    WidgetAbout(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
     ~WidgetAbout();
 private:
     Ui::WidgetAbout *ui;
 public slots:
     void update();
+protected:
+    virtual void initializeGui();
 };
 
 #endif

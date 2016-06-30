@@ -7,8 +7,8 @@
 
 #include <utilities.h>
 
-WidgetMenu::WidgetMenu(QWidget *_parent) :
-    Widget(_parent) {
+WidgetMenu::WidgetMenu(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
+    Widget(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent) {
 
 }
 
@@ -20,6 +20,12 @@ WidgetMenu::~WidgetMenu() {
 void WidgetMenu::update() {
     Widget::update();
     updateButtons();
+}
+
+void WidgetMenu::initializeGui() {
+    Widget::initializeGui();
+    // initialize GUI elements
+    // TODO/FIXME
 }
 
 void WidgetMenu::enterEvent(QEvent *_event) {
@@ -147,7 +153,6 @@ void WidgetMenu::updateButtons() {
         const int borderThickness = 3;
         const QRect rectBorder = QRect(0, 0, button->rect.width(), button->rect.height());
         const QRect rectBackground = Utilities::Graphics::getRectInset(rectBorder, borderThickness);
-        const int fontSize = rectBorder.width() * 0.30;
         // pixmap normal
         button->pixmap = QPixmap(rectBorder.size());
         QPainter painter(&button->pixmap);
@@ -158,8 +163,8 @@ void WidgetMenu::updateButtons() {
         painter.setPen(colorButtonText);
         // text normal (needs to be rotated)
         painter.rotate(-90);
-        painter.translate(0, fontSize / 2);
-        painter.setFont(QFont("Bitwise", fontSize));
+        painter.translate(0, rectBorder.width() * 0.15);
+        painter.setFont(guiFontS);
         painter.drawText(QRect(0, 0, -rectBackground.height(), +rectBackground.width()), Qt::AlignCenter, button->text);
         // pixmap hovered
         button->pixmapHovered = QPixmap(rectBorder.size());
@@ -171,8 +176,8 @@ void WidgetMenu::updateButtons() {
         painterHovered.setPen(colorButtonTextHovered);
         // text hovered (needs to be rotated)
         painterHovered.rotate(-90);
-        painterHovered.translate(0, fontSize / 2);
-        painterHovered.setFont(QFont("Bitwise", fontSize));
+        painterHovered.translate(0, rectBorder.width() * 0.15);
+        painterHovered.setFont(guiFontS);
         painterHovered.drawText(QRect(0, 0, -rectBackground.height(), +rectBackground.width()), Qt::AlignCenter, button->text);
     }
     // call explicit repaint

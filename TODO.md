@@ -12,6 +12,7 @@ This document contains the most important TODOs for the project.
 - The "Options" widget doesn't contain any functionality so far, all I added were some items for future ideas and implementations.
 - The "Drivers" widget provides an "Edit Driver" button, but for now the dialog popping up doesn't do anything.
 - QTimeTrial is optimized for 1920x1080, so if you launch rF2 in different resolutions the whole thing looks ugly as hell and doesn't serve its purpose.
+- The "horizontal header" in the table widget of the "Records" widget doesn't apply its font type properly (it should look identical to all other elements).
 
 ## Bugs
 

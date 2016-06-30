@@ -12,8 +12,8 @@
 
 #include <utilities.h>
 
-WidgetDrivers::WidgetDrivers(QWidget *_parent) :
-    Widget(_parent),
+WidgetDrivers::WidgetDrivers(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
+    Widget(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
     ui(new Ui::WidgetDrivers) {
     ui->setupUi(this);
     // connect signals and slots
@@ -36,6 +36,19 @@ void WidgetDrivers::update() {
     Widget::update();
     updateLineEditCurrentDriver();
     updateListWidgetAvailableDrivers();
+}
+
+void WidgetDrivers::initializeGui() {
+    Widget::initializeGui();
+    // initialize GUI elements
+    ui->labelTitle->setFont(guiFontXL);
+    ui->groupBoxAvailableDrivers->setFont(guiFontM);
+    ui->listWidgetAvailableDrivers->setFont(guiFontM);
+    ui->groupBoxCurrentDriver->setFont(guiFontM);
+    ui->lineEditCurrentDriver->setFont(guiFontM);
+    ui->pushButtonCreateDriver->setFont(guiFontM);
+    ui->pushButtonEditDriver->setFont(guiFontM);
+    ui->pushButtonDeleteDriver->setFont(guiFontM);
 }
 
 void WidgetDrivers::updateLineEditCurrentDriver() {
@@ -64,7 +77,7 @@ void WidgetDrivers::slotDoubleClickedListWidgetAvailableDrivers(QListWidgetItem 
 }
 
 void WidgetDrivers::slotPressedPushButtonCreateDriver() {
-    DialogCreateDriver dialogCreateDriver;
+    DialogCreateDriver dialogCreateDriver(guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     dialogCreateDriver.setGeometry(x(), y(), rect().width(), rect().height());
     if(dialogCreateDriver.exec() == QDialog::Accepted) {
         update();
@@ -83,7 +96,7 @@ void WidgetDrivers::slotPressedPushButtonEditDriver() {
     if(!ui->listWidgetAvailableDrivers->currentItem()) return;
     const QString driverName = ui->listWidgetAvailableDrivers->currentItem()->text();
     if(driverName.isEmpty()) return;
-    DialogEditDriver dialogEditDriver(driverName);
+    DialogEditDriver dialogEditDriver(driverName, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     dialogEditDriver.setGeometry(x(), y(), rect().width(), rect().height());
     if(dialogEditDriver.exec() == QDialog::Accepted) {
         update();
@@ -94,7 +107,7 @@ void WidgetDrivers::slotPressedPushButtonDeleteDriver() {
     if(!ui->listWidgetAvailableDrivers->currentItem()) return;
     const QString driverName = ui->listWidgetAvailableDrivers->currentItem()->text();
     if(driverName.isEmpty()) return;
-    DialogDeleteDriver dialogDeleteDriver(driverName);
+    DialogDeleteDriver dialogDeleteDriver(driverName, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     dialogDeleteDriver.setGeometry(x(), y(), rect().width(), rect().height());
     if(dialogDeleteDriver.exec() == QDialog::Accepted) {
         update();

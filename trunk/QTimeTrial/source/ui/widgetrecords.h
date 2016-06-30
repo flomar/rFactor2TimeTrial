@@ -14,14 +14,15 @@ namespace Ui {
 class WidgetRecords : public Widget {
     Q_OBJECT
 public:
-    WidgetRecords(QWidget *_parent = 0);
+    WidgetRecords(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
     ~WidgetRecords();
 private:
     Ui::WidgetRecords *ui;
 public slots:
     void update();
+protected:
+    virtual void initializeGui();
 private:
-    void updateLineEditTrackName();
     void updateTableViewAvailableRecords();
     void updateComboBoxes();
 private slots:

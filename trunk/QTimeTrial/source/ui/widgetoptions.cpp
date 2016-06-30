@@ -8,8 +8,8 @@
 
 #include <utilities.h>
 
-WidgetOptions::WidgetOptions(QWidget *_parent) :
-    Widget(_parent),
+WidgetOptions::WidgetOptions(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
+    Widget(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
     ui(new Ui::WidgetOptions) {
     ui->setupUi(this);
     // connect signals and slots
@@ -29,6 +29,16 @@ WidgetOptions::~WidgetOptions() {
 void WidgetOptions::update() {
     Widget::update();
     updateCheckBoxes();
+}
+
+void WidgetOptions::initializeGui() {
+    Widget::initializeGui();
+    // initialize GUI elements
+    ui->labelTitle->setFont(guiFontXL);
+    ui->groupBoxDatabase->setFont(guiFontM);
+    ui->checkBoxAutoDeleteSessions->setFont(guiFontM);
+    ui->checkBoxAutoDeleteRuns->setFont(guiFontM);
+    ui->checkBoxAutoDeleteLaps->setFont(guiFontM);
 }
 
 void WidgetOptions::updateCheckBoxes() {

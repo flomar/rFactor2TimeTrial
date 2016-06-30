@@ -74,6 +74,15 @@ signals:
     void signalChangedGuiSize();
     void signalChangedGuiScale();
 private:
+    // fonts depending on the GUI scale, initialized at application
+    // start and injected into widgets and dialogs at construction
+    QFont guiFontXL;
+    QFont guiFontL;
+    QFont guiFontM;
+    QFont guiFontS;
+private:
+    void initializeFonts();
+private:
     void initializeWidgets();
     void deinitializeWidgets();
 private:

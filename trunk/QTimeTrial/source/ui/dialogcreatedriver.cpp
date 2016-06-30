@@ -8,8 +8,8 @@
 
 #include <utilities.h>
 
-DialogCreateDriver::DialogCreateDriver(QWidget *_parent) :
-    Dialog(_parent),
+DialogCreateDriver::DialogCreateDriver(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
+    Dialog(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
     ui(new Ui::DialogCreateDriver) {
     ui->setupUi(this);
     // connect signals and slots
@@ -26,6 +26,12 @@ DialogCreateDriver::~DialogCreateDriver() {
 
 void DialogCreateDriver::update() {
     Dialog::update();
+}
+
+void DialogCreateDriver::initializeGui() {
+    Dialog::initializeGui();
+    // initialize GUI elements
+    // TODO/FIXME
 }
 
 void DialogCreateDriver::slotPressedPushButtonOK() {

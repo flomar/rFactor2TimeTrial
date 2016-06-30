@@ -12,84 +12,126 @@
   </property>
   <property name="font">
    <font>
-    <family>Bitwise</family>
+    <family>Arial</family>
     <pointsize>32</pointsize>
    </font>
   </property>
   <property name="windowTitle">
    <string>About</string>
   </property>
-  <widget class="QLabel" name="labelApplicationName">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>70</y>
-     <width>858</width>
-     <height>50</height>
-    </rect>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>10</number>
    </property>
-   <property name="text">
-    <string>[APPLICATION_NAME]</string>
+   <property name="topMargin">
+    <number>10</number>
    </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
+   <property name="rightMargin">
+    <number>10</number>
    </property>
-  </widget>
-  <widget class="QLabel" name="labelApplicationCopyright">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>120</y>
-     <width>858</width>
-     <height>25</height>
-    </rect>
+   <property name="bottomMargin">
+    <number>10</number>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>16</pointsize>
-    </font>
+   <property name="spacing">
+    <number>0</number>
    </property>
-   <property name="text">
-    <string>[APPLICATION_COPYRIGHT]</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelTitle">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>858</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>16</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>/ ABOUT</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="Line" name="lineTitle">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>35</y>
-     <width>858</width>
-     <height>10</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-  </widget>
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="layoutCenter">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <layout class="QVBoxLayout" name="layoutTitle">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <item>
+        <widget class="QLabel" name="labelTitle">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>32</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>/ ABOUT</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="layoutContent">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="labelApplicationName">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>[APPLICATION_NAME]</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelApplicationCopyright">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>[APPLICATION_COPYRIGHT]</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

@@ -8,8 +8,8 @@
 
 #include <utilities.h>
 
-DialogEditDriver::DialogEditDriver(const QString &_driverName, QWidget *_parent) :
-    Dialog(_parent),
+DialogEditDriver::DialogEditDriver(const QString &_driverName, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
+    Dialog(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
     ui(new Ui::DialogEditDriver),
     driverName(_driverName) {
     ui->setupUi(this);
@@ -29,6 +29,12 @@ DialogEditDriver::~DialogEditDriver() {
 
 void DialogEditDriver::update() {
     Dialog::update();
+}
+
+void DialogEditDriver::initializeGui() {
+    Dialog::initializeGui();
+    // initialize GUI elements
+    // TODO/FIXME
 }
 
 void DialogEditDriver::slotPressedPushButtonOK() {
