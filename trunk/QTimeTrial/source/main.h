@@ -30,6 +30,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QPushButton>
+#include <QDateTime>
 
 #include <stdint.h>
 
@@ -89,15 +90,17 @@ struct Lap {
 };
 
 struct Record {
-    Record() : rank(0), time(0), track(QString::null), driver(QString::null), car(QString::null), frontTireCompound(QString::null), rearTireCompound(QString::null), timeHumandReadable(QString::null) { }
+    Record() : rank(0), time(0), date(0), track(QString::null), driver(QString::null), car(QString::null), frontTireCompound(QString::null), rearTireCompound(QString::null), timeHumanReadable(QString::null), dateHumanReadable(QString::null) { }
     int64_t rank;
     int64_t time;
+    int64_t date;
     QString track;
     QString driver;
     QString car;
     QString frontTireCompound;
     QString rearTireCompound;
-    QString timeHumandReadable;
+    QString timeHumanReadable;
+    QString dateHumanReadable;
     // operator used for sorting
     static bool lessThan(const Record &_recordA, const Record &_recordB) {
         return _recordA.time < _recordB.time;

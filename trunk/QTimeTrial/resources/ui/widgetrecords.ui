@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>878</width>
+    <width>904</width>
     <height>945</height>
    </rect>
   </property>
@@ -108,6 +108,9 @@
               <pointsize>12</pointsize>
              </font>
             </property>
+            <attribute name="horizontalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
             <attribute name="verticalHeaderVisible">
              <bool>false</bool>
             </attribute>
@@ -115,66 +118,25 @@
              <property name="text">
               <string>Rank</string>
              </property>
-             <property name="font">
-              <font>
-               <family>Arial</family>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
             </column>
             <column>
              <property name="text">
               <string>Time</string>
-             </property>
-             <property name="font">
-              <font>
-               <family>Arial</family>
-               <pointsize>12</pointsize>
-              </font>
              </property>
             </column>
             <column>
              <property name="text">
               <string>Driver</string>
              </property>
-             <property name="font">
-              <font>
-               <family>Arial</family>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
             </column>
             <column>
              <property name="text">
               <string>Car</string>
              </property>
-             <property name="font">
-              <font>
-               <family>Arial</family>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
             </column>
             <column>
              <property name="text">
-              <string>FTC</string>
-             </property>
-             <property name="font">
-              <font>
-               <family>Arial</family>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>RTC</string>
-             </property>
-             <property name="font">
-              <font>
-               <family>Arial</family>
-               <pointsize>12</pointsize>
-              </font>
+              <string>Date</string>
              </property>
             </column>
            </widget>

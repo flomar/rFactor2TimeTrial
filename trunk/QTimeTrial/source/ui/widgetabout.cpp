@@ -13,9 +13,6 @@ WidgetAbout::WidgetAbout(const float _guiScale, const QFont &_guiFontXL, const Q
     Widget(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
     ui(new Ui::WidgetAbout) {
     ui->setupUi(this);
-    // initialize user interface
-    ui->labelApplicationName->setText(APPLICATION_NAME);
-    ui->labelApplicationCopyright->setText(APPLICATION_COPYRIGHT);
 }
 
 WidgetAbout::~WidgetAbout() {
@@ -33,4 +30,7 @@ void WidgetAbout::initializeGui() {
     ui->labelApplicationName->setFont(guiFontL);
     ui->labelApplicationCopyright->setFont(guiFontM);
     ui->labelProjectInformation->setFont(guiFontM);
+    // initialize GUI elements
+    ui->labelApplicationName->setText(APPLICATION_NAME);
+    ui->labelApplicationCopyright->setText(APPLICATION_COPYRIGHT);
 }

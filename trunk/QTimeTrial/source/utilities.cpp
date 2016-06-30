@@ -11,7 +11,7 @@ namespace Utilities {
         }
 
         QString timeInMillisecondsToStringInMinutesSecondsMilliseconds(const int64_t _time) {
-            qint64 time = _time;
+            int64_t time = _time;
             // convert time into integers for milliseconds, seconds, and minutes
             int64_t intMilliseconds = time % 1000;
             time /= 1000;
@@ -27,6 +27,12 @@ namespace Utilities {
             while(stringSeconds.length() < 2) stringSeconds.prepend("0");
             // return result string
             return QString("%1:%2:%3").arg(stringMinutes).arg(stringSeconds).arg(stringMilliseconds);
+        }
+
+        QString timeInMillisecondsToStringDate(const int64_t _time) {
+            QDateTime dateTime;
+            dateTime.setMSecsSinceEpoch(_time);
+            return dateTime.toString("yyyy/MM/dd");
         }
 
     }

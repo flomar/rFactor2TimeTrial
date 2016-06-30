@@ -561,6 +561,7 @@ QVector<Record> ApplicationDatabase::getVectorRecordsUnsortedAndUnfiltered() con
                 if(driver && session) {
                     Record record;
                     record.time = lap->time;
+                    record.date = run->timeFinish;
                     record.track = session->nameTrack;
                     record.driver = driver->name;
                     record.car = session->nameCar;

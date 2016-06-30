@@ -18,13 +18,6 @@ WidgetRecords::WidgetRecords(const float _guiScale, const QFont &_guiFontXL, con
     connect(ui->comboBoxCar, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxCar(int)));
     connect(ui->comboBoxFrontTireCompound, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxFrontTireCompound(int)));
     connect(ui->comboBoxRearTireCompound, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxRearTireCompound(int)));
-    // initialize user interface
-    ui->tableWidgetAvailableRecords->setColumnWidth(0, 75);
-    ui->tableWidgetAvailableRecords->setColumnWidth(1, 120);
-    ui->tableWidgetAvailableRecords->setColumnWidth(2, 160);
-    ui->tableWidgetAvailableRecords->setColumnWidth(3, 200);
-    ui->tableWidgetAvailableRecords->setColumnWidth(4, 150);
-    ui->tableWidgetAvailableRecords->setColumnWidth(5, 150);
 }
 
 WidgetRecords::~WidgetRecords() {
@@ -53,13 +46,18 @@ void WidgetRecords::initializeGui() {
     ui->labelTitle->setFont(guiFontXL);
     ui->groupBoxAvailableRecords->setFont(guiFontM);
     ui->tableWidgetAvailableRecords->setFont(guiFontM);
-    ui->tableWidgetAvailableRecords->horizontalHeader()->setFont(guiFontM);
     ui->groupBoxFilters->setFont(guiFontM);
     ui->comboBoxLimit->setFont(guiFontM);
     ui->comboBoxDriver->setFont(guiFontM);
     ui->comboBoxCar->setFont(guiFontM);
     ui->comboBoxFrontTireCompound->setFont(guiFontM);
     ui->comboBoxRearTireCompound->setFont(guiFontM);
+    // initialize GUI elements
+    ui->tableWidgetAvailableRecords->setColumnWidth(0, 75 * guiScale);
+    ui->tableWidgetAvailableRecords->setColumnWidth(1, 150 * guiScale);
+    ui->tableWidgetAvailableRecords->setColumnWidth(2, 150 * guiScale);
+    ui->tableWidgetAvailableRecords->setColumnWidth(3, 330 * guiScale);
+    ui->tableWidgetAvailableRecords->setColumnWidth(4, 150 * guiScale);
 }
 
 void WidgetRecords::updateTableViewAvailableRecords() {
@@ -73,26 +71,22 @@ void WidgetRecords::updateTableViewAvailableRecords() {
         itemRank->setText(QString("#%1").arg(record.rank));
         QTableWidgetItem *itemTime = new QTableWidgetItem();
         if(!itemTime) continue;
-        itemTime->setText(QString("%1").arg(record.timeHumandReadable));
+        itemTime->setText(QString("%1").arg(record.timeHumanReadable));
         QTableWidgetItem *itemDriver = new QTableWidgetItem();
         if(!itemDriver) continue;
         itemDriver->setText(QString("%1").arg(record.driver));
         QTableWidgetItem *itemCar = new QTableWidgetItem();
         if(!itemCar) continue;
         itemCar->setText(QString("%1").arg(record.car));
-        QTableWidgetItem *itemFrontTireCompound = new QTableWidgetItem();
-        if(!itemFrontTireCompound) continue;
-        itemFrontTireCompound->setText(QString("%1").arg(record.frontTireCompound));
-        QTableWidgetItem *itemRearTireCompound = new QTableWidgetItem();
-        if(!itemRearTireCompound) continue;
-        itemRearTireCompound->setText(QString("%1").arg(record.rearTireCompound));
+        QTableWidgetItem *itemDate = new QTableWidgetItem();
+        if(!itemDate) continue;
+        itemDate->setText(QString("%1").arg(record.dateHumanReadable));
         ui->tableWidgetAvailableRecords->insertRow(rowIndex);
         ui->tableWidgetAvailableRecords->setItem(rowIndex, 0, itemRank);
         ui->tableWidgetAvailableRecords->setItem(rowIndex, 1, itemTime);
         ui->tableWidgetAvailableRecords->setItem(rowIndex, 2, itemDriver);
         ui->tableWidgetAvailableRecords->setItem(rowIndex, 3, itemCar);
-        ui->tableWidgetAvailableRecords->setItem(rowIndex, 4, itemFrontTireCompound);
-        ui->tableWidgetAvailableRecords->setItem(rowIndex, 5, itemRearTireCompound);
+        ui->tableWidgetAvailableRecords->setItem(rowIndex, 4, itemDate);
     }
 }
 
@@ -192,12 +186,13 @@ QVector<Record> WidgetRecords::calculateVectorRecords() const {
             vectorRecords.pop_back();
         }
     }
-    // sanitize records (set ranks and human-readable times)
+    // sanitize records (set ranks and human-readable times and dates)
     QVector<Record> vectorRecordsRanked;
     foreach(const Record record, vectorRecords) {
         Record recordRanked = record;
         recordRanked.rank = vectorRecordsRanked.size() + 1;
-        recordRanked.timeHumandReadable = Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(recordRanked.time);
+        recordRanked.timeHumanReadable = Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(recordRanked.time);
+        recordRanked.dateHumanReadable = Utilities::Core::timeInMillisecondsToStringDate(recordRanked.date);
         vectorRecordsRanked.push_back(recordRanked);
     }
     vectorRecords = vectorRecordsRanked;

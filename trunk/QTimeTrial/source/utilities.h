@@ -13,6 +13,8 @@ namespace Utilities {
 
         QString timeInMillisecondsToStringInMinutesSecondsMilliseconds(const int64_t _time);
 
+        QString timeInMillisecondsToStringDate(const int64_t _time);
+
     }
 
     namespace Containers {
