@@ -365,20 +365,20 @@
        style="fill:#ff00ff;fill-opacity:1;stroke:none"
        id="rect3992"
        width="100"
-       height="100"
+       height="92"
        x="910"
-       y="966" />
+       y="956" />
     <rect
        style="fill:#ff00ff;fill-opacity:1;stroke:none"
        id="rect4004"
        width="160"
-       height="64"
+       height="92"
        x="1030"
-       y="984" />
+       y="956" />
     <rect
-       y="984"
+       y="956"
        x="730"
-       height="64"
+       height="92"
        width="160"
        id="rect4008"
        style="fill:#ff00ff;fill-opacity:1;stroke:none" />

@@ -71,9 +71,9 @@ Item {
         Item {
             id: idItemRPM
             x: 730 * gui.guiScale
-            y: 984 * gui.guiScale
+            y: 956 * gui.guiScale
             width: 160 * gui.guiScale
-            height: 64 * gui.guiScale
+            height: 92 * gui.guiScale
             Text {
                 anchors.fill: parent
                 text: gui.intEngineRPMCurrent
@@ -81,15 +81,15 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 40 * gui.guiScale
+                font.pixelSize: 48 * gui.guiScale
             }
         }
         Item {
             id: idItemGear
             x: 910 * gui.guiScale
-            y: 966 * gui.guiScale
-            width: 100 * gui.guiScale
-            height: 100 * gui.guiScale
+            y: 956 * gui.guiScale
+            width: 92 * gui.guiScale
+            height: 92 * gui.guiScale
             Text {
                 anchors.fill: parent
                 text: gui.stringGear
@@ -97,15 +97,15 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 50 * gui.guiScale
+                font.pixelSize: 60 * gui.guiScale
             }
         }
         Item {
             id: idItemSpeed
             x: 1030 * gui.guiScale
-            y: 984 * gui.guiScale
+            y: 956 * gui.guiScale
             width: 160 * gui.guiScale
-            height: 64 * gui.guiScale
+            height: 92 * gui.guiScale
             Text {
                 anchors.fill: parent
                 text: gui.intSpeed
@@ -113,7 +113,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 40 * gui.guiScale
+                font.pixelSize: 48 * gui.guiScale
             }
         }
         Item {
