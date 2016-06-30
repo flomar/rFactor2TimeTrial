@@ -32,4 +32,5 @@ void WidgetAbout::initializeGui() {
     ui->labelTitle->setFont(guiFontXL);
     ui->labelApplicationName->setFont(guiFontL);
     ui->labelApplicationCopyright->setFont(guiFontM);
+    ui->labelProjectInformation->setFont(guiFontM);
 }
