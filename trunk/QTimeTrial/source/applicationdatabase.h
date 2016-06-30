@@ -33,6 +33,9 @@ private:
     void deleteData();
 private:
     void autoDeleteSessionsAndRunsAndLaps();
+    void autoDeleteSessions();
+    void autoDeleteRuns();
+    void autoDeleteLaps();
 private:
     QMap<int64_t, Options*> mapOptions;
     QMap<int64_t, Driver*> mapDrivers;

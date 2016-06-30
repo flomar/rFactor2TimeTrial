@@ -4,7 +4,7 @@ This document contains the most important TODOs for the project.
 
 ## TODOs
 
-- implement "ApplicationDatabase::autoDeleteSessionsAndRunsAndLaps", maybe find a more elegant solution than writing a 100+ line method.
+- Re-design in-car user interface into something more slick.
 
 ## Issues
 

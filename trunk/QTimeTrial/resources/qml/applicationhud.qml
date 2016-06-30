@@ -227,8 +227,8 @@ Item {
         Item {
             id: idItemLapInformation
             anchors.centerIn: parent
-            width: 250
-            height: 100
+            width: 256
+            height: 128
             opacity: 0.0
             property real durationVisible: 3000
             Text {
@@ -240,7 +240,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 32
+                font.pixelSize: 40
                 style: Text.Raised
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }
@@ -253,7 +253,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 24
+                font.pixelSize: 28
                 style: Text.Raised
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }
@@ -265,7 +265,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 24
+                font.pixelSize: 28
                 style: Text.Raised
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }

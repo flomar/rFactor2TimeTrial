@@ -247,24 +247,104 @@ void ApplicationDatabase::deleteData() {
 }
 
 void ApplicationDatabase::autoDeleteSessionsAndRunsAndLaps() {
+    // the order of execution is important here: first we need to
+    // auto-delete the laps, then the runs, and then the sessions,
+    // otherwise unwanted artifacts may remain in the database
     if(!mapOptions.isEmpty()) {
-        // the order of execution is important here: first we need to
-        // auto-delete the laps, then the runs, and then the sessions,
-        // otherwise unwanted artifacts will remain in the database
         const Options *options = mapOptions.values().first();
         if(options) {
-            // auto-delete laps
+            // auto-delete laps: for every run, keep only the very best lap
             if(options->autoDeleteLaps == 1) {
-                // TODO/FIXME
+                autoDeleteLaps();
             }
-            // auto-delete runs
+            // auto-delete runs: for every session, keep only non-empty runs
             if(options->autoDeleteRuns == 1) {
-                // TODO/FIXME
+                autoDeleteRuns();
             }
-            // auto-delete sessions
+            // auto-delete sessions: keep only non-empty sessions
             if(options->autoDeleteSessions == 1) {
-                // TODO/FIXME
+                autoDeleteSessions();
             }
+        }
+    }
+}
+
+void ApplicationDatabase::autoDeleteSessions() {
+    QVector<Session*> vectorSessionsEmpty;
+    foreach(Session *session, mapSessions.values()) {
+        if(session) {
+            bool empty = true;
+            foreach(Run *run, mapRuns.values()) {
+                if(run) {
+                    if(run->identifierSession == session->identifier) {
+                        empty = false;
+                    }
+                }
+            }
+            if(empty) {
+                vectorSessionsEmpty.push_back(session);
+            }
+        }
+    }
+    foreach(Session *session, vectorSessionsEmpty) {
+        if(session) {
+            mapSessions.remove(session->identifier);
+            delete session;
+        }
+    }
+}
+
+void ApplicationDatabase::autoDeleteRuns() {
+    QVector<Run*> vectorRunsEmpty;
+    foreach(Run *run, mapRuns.values()) {
+        if(run) {
+            bool empty = true;
+            foreach(Lap *lap, mapLaps.values()) {
+                if(lap) {
+                    if(lap->identifierRun == run->identifier) {
+                        empty = false;
+                    }
+                }
+            }
+            if(empty) {
+                vectorRunsEmpty.push_back(run);
+            }
+        }
+    }
+    foreach(Run *run, vectorRunsEmpty) {
+        if(run) {
+            mapRuns.remove(run->identifier);
+            delete run;
+        }
+    }
+}
+
+void ApplicationDatabase::autoDeleteLaps() {
+    QVector<Lap*> vectorLaps;
+    QVector<Lap*> vectorLapsToBeDeleted;
+    foreach(Run *run, mapRuns.values()) {
+        if(run) {
+            foreach(Lap *lap, mapLaps.values()) {
+                if(lap) {
+                    if(lap->identifierRun == run->identifier) {
+                        vectorLaps.push_back(lap);
+                    }
+                }
+            }
+            qSort(vectorLaps.begin(), vectorLaps.end(), Lap::lessThanPointers);
+            vectorLaps.pop_front();
+            foreach(Lap *lap, vectorLaps) {
+                if(lap) {
+                    vectorLapsToBeDeleted.push_back(lap);
+                }
+            }
+            vectorLaps.clear();
+        }
+    }
+    foreach(Lap *lap, vectorLapsToBeDeleted) {
+        if(lap) {
+            mapLaps.remove(lap->identifier);
+            delete lap;
         }
     }
 }

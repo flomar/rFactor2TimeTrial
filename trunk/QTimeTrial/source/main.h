@@ -78,6 +78,14 @@ struct Lap {
     int64_t elapsedTime;
     int64_t elapsedTimeStart;
     int64_t elapsedTimeFinish;
+    // operators used for sorting
+    static bool lessThan(const Lap &_lapA, const Lap &_lapB) {
+        return _lapA.time < _lapB.time;
+    }
+    static bool lessThanPointers(const Lap *_lapA, const Lap *_lapB) {
+        if(!_lapA || !_lapB) return false;
+        return Lap::lessThan(*_lapA, *_lapB);
+    }
 };
 
 struct Record {
@@ -93,6 +101,10 @@ struct Record {
     // operator used for sorting
     static bool lessThan(const Record &_recordA, const Record &_recordB) {
         return _recordA.time < _recordB.time;
+    }
+    static bool lessThanPointers(const Record *_recordA, const Record *_recordB) {
+        if(!_recordA || !_recordB) return false;
+        return Record::lessThan(*_recordA, *_recordB);
     }
 };
 
