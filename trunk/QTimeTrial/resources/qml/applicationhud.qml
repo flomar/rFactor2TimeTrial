@@ -150,31 +150,31 @@ Item {
         }
         Item {
             id: idItemRPMLimiterLED
-            x: 670 * gui.guiScale
-            y: 1000 * gui.guiScale
-            width: 40 * gui.guiScale
-            height: 40 * gui.guiScale
+            x: 622 * gui.guiScale
+            y: 956 * gui.guiScale
+            width: 92 * gui.guiScale
+            height: 92 * gui.guiScale
             Image {
                 anchors.fill: parent
                 source: {
-                    if(gui.intEngineRPMPercentage > 90) return "../png/LED_RED.png"
-                    if(gui.intEngineRPMPercentage > 70) return "../png/LED_YELLOW.png"
-                    if(gui.intEngineRPMPercentage > 50) return "../png/LED_GREEN.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage > 90) return "../png/LED_RPM_LIMITER_RED.png"
+                    if(gui.intEngineRPMPercentage > 70) return "../png/LED_RPM_LIMITER_YELLOW.png"
+                    if(gui.intEngineRPMPercentage > 50) return "../png/LED_RPM_LIMITER_GREEN.png"
+                    return "../png/LED_RPM_LIMITER_OFF.png"
                 }
             }
         }
         Item {
             id: idItemSpeedLimiterLED
-            x: 1210 * gui.guiScale
-            y: 1000 * gui.guiScale
-            width: 40 * gui.guiScale
-            height: 40 * gui.guiScale
+            x: 1206 * gui.guiScale
+            y: 956 * gui.guiScale
+            width: 92 * gui.guiScale
+            height: 92 * gui.guiScale
             Image {
                 anchors.fill: parent
                 source: {
-                    if(gui.boolSpeedLimiterActive) return "../png/LED_RED.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.boolSpeedLimiterActive) return "../png/LED_SPEED_LIMITER_RED.png"
+                    return "../png/LED_SPEED_LIMITER_OFF.png"
                 }
             }
         }

@@ -199,9 +199,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="1048.86"
-     inkscape:cy="550.51956"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="949.6602"
+     inkscape:cy="182.029"
      inkscape:document-units="px"
      inkscape:current-layer="layer2"
      showgrid="false"
@@ -219,7 +219,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -368,26 +368,6 @@
        height="100"
        x="910"
        y="966" />
-    <path
-       transform="matrix(0.37712362,0,0,0.40991698,584.66666,880.18821)"
-       d="m 332.3402,341.07343 a 53.033009,48.790367 0 1 1 -106.06602,0 53.033009,48.790367 0 1 1 106.06602,0 z"
-       sodipodi:ry="48.790367"
-       sodipodi:rx="53.033009"
-       sodipodi:cy="341.07343"
-       sodipodi:cx="279.30719"
-       id="path4000"
-       style="fill:#ff00ff;fill-opacity:1;stroke:none"
-       sodipodi:type="arc" />
-    <path
-       sodipodi:type="arc"
-       style="fill:#ff00ff;fill-opacity:1;stroke:none"
-       id="path4002"
-       sodipodi:cx="279.30719"
-       sodipodi:cy="341.07343"
-       sodipodi:rx="53.033009"
-       sodipodi:ry="48.790367"
-       d="m 332.3402,341.07343 a 53.033009,48.790367 0 1 1 -106.06602,0 53.033009,48.790367 0 1 1 106.06602,0 z"
-       transform="matrix(0.37712362,0,0,0.40991698,1124.6667,880.18821)" />
     <rect
        style="fill:#ff00ff;fill-opacity:1;stroke:none"
        id="rect4004"
@@ -423,5 +403,19 @@
        height="20"
        x="1645"
        y="5.9999995" />
+    <rect
+       style="fill:#ff00ff;fill-opacity:1;stroke:none"
+       id="rect3047"
+       width="92"
+       height="92"
+       x="622"
+       y="956" />
+    <rect
+       style="fill:#ff00ff;fill-opacity:1;stroke:none"
+       id="rect3049"
+       width="92"
+       height="92"
+       x="1206"
+       y="956" />
   </g>
 </svg>
