@@ -79,6 +79,7 @@ void WidgetDrivers::slotDoubleClickedListWidgetAvailableDrivers(QListWidgetItem 
 void WidgetDrivers::slotPressedPushButtonCreateDriver() {
     DialogCreateDriver dialogCreateDriver(guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     dialogCreateDriver.setGeometry(x(), y(), rect().width(), rect().height());
+    dialogCreateDriver.update();
     if(dialogCreateDriver.exec() == QDialog::Accepted) {
         update();
     }
@@ -90,6 +91,7 @@ void WidgetDrivers::slotPressedPushButtonEditDriver() {
     if(driverName.isEmpty()) return;
     DialogEditDriver dialogEditDriver(driverName, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     dialogEditDriver.setGeometry(x(), y(), rect().width(), rect().height());
+    dialogEditDriver.update();
     if(dialogEditDriver.exec() == QDialog::Accepted) {
         update();
     }
@@ -101,6 +103,7 @@ void WidgetDrivers::slotPressedPushButtonDeleteDriver() {
     if(driverName.isEmpty()) return;
     DialogDeleteDriver dialogDeleteDriver(driverName, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     dialogDeleteDriver.setGeometry(x(), y(), rect().width(), rect().height());
+    dialogDeleteDriver.update();
     if(dialogDeleteDriver.exec() == QDialog::Accepted) {
         update();
     }
