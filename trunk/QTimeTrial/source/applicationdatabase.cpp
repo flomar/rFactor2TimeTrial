@@ -524,11 +524,7 @@ void ApplicationDatabase::processMessageUpdateTelemetry(const ClientServerMessag
             currentLap->time = currentLap->elapsedTimeFinish - currentLap->elapsedTimeStart;
             mapLaps.insert(currentLap->identifier, currentLap);
             // update last lap time, best lap time, and record lap time in the HUD
-            timeLastLap = currentLap->time;
-            timeBestLap = timeBestLap == 0 ? currentLap->time : currentLap->time < timeBestLap ? currentLap->time : timeBestLap;
-            timeRecordLap = timeRecordLap == 0 ? currentLap->time : currentLap->time < timeRecordLap ? currentLap->time : timeRecordLap;
-            // display lap information in the HUD
-            displayLapInformation(currentLap);
+            updateTimeLastLapAndTimeBestLapAndTimeRecordLap(currentLap);
             // create a new lap
             Lap *lap = new Lap();
             lap->identifier = Utilities::Containers::getSmallestAvailableIdentifier<int64_t, Lap>(mapLaps);
@@ -556,6 +552,25 @@ void ApplicationDatabase::initializeTimeLastLapAndTimeBestLapAndTimeRecordLap() 
     // acquire the best lap for the current setup by the current driver
     // and the best lap for the current setup by any driver
     getBestLapTimes(timeBestLap, timeRecordLap);
+}
+
+void ApplicationDatabase::updateTimeLastLapAndTimeBestLapAndTimeRecordLap(const Lap *_lap) {
+    if(!_lap) return;
+    // update times for last lap, best lap, and record lap
+    timeLastLap = _lap->time;
+    timeBestLap = timeBestLap == 0 ? _lap->time : _lap->time < timeBestLap ? _lap->time : timeBestLap;
+    timeRecordLap = timeRecordLap == 0 ? _lap->time : _lap->time < timeRecordLap ? _lap->time : timeRecordLap;
+    // acquire both the personal best lap and the absolute best lap (if any)
+    const int64_t personalBest = timeBestLap;
+    const int64_t absoluteBest = timeRecordLap;
+    // these variables will be signaled to the outside
+    const bool isPersonalBest = personalBest && personalBest >= _lap->time;
+    const bool isAbsoluteBest = absoluteBest && absoluteBest >= _lap->time;
+    const QString infoLapTime = Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(_lap->time);
+    const QString infoPersonalBest = isPersonalBest ? "PERSONAL BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - personalBest));
+    const QString infoAbsoluteBest = isAbsoluteBest ? "ABSOLUTE BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - absoluteBest));
+    // emit signal to the HUD
+    emit signalLapInformation(infoLapTime, infoAbsoluteBest, infoPersonalBest, isAbsoluteBest, isPersonalBest);
 }
 
 void ApplicationDatabase::getBestLapTimes(int64_t &_personalBest, int64_t &_absoluteBest) const {
@@ -657,23 +672,6 @@ QVector<Record> ApplicationDatabase::getVectorRecordsUnsortedAndUnfiltered() con
         }
     }
     return vectorRecords;
-}
-
-void ApplicationDatabase::displayLapInformation(const Lap *_lap) const {
-    // don't do anything without a valid lap
-    if(!_lap) return;
-    // acquire both the personal best lap and the absolute best lap (if any)
-    int64_t personalBest;
-    int64_t absoluteBest;
-    getBestLapTimes(personalBest, absoluteBest);
-    // these variables will be signaled to the outside
-    const bool isPersonalBest = personalBest && personalBest <= _lap->time;
-    const bool isAbsoluteBest = absoluteBest && absoluteBest <= _lap->time;
-    const QString infoLapTime = Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(_lap->time);
-    const QString infoPersonalBest = isPersonalBest ? "PERSONAL BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - personalBest));
-    const QString infoAbsoluteBest = isAbsoluteBest ? "ABSOLUTE BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - absoluteBest));
-    // emit signal to the HUD
-    emit signalLapInformation(infoLapTime, infoAbsoluteBest, infoPersonalBest, isAbsoluteBest, isPersonalBest);
 }
 
 bool ApplicationDatabase::createDriver(const QString &_name) {

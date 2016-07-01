@@ -4,7 +4,6 @@ This document contains the most important TODOs for the project.
 
 ## TODOs
 
-- Fixed the bug with the "lst", "bst", and "rec" variables, but now the "LapInformationDisplay" is bugged, it always (!) shows a personal best and an absolute best time. FIX THIS ASAP!
 - Find a better solution than explicitly calling "update()" before displaying a dialog in order for the dialogs to honor the application-wide font settings.
 
 ## Issues

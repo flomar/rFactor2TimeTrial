@@ -79,25 +79,21 @@ public:
 private:
     bool initializedTimeLastLapAndTimeBestLapAndTimeRecordLap;
     void initializeTimeLastLapAndTimeBestLapAndTimeRecordLap();
+    void updateTimeLastLapAndTimeBestLapAndTimeRecordLap(const Lap *_lap);
 private:
     // this function extracts the best lap for the current setup
     // by the current driver, and the best lap for the current
     // setup by any driver
     void getBestLapTimes(int64_t &_personalBest, int64_t &_absoluteBest) const;
+signals:
+    // this signal is emitted after each finished lap to temporarily
+    // display some additional information to the user in the HUD
+    void signalLapInformation(const QString &_infoLapTime, const QString &_infoAbsolute, const QString &_infoPersonal, const bool _absoluteBest, const bool _personalBest) const;
 public:
     void setCurrentDriver(const QString &_name);
 public:
     QString getCurrentTrackName() const;
     QVector<Record> getVectorRecordsUnsortedAndUnfiltered() const;
-private:
-    // this function is called after each finished lap; after
-    // accumulating the required data, the appropriate signal is
-    // emitted to be picked up by the HUD (see below)
-    void displayLapInformation(const Lap *_lap) const;
-signals:
-    // this signal is emitted after each finished lap to temporarily
-    // display some additional information to the user in the HUD
-    void signalLapInformation(const QString &_infoLapTime, const QString &_infoAbsolute, const QString &_infoPersonal, const bool _absoluteBest, const bool _personalBest) const;
 public:
     bool createDriver(const QString &_name);
     bool deleteDriver(const QString &_name);
