@@ -26,6 +26,9 @@ class ApplicationGui : public QObject {
     Q_PROPERTY(QString stringSessionTime READ getStringSessionTime WRITE setStringSessionTime NOTIFY signalChangedStringSessionTime)
     Q_PROPERTY(QString stringRunTime READ getStringRunTime WRITE setStringRunTime NOTIFY signalChangedStringRunTime)
     Q_PROPERTY(QString stringLapTime READ getStringLapTime WRITE setStringLapTime NOTIFY signalChangedStringLapTime)
+    Q_PROPERTY(QString stringLstTime READ getStringLstTime WRITE setStringLstTime NOTIFY signalChangedStringLstTime)
+    Q_PROPERTY(QString stringBstTime READ getStringBstTime WRITE setStringBstTime NOTIFY signalChangedStringBstTime)
+    Q_PROPERTY(QString stringRecTime READ getStringRecTime WRITE setStringRecTime NOTIFY signalChangedStringRecTime)
     Q_PROPERTY(int intFuelCurrent READ getIntFuelCurrent WRITE setIntFuelCurrent NOTIFY signalChangedIntFuelCurrent)
     Q_PROPERTY(int intFuelMaximum READ getIntFuelMaximum WRITE setIntFuelMaximum NOTIFY signalChangedIntFuelMaximum)
     Q_PROPERTY(int intBrakeTemperatureFrontLeft READ getIntBrakeTemperatureFrontLeft WRITE setIntBrakeTemperatureFrontLeft NOTIFY signalChangedIntBrakeTemperatureFrontLeft)
@@ -144,6 +147,9 @@ private:
     QString stringSessionTime;
     QString stringRunTime;
     QString stringLapTime;
+    QString stringLstTime;
+    QString stringBstTime;
+    QString stringRecTime;
     int intFuelCurrent;
     int intFuelMaximum;
     int intBrakeTemperatureFrontLeft;
@@ -168,6 +174,9 @@ public:
     const QString &getStringSessionTime() const { return stringSessionTime; }
     const QString &getStringRunTime() const { return stringRunTime; }
     const QString &getStringLapTime() const { return stringLapTime; }
+    const QString &getStringLstTime() const { return stringLstTime; }
+    const QString &getStringBstTime() const { return stringBstTime; }
+    const QString &getStringRecTime() const { return stringRecTime; }
     int getIntFuelCurrent() const { return intFuelCurrent; }
     int getIntFuelMaximum() const { return intFuelMaximum; }
     int getIntBrakeTemperatureFrontLeft() const { return intBrakeTemperatureFrontLeft; }
@@ -191,6 +200,9 @@ public:
     void setStringSessionTime(const QString &_stringSessionTime) { stringSessionTime = _stringSessionTime; emit signalChangedStringSessionTime(); }
     void setStringRunTime(const QString &_stringRunTime) { stringRunTime = _stringRunTime; emit signalChangedStringRunTime(); }
     void setStringLapTime(const QString &_stringLapTime) { stringLapTime = _stringLapTime; emit signalChangedStringLapTime(); }
+    void setStringLstTime(const QString &_stringLstTime) { stringLstTime = _stringLstTime; emit signalChangedStringLstTime(); }
+    void setStringBstTime(const QString &_stringBstTime) { stringBstTime = _stringBstTime; emit signalChangedStringBstTime(); }
+    void setStringRecTime(const QString &_stringRecTime) { stringRecTime = _stringRecTime; emit signalChangedStringRecTime(); }
     void setIntFuelCurrent(const int _intFuelCurrent) { intFuelCurrent = _intFuelCurrent; emit signalChangedIntFuelCurrent(); }
     void setIntFuelMaximum(const int _intFuelMaximum) { intFuelMaximum = _intFuelMaximum; emit signalChangedIntFuelMaximum(); }
     void setIntBrakeTemperatureFrontLeft(const int _intBrakeTemperatureFrontLeft) { intBrakeTemperatureFrontLeft = _intBrakeTemperatureFrontLeft; emit signalChangedIntBrakeTemperatureFrontLeft(); }
@@ -215,6 +227,9 @@ signals:
     void signalChangedStringSessionTime();
     void signalChangedStringRunTime();
     void signalChangedStringLapTime();
+    void signalChangedStringLstTime();
+    void signalChangedStringBstTime();
+    void signalChangedStringRecTime();
     void signalChangedIntFuelCurrent();
     void signalChangedIntFuelMaximum();
     void signalChangedIntBrakeTemperatureFrontLeft();

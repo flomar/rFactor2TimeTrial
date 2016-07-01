@@ -30,6 +30,9 @@ ApplicationGui::ApplicationGui() :
     stringSessionTime(QString::null),
     stringRunTime(QString::null),
     stringLapTime(QString::null),
+    stringLstTime(QString::null),
+    stringBstTime(QString::null),
+    stringRecTime(QString::null),
     intFuelCurrent(0),
     intFuelMaximum(0),
     intBrakeTemperatureFrontLeft(0),
@@ -246,16 +249,22 @@ void ApplicationGui::processMessageUpdateTelemetry(const ClientServerMessage &_m
     }
     // at this point it's safe to show the HUD
     setShowHud(true);
-    // calculate session time, run time, and lap time
+    // calculate session time, run time, and lap time as well as lst time, bst time, and rec time
     const int64_t localTime = Utilities::Core::getMillisecondsSinceEpoch();
     const int64_t localSessionTime = localTime - session->timeStart;
     const int64_t localRunTime = localTime - run->timeStart;
     const int64_t localLapTime = lap ? lap->time : 0;
+    const int64_t localLstTime = 0;
+    const int64_t localBstTime = 0;
+    const int64_t localRecTime = 0;
     // set properties
     setStringDriver(driver->name);
     setStringSessionTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localSessionTime));
     setStringRunTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localRunTime));
     setStringLapTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localLapTime));
+    setStringLstTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localLstTime));
+    setStringBstTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localBstTime));
+    setStringRecTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localRecTime));
     setIntFuelCurrent((int)(_message.m_fuelCurrent));
     setIntFuelMaximum((int)(_message.m_fuelMaximum));
     setIntBrakeTemperatureFrontLeft((int)(_message.m_brakeTemperature[0]));

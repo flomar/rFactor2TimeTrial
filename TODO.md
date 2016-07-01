@@ -4,7 +4,7 @@ This document contains the most important TODOs for the project.
 
 ## TODOs
 
-- Re-design in-car user interface into something more slick.
+- Populate variables "localLstTime", "localBstTime", and "localRecTime" in "ApplicationGui::processMessageUpdateTelemetry" in a performant way.
 - Find a better solution than explicitly calling "update()" before displaying a dialog in order for the dialogs to honor the application-wide font settings.
 
 ## Issues

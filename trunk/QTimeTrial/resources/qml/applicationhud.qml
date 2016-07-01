@@ -22,9 +22,9 @@ Item {
         }
         Item {
             id: idItemLap
-            x: 75 * gui.guiScale
-            y: 6 * gui.guiScale
-            width: 200 * gui.guiScale
+            x: 68 * gui.guiScale
+            y: 8 * gui.guiScale
+            width: 150 * gui.guiScale
             height: 20 * gui.guiScale
             Text {
                 anchors.fill: parent
@@ -37,10 +37,26 @@ Item {
             }
         }
         Item {
+            id: idItemLst
+            x: 360 * gui.guiScale
+            y: 8 * gui.guiScale
+            width: 150 * gui.guiScale
+            height: 20 * gui.guiScale
+            Text {
+                anchors.fill: parent
+                text: gui.stringLstTime
+                horizontalAlignment: Qt.AlignLeft
+                verticalAlignment: Qt.AlignVCenter
+                color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                font.family: ApplicationStyle.fontBitwise.name
+                font.pixelSize: 20 * gui.guiScale
+            }
+        }
+        Item {
             id: idItemDriver
-            x: 760 * gui.guiScale
+            x: 810 * gui.guiScale
             y: 7 * gui.guiScale
-            width: 400 * gui.guiScale
+            width: 300 * gui.guiScale
             height: 50 * gui.guiScale
             Text {
                 anchors.fill: parent
@@ -53,14 +69,30 @@ Item {
             }
         }
         Item {
-            id: idItemRun
-            x: 1645 * gui.guiScale
-            y: 6 * gui.guiScale
-            width: 200 * gui.guiScale
+            id: idItemBst
+            x: 1410 * gui.guiScale
+            y: 8 * gui.guiScale
+            width: 150 * gui.guiScale
             height: 20 * gui.guiScale
             Text {
                 anchors.fill: parent
-                text: gui.stringRunTime
+                text: gui.stringBstTime
+                horizontalAlignment: Qt.AlignRight
+                verticalAlignment: Qt.AlignVCenter
+                color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                font.family: ApplicationStyle.fontBitwise.name
+                font.pixelSize: 20 * gui.guiScale
+            }
+        }
+        Item {
+            id: idItemRec
+            x: 1702 * gui.guiScale
+            y: 8 * gui.guiScale
+            width: 150 * gui.guiScale
+            height: 20 * gui.guiScale
+            Text {
+                anchors.fill: parent
+                text: gui.stringRecTime
                 horizontalAlignment: Qt.AlignRight
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
@@ -70,10 +102,10 @@ Item {
         }
         Item {
             id: idItemRPM
-            x: 730 * gui.guiScale
-            y: 956 * gui.guiScale
-            width: 160 * gui.guiScale
-            height: 92 * gui.guiScale
+            x: 660 * gui.guiScale
+            y: 966 * gui.guiScale
+            width: 200 * gui.guiScale
+            height: 100 * gui.guiScale
             Text {
                 anchors.fill: parent
                 text: gui.intEngineRPMCurrent
@@ -87,9 +119,9 @@ Item {
         Item {
             id: idItemGear
             x: 910 * gui.guiScale
-            y: 956 * gui.guiScale
-            width: 92 * gui.guiScale
-            height: 92 * gui.guiScale
+            y: 966 * gui.guiScale
+            width: 100 * gui.guiScale
+            height: 100 * gui.guiScale
             Text {
                 anchors.fill: parent
                 text: gui.stringGear
@@ -102,22 +134,22 @@ Item {
         }
         Item {
             id: idItemSpeed
-            x: 1030 * gui.guiScale
-            y: 956 * gui.guiScale
-            width: 160 * gui.guiScale
-            height: 92 * gui.guiScale
+            x: 1060 * gui.guiScale
+            y: 966 * gui.guiScale
+            width: 200 * gui.guiScale
+            height: 100 * gui.guiScale
             Text {
                 anchors.fill: parent
                 text: gui.intSpeed
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
-                color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                color: gui.boolSpeedLimiterActive ? Qt.rgba(1.0, 0.0, 0.0, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
                 font.pixelSize: 48 * gui.guiScale
             }
         }
         Item {
-            id: idItemFuelLED
+            id: idItemFuel
             x: 8 * gui.guiScale
             y: 1054 * gui.guiScale
             width: 20 * gui.guiScale
@@ -135,8 +167,8 @@ Item {
             }
         }
         Item {
-            id: idItemEngineLED
-            x: 250 * gui.guiScale
+            id: idItemEngine
+            x: 300 * gui.guiScale
             y: 1054 * gui.guiScale
             width: 20 * gui.guiScale
             height: 20 * gui.guiScale
@@ -149,38 +181,8 @@ Item {
             }
         }
         Item {
-            id: idItemRPMLimiterLED
-            x: 622 * gui.guiScale
-            y: 956 * gui.guiScale
-            width: 92 * gui.guiScale
-            height: 92 * gui.guiScale
-            Image {
-                anchors.fill: parent
-                source: {
-                    if(gui.intEngineRPMPercentage > 90) return "../png/LED_RPM_LIMITER_RED.png"
-                    if(gui.intEngineRPMPercentage > 70) return "../png/LED_RPM_LIMITER_YELLOW.png"
-                    if(gui.intEngineRPMPercentage > 50) return "../png/LED_RPM_LIMITER_GREEN.png"
-                    return "../png/LED_RPM_LIMITER_OFF.png"
-                }
-            }
-        }
-        Item {
-            id: idItemSpeedLimiterLED
-            x: 1206 * gui.guiScale
-            y: 956 * gui.guiScale
-            width: 92 * gui.guiScale
-            height: 92 * gui.guiScale
-            Image {
-                anchors.fill: parent
-                source: {
-                    if(gui.boolSpeedLimiterActive) return "../png/LED_SPEED_LIMITER_RED.png"
-                    return "../png/LED_SPEED_LIMITER_OFF.png"
-                }
-            }
-        }
-        Item {
-            id: idItemBrakesLED
-            x: 1650 * gui.guiScale
+            id: idItemBrakes
+            x: 1600 * gui.guiScale
             y: 1054 * gui.guiScale
             width: 20 * gui.guiScale
             height: 20 * gui.guiScale
@@ -202,7 +204,7 @@ Item {
             }
         }
         Item {
-            id: idItemTiresLED
+            id: idItemTires
             x: 1892 * gui.guiScale
             y: 1054 * gui.guiScale
             width: 20 * gui.guiScale
@@ -223,6 +225,314 @@ Item {
                     return "../png/LED_OFF.png"
                 }
             }
+        }
+        Item {
+            id: idItemRPMLEDs
+            x: 662 * gui.guiScale
+            y: 934 * gui.guiScale
+            width: 596 * gui.guiScale
+            height: 16 * gui.guiScale
+            Image {
+                x: 20 * gui.guiScale * 0
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 0) return "../png/LED_GREEN.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 1
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 1) return "../png/LED_GREEN.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 2
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 2) return "../png/LED_GREEN.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 3
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 3) return "../png/LED_GREEN.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 4
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 4) return "../png/LED_GREEN.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 5
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 5) return "../png/LED_GREEN.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 6
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 6) return "../png/LED_GREEN.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 7
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 7) return "../png/LED_GREEN.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 8
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 8) return "../png/LED_GREEN.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 9
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 9) return "../png/LED_GREEN.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 10
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 10) return "../png/LED_YELLOW.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 11
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 11) return "../png/LED_YELLOW.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 12
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 12) return "../png/LED_YELLOW.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 13
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 13) return "../png/LED_YELLOW.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 14
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 14) return "../png/LED_YELLOW.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 15
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 15) return "../png/LED_YELLOW.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 16
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 16) return "../png/LED_YELLOW.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 17
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 17) return "../png/LED_YELLOW.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 18
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 18) return "../png/LED_YELLOW.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 19
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 19) return "../png/LED_YELLOW.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 20
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 20) return "../png/LED_RED.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 21
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 21) return "../png/LED_RED.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 22
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 22) return "../png/LED_RED.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 23
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 23) return "../png/LED_RED.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 24
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 24) return "../png/LED_RED.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 25
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 25) return "../png/LED_RED.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 26
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 26) return "../png/LED_RED.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 27
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 27) return "../png/LED_RED.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 28
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 28) return "../png/LED_RED.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+            Image {
+                x: 20 * gui.guiScale * 29
+                y: 0
+                width: 16 * gui.guiScale
+                height: 16 * gui.guiScale
+                source: {
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 29) return "../png/LED_RED.png"
+                    return "../png/LED_OFF.png"
+                }
+            }
+
         }
         Item {
             id: idItemLapInformation
