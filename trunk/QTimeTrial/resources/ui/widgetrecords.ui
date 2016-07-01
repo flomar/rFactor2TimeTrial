@@ -227,6 +227,20 @@
            </widget>
           </item>
           <item>
+           <widget class="QComboBox" name="comboBoxTrack">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <item>
+             <property name="text">
+              <string>[ALL TRACKS]</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
            <widget class="QComboBox" name="comboBoxCar">
             <property name="font">
              <font>

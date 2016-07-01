@@ -12,6 +12,7 @@ ApplicationDatabase::ApplicationDatabase() :
     timeLastLap(0),
     timeBestLap(0),
     timeRecordLap(0),
+    initializedTimeLastLapAndTimeBestLapAndTimeRecordLap(false),
     lnc(0),
     lno(0),
     lns(0),
@@ -438,7 +439,7 @@ void ApplicationDatabase::processMessageStartRun(const ClientServerMessage &_mes
         // reset variables
         currentLap = 0;
         // reset variables
-        initializeTimeLastLapAndTimeBestLapAndTimeRecordLap();
+        initializedTimeLastLapAndTimeBestLapAndTimeRecordLap = false;
     }
     // emit signal to other internal components
     emit signalReceivedClientServerMessage(_message);
@@ -482,6 +483,14 @@ void ApplicationDatabase::processMessageUpdateTelemetry(const ClientServerMessag
     }
     // we need a valid session and a valid run
     if(currentSession && currentRun) {
+        // IMPORTANT: initializing the following does not work unless
+        // we have a valid session and a valid run, but it should be
+        // called only once (the control variable is reset to false
+        // whenever a new run is started)
+        if(!initializedTimeLastLapAndTimeBestLapAndTimeRecordLap) {
+            initializeTimeLastLapAndTimeBestLapAndTimeRecordLap();
+            initializedTimeLastLapAndTimeBestLapAndTimeRecordLap = true;
+        }
         // do some magic with internal variables to find out
         // when exactly a lap has been started; see header
         // file for some more explanation

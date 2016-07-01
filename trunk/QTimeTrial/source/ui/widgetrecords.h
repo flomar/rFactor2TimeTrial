@@ -28,13 +28,13 @@ private:
 private slots:
     void slotChangedCurrentIndexComboBoxLimit(const int _index);
     void slotChangedCurrentIndexComboBoxDriver(const int _index);
+    void slotChangedCurrentIndexComboBoxTrack(const int _index);
     void slotChangedCurrentIndexComboBoxCar(const int _index);
     void slotChangedCurrentIndexComboBoxFrontTireCompound(const int _index);
     void slotChangedCurrentIndexComboBoxRearTireCompound(const int _index);
 private:
     QVector<Record> calculateVectorRecords() const;
 private:
-    QString trackName;
     QVector<Record> vectorRecordsUnsortedAndUnfiltered;
 };
 

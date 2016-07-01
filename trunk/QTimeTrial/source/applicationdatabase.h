@@ -77,6 +77,7 @@ public:
     int64_t getTimeBestLap() const { return timeBestLap; }
     int64_t getTimeRecordLap() const { return timeRecordLap; }
 private:
+    bool initializedTimeLastLapAndTimeBestLapAndTimeRecordLap;
     void initializeTimeLastLapAndTimeBestLapAndTimeRecordLap();
 private:
     // this function extracts the best lap for the current setup

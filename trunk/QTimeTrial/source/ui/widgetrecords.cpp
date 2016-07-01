@@ -15,6 +15,7 @@ WidgetRecords::WidgetRecords(const float _guiScale, const QFont &_guiFontXL, con
     // connect signals and slots
     connect(ui->comboBoxLimit, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxLimit(int)));
     connect(ui->comboBoxDriver, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxDriver(int)));
+    connect(ui->comboBoxTrack, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxTrack(int)));
     connect(ui->comboBoxCar, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxCar(int)));
     connect(ui->comboBoxFrontTireCompound, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxFrontTireCompound(int)));
     connect(ui->comboBoxRearTireCompound, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxRearTireCompound(int)));
@@ -24,6 +25,7 @@ WidgetRecords::~WidgetRecords() {
     // disconnect signals and slots
     disconnect(ui->comboBoxLimit, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxLimit(int)));
     disconnect(ui->comboBoxDriver, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxDriver(int)));
+    disconnect(ui->comboBoxTrack, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxTrack(int)));
     disconnect(ui->comboBoxCar, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxCar(int)));
     disconnect(ui->comboBoxFrontTireCompound, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxFrontTireCompound(int)));
     disconnect(ui->comboBoxRearTireCompound, SIGNAL(currentIndexChanged(int)), this, SLOT(slotChangedCurrentIndexComboBoxRearTireCompound(int)));
@@ -33,7 +35,6 @@ WidgetRecords::~WidgetRecords() {
 void WidgetRecords::update() {
     Widget::update();
     // acquire data (and store it temporarily)
-    trackName = ApplicationDatabase::instance().getCurrentTrackName();
     vectorRecordsUnsortedAndUnfiltered = ApplicationDatabase::instance().getVectorRecordsUnsortedAndUnfiltered();
     // update user interface
     updateTableViewAvailableRecords();
@@ -49,6 +50,7 @@ void WidgetRecords::initializeGui() {
     ui->groupBoxFilters->setFont(guiFontM);
     ui->comboBoxLimit->setFont(guiFontM);
     ui->comboBoxDriver->setFont(guiFontM);
+    ui->comboBoxTrack->setFont(guiFontM);
     ui->comboBoxCar->setFont(guiFontM);
     ui->comboBoxFrontTireCompound->setFont(guiFontM);
     ui->comboBoxRearTireCompound->setFont(guiFontM);
@@ -95,6 +97,8 @@ void WidgetRecords::updateComboBoxes() {
     // but ignore the limit box since its content is static
     while(ui->comboBoxDriver->count() > 1)
         ui->comboBoxDriver->removeItem(ui->comboBoxDriver->count() - 1);
+    while(ui->comboBoxTrack->count() > 1)
+        ui->comboBoxTrack->removeItem(ui->comboBoxTrack->count() - 1);
     while(ui->comboBoxCar->count() > 1)
         ui->comboBoxCar->removeItem(ui->comboBoxCar->count() - 1);
     while(ui->comboBoxFrontTireCompound->count() > 1)
@@ -103,12 +107,13 @@ void WidgetRecords::updateComboBoxes() {
         ui->comboBoxRearTireCompound->removeItem(ui->comboBoxRearTireCompound->count() - 1);
     // go through temporary data and extract what we need
     QSet<QString> setDrivers;
+    QSet<QString> setTracks;
     QSet<QString> setCars;
     QSet<QString> setFrontTireCompounds;
     QSet<QString> setRearTireCompounds;
     foreach(const Record record, vectorRecordsUnsortedAndUnfiltered) {
-        if(trackName != record.track) continue;
         setDrivers.insert(record.driver);
+        setTracks.insert(record.track);
         setCars.insert(record.car);
         setFrontTireCompounds.insert(record.frontTireCompound);
         setRearTireCompounds.insert(record.rearTireCompound);
@@ -116,6 +121,9 @@ void WidgetRecords::updateComboBoxes() {
     // fill the combo boxes
     foreach(const QString driver, setDrivers) {
         ui->comboBoxDriver->insertItem(ui->comboBoxDriver->count(), driver);
+    }
+    foreach(const QString track, setTracks) {
+        ui->comboBoxTrack->insertItem(ui->comboBoxTrack->count(), track);
     }
     foreach(const QString car, setCars) {
         ui->comboBoxCar->insertItem(ui->comboBoxCar->count(), car);
@@ -132,6 +140,18 @@ void WidgetRecords::updateComboBoxes() {
     ui->comboBoxCar->setCurrentIndex(0);
     ui->comboBoxFrontTireCompound->setCurrentIndex(0);
     ui->comboBoxRearTireCompound->setCurrentIndex(0);
+    // however, if we have a valid current session, we want to
+    // pre-select the track corresponding to the current session
+    const Session *currentSession = ApplicationDatabase::instance().getCurrentSession();
+    if(currentSession) {
+        const QString track = currentSession->nameTrack;
+        for(int i=0; i<ui->comboBoxTrack->count(); i++) {
+            if(track == ui->comboBoxTrack->itemText(i)) {
+                ui->comboBoxTrack->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
 }
 
 void WidgetRecords::slotChangedCurrentIndexComboBoxLimit(const int _index) {
@@ -140,6 +160,11 @@ void WidgetRecords::slotChangedCurrentIndexComboBoxLimit(const int _index) {
 }
 
 void WidgetRecords::slotChangedCurrentIndexComboBoxDriver(const int _index) {
+    Q_UNUSED(_index);
+    updateTableViewAvailableRecords();
+}
+
+void WidgetRecords::slotChangedCurrentIndexComboBoxTrack(const int _index) {
     Q_UNUSED(_index);
     updateTableViewAvailableRecords();
 }
@@ -166,16 +191,17 @@ QVector<Record> WidgetRecords::calculateVectorRecords() const {
     // string is empty, there is no filter applied in that area
     const int limit = ui->comboBoxLimit->currentIndex() != 0 ? ui->comboBoxLimit->currentText().toInt() : 0;
     const QString driver = ui->comboBoxDriver->currentIndex() != 0 ? ui->comboBoxDriver->currentText() : QString::null;
+    const QString track = ui->comboBoxTrack->currentIndex() != 0 ? ui->comboBoxTrack->currentText() : QString::null;
     const QString car = ui->comboBoxCar->currentIndex() != 0 ? ui->comboBoxCar->currentText() : QString::null;
     const QString frontTireCompound = ui->comboBoxFrontTireCompound->currentIndex() != 0 ? ui->comboBoxFrontTireCompound->currentText() : QString::null;
     const QString rearTireCompound = ui->comboBoxRearTireCompound->currentIndex() != 0 ? ui->comboBoxRearTireCompound->currentText() : QString::null;
     // go through temporary data and extract what we need
     foreach(const Record record, vectorRecordsUnsortedAndUnfiltered) {
         if(!driver.isEmpty() && driver != record.driver) continue;
+        if(!track.isEmpty() && track != record.track) continue;
         if(!car.isEmpty() && car != record.car) continue;
         if(!frontTireCompound.isEmpty() && frontTireCompound != record.frontTireCompound) continue;
         if(!rearTireCompound.isEmpty() && rearTireCompound != record.rearTireCompound) continue;
-        if(trackName != record.track) continue;
         vectorRecords.push_back(record);
     }
     // sort the records
