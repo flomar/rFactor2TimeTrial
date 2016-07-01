@@ -249,14 +249,14 @@ void ApplicationGui::processMessageUpdateTelemetry(const ClientServerMessage &_m
     }
     // at this point it's safe to show the HUD
     setShowHud(true);
-    // calculate session time, run time, and lap time as well as lst time, bst time, and rec time
+    // calculate session time, run time, and lap time, and acquire lst time, bst time, and rec time
     const int64_t localTime = Utilities::Core::getMillisecondsSinceEpoch();
     const int64_t localSessionTime = localTime - session->timeStart;
     const int64_t localRunTime = localTime - run->timeStart;
     const int64_t localLapTime = lap ? lap->time : 0;
-    const int64_t localLstTime = 0;
-    const int64_t localBstTime = 0;
-    const int64_t localRecTime = 0;
+    const int64_t localLstTime = ApplicationDatabase::instance().getTimeLastLap();
+    const int64_t localBstTime = ApplicationDatabase::instance().getTimeBestLap();
+    const int64_t localRecTime = ApplicationDatabase::instance().getTimeRecordLap();
     // set properties
     setStringDriver(driver->name);
     setStringSessionTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localSessionTime));

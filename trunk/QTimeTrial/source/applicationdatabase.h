@@ -68,6 +68,21 @@ public:
     const Session *getCurrentSession() const { return currentSession; }
     const Run *getCurrentRun() const { return currentRun; }
     const Lap *getCurrentLap() const { return currentLap; }
+private:
+    int64_t timeLastLap;
+    int64_t timeBestLap;
+    int64_t timeRecordLap;
+public:
+    int64_t getTimeLastLap() const { return timeLastLap; }
+    int64_t getTimeBestLap() const { return timeBestLap; }
+    int64_t getTimeRecordLap() const { return timeRecordLap; }
+private:
+    void initializeTimeLastLapAndTimeBestLapAndTimeRecordLap();
+private:
+    // this function extracts the best lap for the current setup
+    // by the current driver, and the best lap for the current
+    // setup by any driver
+    void getBestLapTimes(int64_t &_personalBest, int64_t &_absoluteBest) const;
 public:
     void setCurrentDriver(const QString &_name);
 public:
@@ -78,10 +93,6 @@ private:
     // accumulating the required data, the appropriate signal is
     // emitted to be picked up by the HUD (see below)
     void displayLapInformation(const Lap *_lap) const;
-private:
-    // this function extracts the absolute record (if any) and the
-    // personl record (if any) for the specified lap
-    void getAbsoluteRecordAndPersonalRecord(const Lap *_lap, Record &_recordAbsolute, Record &_recordPersonal) const;
 signals:
     // this signal is emitted after each finished lap to temporarily
     // display some additional information to the user in the HUD
