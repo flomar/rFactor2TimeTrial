@@ -4,6 +4,7 @@ This document contains the most important TODOs for the project.
 
 ## TODOs
 
+- Internally, something must be wrong with the "lst", "bst", and "rec" variables. Fix this ASAP!
 - Find a better solution than explicitly calling "update()" before displaying a dialog in order for the dialogs to honor the application-wide font settings.
 
 ## Issues
