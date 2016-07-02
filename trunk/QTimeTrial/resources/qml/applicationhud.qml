@@ -27,6 +27,7 @@ Item {
             width: 150 * gui.guiScale
             height: 20 * gui.guiScale
             Text {
+                id: idTextItemLap
                 anchors.fill: parent
                 text: gui.stringLapTime
                 horizontalAlignment: Qt.AlignLeft
@@ -43,6 +44,7 @@ Item {
             width: 150 * gui.guiScale
             height: 20 * gui.guiScale
             Text {
+                id: idTextItemLst
                 anchors.fill: parent
                 text: gui.stringLstTime
                 horizontalAlignment: Qt.AlignLeft
@@ -59,6 +61,7 @@ Item {
             width: 300 * gui.guiScale
             height: 50 * gui.guiScale
             Text {
+                id: idTextItemDriver
                 anchors.fill: parent
                 text: gui.stringDriver
                 horizontalAlignment: Qt.AlignHCenter
@@ -75,6 +78,7 @@ Item {
             width: 150 * gui.guiScale
             height: 20 * gui.guiScale
             Text {
+                id: idTextItemBst
                 anchors.fill: parent
                 text: gui.stringBstTime
                 horizontalAlignment: Qt.AlignRight
@@ -91,6 +95,7 @@ Item {
             width: 150 * gui.guiScale
             height: 20 * gui.guiScale
             Text {
+                id: idTextItemRec
                 anchors.fill: parent
                 text: gui.stringRecTime
                 horizontalAlignment: Qt.AlignRight
@@ -107,6 +112,7 @@ Item {
             width: 200 * gui.guiScale
             height: 100 * gui.guiScale
             Text {
+                id: idTextItemRPM
                 anchors.fill: parent
                 text: gui.intEngineRPMCurrent
                 horizontalAlignment: Qt.AlignHCenter
@@ -123,6 +129,7 @@ Item {
             width: 100 * gui.guiScale
             height: 100 * gui.guiScale
             Text {
+                id: idTextItemGear
                 anchors.fill: parent
                 text: gui.stringGear
                 horizontalAlignment: Qt.AlignHCenter
@@ -139,6 +146,7 @@ Item {
             width: 200 * gui.guiScale
             height: 100 * gui.guiScale
             Text {
+                id: idTextItemSpeed
                 anchors.fill: parent
                 text: gui.intSpeed
                 horizontalAlignment: Qt.AlignHCenter
@@ -540,9 +548,8 @@ Item {
             width: 256 * gui.guiScale
             height: 128 * gui.guiScale
             opacity: 0.0
-            property real durationVisible: 3000
             Text {
-                id: idItemLapInformationText
+                id: idTextItemLapInformation
                 anchors.fill: parent
                 anchors.bottomMargin: parent.height * 3 / 5
                 text: "00:00:000"
@@ -555,7 +562,7 @@ Item {
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }
             Text {
-                id: idItemLapInformationTextAbsoluteBest
+                id: idTextItemLapInformationAbsoluteBest
                 anchors.fill: parent
                 anchors.topMargin: parent.height * 2 / 5
                 anchors.bottomMargin: parent.height * 1 / 5
@@ -568,7 +575,7 @@ Item {
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }
             Text {
-                id: idItemLapInformationTextPersonalBest
+                id: idTextItemLapInformationPersonalBest
                 anchors.fill: parent
                 anchors.topMargin: parent.height * 4 / 5
                 text: "00:00:000"
@@ -589,11 +596,11 @@ Item {
                     var absoluteBest = _absoluteBest
                     var personalBest = _personalBest
                     // process signal parameters
-                    idItemLapInformationText.text = infoLapTime
-                    idItemLapInformationTextAbsoluteBest.text = infoAbsolute
-                    idItemLapInformationTextPersonalBest.text = infoPersonal
-                    idItemLapInformationTextAbsoluteBest.color = absoluteBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
-                    idItemLapInformationTextPersonalBest.color = personalBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
+                    idTextItemLapInformation.text = infoLapTime
+                    idTextItemLapInformationAbsoluteBest.text = infoAbsolute
+                    idTextItemLapInformationPersonalBest.text = infoPersonal
+                    idTextItemLapInformationAbsoluteBest.color = absoluteBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
+                    idTextItemLapInformationPersonalBest.color = personalBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
                     idSequentialAnimation.start()
                 }
             }
