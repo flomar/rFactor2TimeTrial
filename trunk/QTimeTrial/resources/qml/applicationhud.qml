@@ -38,15 +38,15 @@ Item {
             }
         }
         Item {
-            id: idItemLst
+            id: idItemLapTimeLast
             x: 360 * gui.guiScale
             y: 8 * gui.guiScale
             width: 150 * gui.guiScale
             height: 20 * gui.guiScale
             Text {
-                id: idTextItemLst
+                id: idTextItemLapTimeLast
                 anchors.fill: parent
-                text: gui.stringLstTime
+                text: gui.stringLapTimeLast
                 horizontalAlignment: Qt.AlignLeft
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
@@ -57,9 +57,9 @@ Item {
         Item {
             id: idItemDriver
             x: 810 * gui.guiScale
-            y: 7 * gui.guiScale
+            y: 8 * gui.guiScale
             width: 300 * gui.guiScale
-            height: 50 * gui.guiScale
+            height: 40 * gui.guiScale
             Text {
                 id: idTextItemDriver
                 anchors.fill: parent
@@ -68,19 +68,19 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 32 * gui.guiScale
+                font.pixelSize: 36 * gui.guiScale
             }
         }
         Item {
-            id: idItemBst
+            id: idItemLapTimePersonalBest
             x: 1410 * gui.guiScale
             y: 8 * gui.guiScale
             width: 150 * gui.guiScale
             height: 20 * gui.guiScale
             Text {
-                id: idTextItemBst
+                id: idTextItemLapTimePersonalBest
                 anchors.fill: parent
-                text: gui.stringBstTime
+                text: gui.stringLapTimePersonalBest
                 horizontalAlignment: Qt.AlignRight
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
@@ -89,15 +89,15 @@ Item {
             }
         }
         Item {
-            id: idItemRec
+            id: idItemLapTimeAbsoluteBest
             x: 1702 * gui.guiScale
             y: 8 * gui.guiScale
             width: 150 * gui.guiScale
             height: 20 * gui.guiScale
             Text {
-                id: idTextItemRec
+                id: idTextItemLapTimeAbsoluteBest
                 anchors.fill: parent
-                text: gui.stringRecTime
+                text: gui.stringLapTimeAbsoluteBest
                 horizontalAlignment: Qt.AlignRight
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
@@ -562,7 +562,7 @@ Item {
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }
             Text {
-                id: idTextItemLapInformationAbsoluteBest
+                id: idTextItemLapInformationPersonalBest
                 anchors.fill: parent
                 anchors.topMargin: parent.height * 2 / 5
                 anchors.bottomMargin: parent.height * 1 / 5
@@ -575,7 +575,7 @@ Item {
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }
             Text {
-                id: idTextItemLapInformationPersonalBest
+                id: idTextItemLapInformationAbsoluteBest
                 anchors.fill: parent
                 anchors.topMargin: parent.height * 4 / 5
                 text: "00:00:000"
@@ -590,60 +590,24 @@ Item {
         Connections {
             target: QTimeTrialApplicationDatabase
             onSignalLapInformation: {
-                idItemLapInformationAnimations.startAnimations(_infoLapTime, _infoAbsolute, _infoPersonal, _absoluteBest, _personalBest)
+                idItemLapInformationAnimations.startAnimations(_isPersonalBest, _isAbsoluteBest, _infoLapTime, _infoLapTimePersonalBest, _infoLapTimeAbsoluteBest)
             }
         }
         Item {
             id: idItemLapInformationAnimations
             readonly property real durationFadeIn: 125
             readonly property real durationFadeOut: 6375
-            function startAnimations(_infoLapTime, _infoAbsolute, _infoPersonal, _absoluteBest, _personalBest) {
+            function startAnimations(_isPersonalBest, _isAbsoluteBest, _infoLapTime, _infoLapTimePersonalBest, _infoLapTimeAbsoluteBest) {
                 // initialize lap information items
                 idTextItemLapInformation.text = _infoLapTime
-                idTextItemLapInformationAbsoluteBest.text = _infoAbsolute
-                idTextItemLapInformationPersonalBest.text = _infoPersonal
-                idTextItemLapInformationAbsoluteBest.color = _absoluteBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
-                idTextItemLapInformationPersonalBest.color = _personalBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
+                idTextItemLapInformationPersonalBest.text = _infoLapTimePersonalBest
+                idTextItemLapInformationAbsoluteBest.text = _infoLapTimeAbsoluteBest
+                idTextItemLapInformationPersonalBest.color = _isPersonalBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
+                idTextItemLapInformationAbsoluteBest.color = _isAbsoluteBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
                 // start animations
-                if(_absoluteBest) idSequentialAnimationRec.start()
-                if(_personalBest) idSequentialAnimationBst.start()
                 idSequentialAnimationLap.start()
-            }
-            SequentialAnimation {
-                id: idSequentialAnimationRec
-                alwaysRunToEnd: true
-                PropertyAnimation {
-                    target: idTextItemRec
-                    properties: "color"
-                    from: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                    to: Qt.rgba(0.0, 1.0, 0.0, 1.0)
-                    duration: idItemLapInformationAnimations.durationFadeIn
-                }
-                PropertyAnimation {
-                    target: idTextItemRec
-                    properties: "color"
-                    from: Qt.rgba(0.0, 1.0, 0.0, 1.0)
-                    to: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                    duration: idItemLapInformationAnimations.durationFadeOut
-                }
-            }
-            SequentialAnimation {
-                id: idSequentialAnimationBst
-                alwaysRunToEnd: true
-                PropertyAnimation {
-                    target: idTextItemBst
-                    properties: "color"
-                    from: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                    to: Qt.rgba(0.0, 1.0, 0.0, 1.0)
-                    duration: idItemLapInformationAnimations.durationFadeIn
-                }
-                PropertyAnimation {
-                    target: idTextItemBst
-                    properties: "color"
-                    from: Qt.rgba(0.0, 1.0, 0.0, 1.0)
-                    to: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                    duration: idItemLapInformationAnimations.durationFadeOut
-                }
+                if(_personalBest) idSequentialAnimationPersonalBest.start()
+                if(_absoluteBest) idSequentialAnimationAbsoluteBest.start()
             }
             SequentialAnimation {
                 id: idSequentialAnimationLap
@@ -660,6 +624,42 @@ Item {
                     properties: "opacity"
                     from: 1.0
                     to: 0.0
+                    duration: idItemLapInformationAnimations.durationFadeOut
+                }
+            }
+            SequentialAnimation {
+                id: idSequentialAnimationPersonalBest
+                alwaysRunToEnd: true
+                PropertyAnimation {
+                    target: idTextItemLapTimePersonalBest
+                    properties: "color"
+                    from: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    to: Qt.rgba(0.0, 1.0, 0.0, 1.0)
+                    duration: idItemLapInformationAnimations.durationFadeIn
+                }
+                PropertyAnimation {
+                    target: idTextItemLapTimePersonalBest
+                    properties: "color"
+                    from: Qt.rgba(0.0, 1.0, 0.0, 1.0)
+                    to: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    duration: idItemLapInformationAnimations.durationFadeOut
+                }
+            }
+            SequentialAnimation {
+                id: idSequentialAnimationAbsoluteBest
+                alwaysRunToEnd: true
+                PropertyAnimation {
+                    target: idTextItemLapTimeAbsoluteBest
+                    properties: "color"
+                    from: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    to: Qt.rgba(0.0, 1.0, 0.0, 1.0)
+                    duration: idItemLapInformationAnimations.durationFadeIn
+                }
+                PropertyAnimation {
+                    target: idTextItemLapTimeAbsoluteBest
+                    properties: "color"
+                    from: Qt.rgba(0.0, 1.0, 0.0, 1.0)
+                    to: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                     duration: idItemLapInformationAnimations.durationFadeOut
                 }
             }

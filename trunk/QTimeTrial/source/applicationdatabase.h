@@ -69,26 +69,27 @@ public:
     const Run *getCurrentRun() const { return currentRun; }
     const Lap *getCurrentLap() const { return currentLap; }
 private:
-    int64_t timeLastLap;
-    int64_t timeBestLap;
-    int64_t timeRecordLap;
+    int64_t lapTimeLast;
+    int64_t lapTimePersonalBest;
+    int64_t lapTimeAbsoluteBest;
 public:
-    int64_t getTimeLastLap() const { return timeLastLap; }
-    int64_t getTimeBestLap() const { return timeBestLap; }
-    int64_t getTimeRecordLap() const { return timeRecordLap; }
+    int64_t getLapTimeLast() const { return lapTimeLast; }
+    int64_t getLapTimePersonalBest() const { return lapTimePersonalBest; }
+    int64_t getLapTimeAbsoluteBest() const { return lapTimeAbsoluteBest; }
 private:
-    bool initializedTimeLastLapAndTimeBestLapAndTimeRecordLap;
-    void initializeTimeLastLapAndTimeBestLapAndTimeRecordLap();
-    void updateTimeLastLapAndTimeBestLapAndTimeRecordLap(const Lap *_lap);
+    bool initializedLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest;
+    void initializeLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest();
+    void updateLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest(const Lap *_lap);
 private:
-    // this function extracts the best lap for the current setup
-    // by the current driver, and the best lap for the current
-    // setup by any driver
-    void getBestLapTimes(int64_t &_personalBest, int64_t &_absoluteBest) const;
+    // for the current setup (track, car, tires), this function extracts
+    // the personal best lap time (for the current driver) and the absolute
+    // best lap time (for any driver); if a result value is zero, then the
+    // corresponding lap time could not be extracted
+    void getLapTimePersonalBestAndLapTimeAbsoluteBest(int64_t &_lapTimePersonalBest, int64_t &_lapTimeAbsoluteBest) const;
 signals:
     // this signal is emitted after each finished lap to temporarily
     // display some additional information to the user in the HUD
-    void signalLapInformation(const QString &_infoLapTime, const QString &_infoAbsolute, const QString &_infoPersonal, const bool _absoluteBest, const bool _personalBest) const;
+    void signalLapInformation(const bool _isPersonalBest, const bool _isAbsoluteBest, const QString &_infoLapTime, const QString &_infoLapTimePersonalBest, const QString &_infoLapTimeAbsoluteBest);
 public:
     void setCurrentDriver(const QString &_name);
 public:

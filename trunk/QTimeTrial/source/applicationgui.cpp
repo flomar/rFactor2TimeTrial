@@ -30,9 +30,9 @@ ApplicationGui::ApplicationGui() :
     stringSessionTime(QString::null),
     stringRunTime(QString::null),
     stringLapTime(QString::null),
-    stringLstTime(QString::null),
-    stringBstTime(QString::null),
-    stringRecTime(QString::null),
+    stringLapTimeLast(QString::null),
+    stringLapTimePersonalBest(QString::null),
+    stringLapTimeAbsoluteBest(QString::null),
     intFuelCurrent(0),
     intFuelMaximum(0),
     intBrakeTemperatureFrontLeft(0),
@@ -254,17 +254,17 @@ void ApplicationGui::processMessageUpdateTelemetry(const ClientServerMessage &_m
     const int64_t localSessionTime = localTime - session->timeStart;
     const int64_t localRunTime = localTime - run->timeStart;
     const int64_t localLapTime = lap ? lap->time : 0;
-    const int64_t localLstTime = ApplicationDatabase::instance().getTimeLastLap();
-    const int64_t localBstTime = ApplicationDatabase::instance().getTimeBestLap();
-    const int64_t localRecTime = ApplicationDatabase::instance().getTimeRecordLap();
+    const int64_t localLapTimeLast = ApplicationDatabase::instance().getLapTimeLast();
+    const int64_t localLapTimePersonalBest = ApplicationDatabase::instance().getLapTimePersonalBest();
+    const int64_t localLapTimeAbsoluteBest = ApplicationDatabase::instance().getLapTimeAbsoluteBest();
     // set properties
     setStringDriver(driver->name);
     setStringSessionTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localSessionTime));
     setStringRunTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localRunTime));
     setStringLapTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localLapTime));
-    setStringLstTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localLstTime));
-    setStringBstTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localBstTime));
-    setStringRecTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localRecTime));
+    setStringLapTimeLast(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localLapTimeLast));
+    setStringLapTimePersonalBest(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localLapTimePersonalBest));
+    setStringLapTimeAbsoluteBest(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localLapTimeAbsoluteBest));
     setIntFuelCurrent((int)(_message.m_fuelCurrent));
     setIntFuelMaximum((int)(_message.m_fuelMaximum));
     setIntBrakeTemperatureFrontLeft((int)(_message.m_brakeTemperature[0]));

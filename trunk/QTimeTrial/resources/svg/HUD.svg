@@ -200,8 +200,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.70710678"
-     inkscape:cx="949.50044"
-     inkscape:cy="508.58667"
+     inkscape:cx="939.96172"
+     inkscape:cy="537.89609"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -310,41 +310,53 @@
          id="tspan3051"
          sodipodi:role="line">LST</tspan></text>
     <text
-       xml:space="preserve"
-       style="font-size:22.62983513000000000px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#b3b3b3;fill-opacity:1;stroke:none;font-family:Sans"
-       x="1575.2264"
-       y="24"
-       id="text3053"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan3055"
-         x="1575.2264"
-         y="24"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#b3b3b3;font-family:Bitwise;-inkscape-font-specification:Bitwise">BST</tspan></text>
-    <text
        sodipodi:linespacing="125%"
-       id="text3057"
+       id="text3082"
        y="24"
-       x="1869.4364"
-       style="font-size:22.62983513000000000px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#b3b3b3;fill-opacity:1;stroke:none;font-family:Sans"
+       x="1575.1823"
+       style="font-size:22.62983513px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#b3b3b3;fill-opacity:1;stroke:none;font-family:Sans"
        xml:space="preserve"><tspan
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#b3b3b3;font-family:Bitwise;-inkscape-font-specification:Bitwise"
          y="24"
-         x="1869.4364"
-         id="tspan3059"
-         sodipodi:role="line">REC</tspan></text>
+         x="1575.1823"
+         id="tspan3084"
+         sodipodi:role="line">PER</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:22.62983513px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#b3b3b3;fill-opacity:1;stroke:none;font-family:Sans"
+       x="1869.6573"
+       y="24"
+       id="text3086"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3088"
+         x="1869.6573"
+         y="24"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#b3b3b3;font-family:Bitwise;-inkscape-font-specification:Bitwise">ABS</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:18.41623116px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#b3b3b3;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
-       x="846.82037"
-       y="1074.7977"
+       x="890.04858"
+       y="1073.1217"
        id="text3971"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3973"
-         x="846.82037"
-         y="1074.7977"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#b3b3b3;font-family:Copperplate;-inkscape-font-specification:Copperplate">Ana Perverez Solutions</tspan></text>
+         x="890.04858"
+         y="1073.1217"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#b3b3b3;font-family:Copperplate;-inkscape-font-specification:Copperplate">Powered By Qt</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3090"
+       y="57.435688"
+       x="916.32324"
+       style="font-size:15.33795166px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#b3b3b3;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#b3b3b3;font-family:Copperplate;-inkscape-font-specification:Copperplate"
+         y="57.435688"
+         x="916.32324"
+         id="tspan3092"
+         sodipodi:role="line">QTimeTrial</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -423,9 +435,9 @@
        style="fill:#ff00ff;fill-opacity:1;stroke:none"
        id="rect3071"
        width="300"
-       height="50"
+       height="40"
        x="810"
-       y="7" />
+       y="6" />
     <g
        id="g3931"
        transform="translate(-69.335131,392.18795)">

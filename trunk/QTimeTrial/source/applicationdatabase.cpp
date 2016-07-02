@@ -9,10 +9,10 @@ ApplicationDatabase::ApplicationDatabase() :
     currentSession(0),
     currentRun(0),
     currentLap(0),
-    timeLastLap(0),
-    timeBestLap(0),
-    timeRecordLap(0),
-    initializedTimeLastLapAndTimeBestLapAndTimeRecordLap(false),
+    lapTimeLast(0),
+    lapTimePersonalBest(0),
+    lapTimeAbsoluteBest(0),
+    initializedLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest(false),
     lnc(0),
     lno(0),
     lns(0),
@@ -439,7 +439,7 @@ void ApplicationDatabase::processMessageStartRun(const ClientServerMessage &_mes
         // reset variables
         currentLap = 0;
         // reset variables
-        initializedTimeLastLapAndTimeBestLapAndTimeRecordLap = false;
+        initializedLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest = false;
     }
     // emit signal to other internal components
     emit signalReceivedClientServerMessage(_message);
@@ -487,9 +487,9 @@ void ApplicationDatabase::processMessageUpdateTelemetry(const ClientServerMessag
         // we have a valid session and a valid run, but it should be
         // called only once (the control variable is reset to false
         // whenever a new run is started)
-        if(!initializedTimeLastLapAndTimeBestLapAndTimeRecordLap) {
-            initializeTimeLastLapAndTimeBestLapAndTimeRecordLap();
-            initializedTimeLastLapAndTimeBestLapAndTimeRecordLap = true;
+        if(!initializedLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest) {
+            initializeLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest();
+            initializedLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest = true;
         }
         // do some magic with internal variables to find out
         // when exactly a lap has been started; see header
@@ -523,8 +523,8 @@ void ApplicationDatabase::processMessageUpdateTelemetry(const ClientServerMessag
             currentLap->elapsedTimeFinish = elapsedTimeLapStart;
             currentLap->time = currentLap->elapsedTimeFinish - currentLap->elapsedTimeStart;
             mapLaps.insert(currentLap->identifier, currentLap);
-            // update last lap time, best lap time, and record lap time in the HUD
-            updateTimeLastLapAndTimeBestLapAndTimeRecordLap(currentLap);
+            // update last lap time, personal best lap time, and absolute best lap time in the HUD
+            updateLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest(currentLap);
             // create a new lap
             Lap *lap = new Lap();
             lap->identifier = Utilities::Containers::getSmallestAvailableIdentifier<int64_t, Lap>(mapLaps);
@@ -544,43 +544,40 @@ void ApplicationDatabase::processMessageUpdateTelemetry(const ClientServerMessag
     emit signalReceivedClientServerMessage(_message);
 }
 
-void ApplicationDatabase::initializeTimeLastLapAndTimeBestLapAndTimeRecordLap() {
+void ApplicationDatabase::initializeLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest() {
     // initialize variables to default values
-    timeLastLap = 0;
-    timeBestLap = 0;
-    timeRecordLap = 0;
-    // acquire the best lap for the current setup by the current driver
-    // and the best lap for the current setup by any driver
-    getBestLapTimes(timeBestLap, timeRecordLap);
+    lapTimeLast = 0;
+    lapTimePersonalBest = 0;
+    lapTimeAbsoluteBest = 0;
+    // acquire the personal best lap time (for the current driver)
+    // and the absolute best lap time (for any driver)
+    getLapTimePersonalBestAndLapTimeAbsoluteBest(lapTimePersonalBest, lapTimeAbsoluteBest);
 }
 
-void ApplicationDatabase::updateTimeLastLapAndTimeBestLapAndTimeRecordLap(const Lap *_lap) {
+void ApplicationDatabase::updateLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest(const Lap *_lap) {
     if(!_lap) return;
-    // update times for last lap, best lap, and record lap
-    timeLastLap = _lap->time;
-    timeBestLap = timeBestLap == 0 ? _lap->time : _lap->time < timeBestLap ? _lap->time : timeBestLap;
-    timeRecordLap = timeRecordLap == 0 ? _lap->time : _lap->time < timeRecordLap ? _lap->time : timeRecordLap;
-    // acquire both the personal best lap and the absolute best lap (if any)
-    const int64_t personalBest = timeBestLap;
-    const int64_t absoluteBest = timeRecordLap;
+    // update times for last lap, personal best lap, and absolute best lap
+    lapTimeLast = _lap->time;
+    lapTimePersonalBest = lapTimePersonalBest == 0 ? _lap->time : _lap->time < lapTimePersonalBest ? _lap->time : lapTimePersonalBest;
+    lapTimeAbsoluteBest = lapTimeAbsoluteBest == 0 ? _lap->time : _lap->time < lapTimeAbsoluteBest ? _lap->time : lapTimeAbsoluteBest;
     // these variables will be signaled to the outside
-    const bool isPersonalBest = personalBest && personalBest >= _lap->time;
-    const bool isAbsoluteBest = absoluteBest && absoluteBest >= _lap->time;
+    const bool isPersonalBest = lapTimePersonalBest && lapTimePersonalBest >= _lap->time;
+    const bool isAbsoluteBest = lapTimeAbsoluteBest && lapTimeAbsoluteBest >= _lap->time;
     const QString infoLapTime = Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(_lap->time);
-    const QString infoPersonalBest = isPersonalBest ? "PERSONAL BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - personalBest));
-    const QString infoAbsoluteBest = isAbsoluteBest ? "ABSOLUTE BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - absoluteBest));
+    const QString infoLapTimePersonalBest = isPersonalBest ? "PERSONAL BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - lapTimePersonalBest));
+    const QString infoLapTimeAbsoluteBest = isAbsoluteBest ? "ABSOLUTE BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - lapTimeAbsoluteBest));
     // emit signal to the HUD
-    emit signalLapInformation(infoLapTime, infoAbsoluteBest, infoPersonalBest, isAbsoluteBest, isPersonalBest);
+    emit signalLapInformation(isPersonalBest, isAbsoluteBest, infoLapTime, infoLapTimePersonalBest, infoLapTimeAbsoluteBest);
 }
 
-void ApplicationDatabase::getBestLapTimes(int64_t &_personalBest, int64_t &_absoluteBest) const {
+void ApplicationDatabase::getLapTimePersonalBestAndLapTimeAbsoluteBest(int64_t &_lapTimePersonalBest, int64_t &_lapTimeAbsoluteBest) const {
     // we need valid pointers for the current driver, the current session, and the current run
     if(!currentDriver) return;
     if(!currentSession) return;
     if(!currentRun) return;
     // initialize result variables
-    _personalBest = 0;
-    _absoluteBest = 0;
+    _lapTimePersonalBest = 0;
+    _lapTimeAbsoluteBest = 0;
     // these variables will hold potential results (if any)
     QVector<const Lap*> vectorLapsPersonalBest;
     QVector<const Lap*> vectorLapsAbsoluteBest;
@@ -616,13 +613,13 @@ void ApplicationDatabase::getBestLapTimes(int64_t &_personalBest, int64_t &_abso
     if(!vectorLapsPersonalBest.isEmpty()) {
         const Lap *lap = vectorLapsPersonalBest.first();
         if(lap) {
-            _personalBest = lap->time;
+            _lapTimePersonalBest = lap->time;
         }
     }
     if(!vectorLapsAbsoluteBest.isEmpty()) {
         const Lap *lap = vectorLapsAbsoluteBest.first();
         if(lap) {
-            _absoluteBest = lap->time;
+            _lapTimeAbsoluteBest = lap->time;
         }
     }
 }

@@ -13,6 +13,8 @@ public:
     Dialog(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
     virtual ~Dialog();
 public slots:
+    virtual int exec();
+public slots:
     virtual void update();
 protected:
     virtual void initializeGui();

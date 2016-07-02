@@ -20,6 +20,13 @@ Dialog::~Dialog() {
 
 }
 
+int Dialog::exec() {
+    // initial update
+    update();
+    // invoke base class implementation
+    return QDialog::exec();
+}
+
 void Dialog::update() {
     // invoke base class implementation
     QDialog::update();
