@@ -606,8 +606,8 @@ Item {
                 idTextItemLapInformationAbsoluteBest.color = _isAbsoluteBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
                 // start animations
                 idSequentialAnimationLap.start()
-                if(_personalBest) idSequentialAnimationPersonalBest.start()
-                if(_absoluteBest) idSequentialAnimationAbsoluteBest.start()
+                if(_isPersonalBest) idSequentialAnimationPersonalBest.start()
+                if(_isAbsoluteBest) idSequentialAnimationAbsoluteBest.start()
             }
             SequentialAnimation {
                 id: idSequentialAnimationLap
