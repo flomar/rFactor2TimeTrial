@@ -586,40 +586,81 @@ Item {
                 style: Text.Raised
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
             }
-            Connections {
-                target: QTimeTrialApplicationDatabase
-                onSignalLapInformation: {
-                    // acquire signal parameters
-                    var infoLapTime = _infoLapTime
-                    var infoAbsolute = _infoAbsolute
-                    var infoPersonal = _infoPersonal
-                    var absoluteBest = _absoluteBest
-                    var personalBest = _personalBest
-                    // process signal parameters
-                    idTextItemLapInformation.text = infoLapTime
-                    idTextItemLapInformationAbsoluteBest.text = infoAbsolute
-                    idTextItemLapInformationPersonalBest.text = infoPersonal
-                    idTextItemLapInformationAbsoluteBest.color = absoluteBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
-                    idTextItemLapInformationPersonalBest.color = personalBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
-                    idSequentialAnimation.start()
+        }
+        Connections {
+            target: QTimeTrialApplicationDatabase
+            onSignalLapInformation: {
+                idItemLapInformationAnimations.startAnimations(_infoLapTime, _infoAbsolute, _infoPersonal, _absoluteBest, _personalBest)
+            }
+        }
+        Item {
+            id: idItemLapInformationAnimations
+            readonly property real durationFadeIn: 125
+            readonly property real durationFadeOut: 6375
+            function startAnimations(_infoLapTime, _infoAbsolute, _infoPersonal, _absoluteBest, _personalBest) {
+                // initialize lap information items
+                idTextItemLapInformation.text = _infoLapTime
+                idTextItemLapInformationAbsoluteBest.text = _infoAbsolute
+                idTextItemLapInformationPersonalBest.text = _infoPersonal
+                idTextItemLapInformationAbsoluteBest.color = _absoluteBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
+                idTextItemLapInformationPersonalBest.color = _personalBest ? Qt.rgba(0.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 0.0, 0.0, 1.0)
+                // start animations
+                if(_absoluteBest) idSequentialAnimationRec.start()
+                if(_personalBest) idSequentialAnimationBst.start()
+                idSequentialAnimationLap.start()
+            }
+            SequentialAnimation {
+                id: idSequentialAnimationRec
+                alwaysRunToEnd: true
+                PropertyAnimation {
+                    target: idTextItemRec
+                    properties: "color"
+                    from: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    to: Qt.rgba(0.0, 1.0, 0.0, 1.0)
+                    duration: idItemLapInformationAnimations.durationFadeIn
+                }
+                PropertyAnimation {
+                    target: idTextItemRec
+                    properties: "color"
+                    from: Qt.rgba(0.0, 1.0, 0.0, 1.0)
+                    to: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    duration: idItemLapInformationAnimations.durationFadeOut
                 }
             }
             SequentialAnimation {
-                id: idSequentialAnimation
+                id: idSequentialAnimationBst
+                alwaysRunToEnd: true
+                PropertyAnimation {
+                    target: idTextItemBst
+                    properties: "color"
+                    from: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    to: Qt.rgba(0.0, 1.0, 0.0, 1.0)
+                    duration: idItemLapInformationAnimations.durationFadeIn
+                }
+                PropertyAnimation {
+                    target: idTextItemBst
+                    properties: "color"
+                    from: Qt.rgba(0.0, 1.0, 0.0, 1.0)
+                    to: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    duration: idItemLapInformationAnimations.durationFadeOut
+                }
+            }
+            SequentialAnimation {
+                id: idSequentialAnimationLap
                 alwaysRunToEnd: true
                 PropertyAnimation {
                     target: idItemLapInformation
                     properties: "opacity"
                     from: 0.0
                     to: 1.0
-                    duration: 125
+                    duration: idItemLapInformationAnimations.durationFadeIn
                 }
                 PropertyAnimation {
                     target: idItemLapInformation
                     properties: "opacity"
                     from: 1.0
                     to: 0.0
-                    duration: 7375
+                    duration: idItemLapInformationAnimations.durationFadeOut
                 }
             }
         }
