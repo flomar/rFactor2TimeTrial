@@ -1,9 +1,7 @@
 // applicationgui.cpp
 
 #include <applicationgui.h>
-#include <applicationdatabase.h>
-
-#include <utilities.h>
+#include <application.h>
 
 #include <ui/widgetmenu.h>
 #include <ui/widgetabout.h>
@@ -11,7 +9,9 @@
 #include <ui/widgetdrivers.h>
 #include <ui/widgetoptions.h>
 
-ApplicationGui::ApplicationGui() :
+ApplicationGui::ApplicationGui(Application *_application) :
+    QObject(_application),
+    application(_application),
     guiSizeDefault(QVector2D(1920.0, 1080.0)),
     guiSize(QVector2D(1920.0, 1080.0)),
     guiScale(1.0),
@@ -71,13 +71,7 @@ ApplicationGui::ApplicationGui() :
 }
 
 ApplicationGui::~ApplicationGui() {
-    // TODO/FIXME: fore some reasons this leads to a crash
-    //deinitializeWidgets();
-}
-
-ApplicationGui &ApplicationGui::instance() {
-    static ApplicationGui applicationGui;
-    return applicationGui;
+    deinitializeWidgets();
 }
 
 void ApplicationGui::initializeFonts() {
@@ -96,7 +90,7 @@ void ApplicationGui::initializeWidgets() {
     const int widgetMenuW = 32 * guiScale;
     const int widgetMenuH = 945 * guiScale;
     const QRect widgetMenuRect(widgetMenuX, widgetMenuY, widgetMenuW, widgetMenuH);
-    widgetMenu = new WidgetMenu(guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
+    widgetMenu = new WidgetMenu(this, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     widgetMenu->setGeometry(widgetMenuRect);
     // about widget
     const int widgetAboutX = 60 * guiScale;
@@ -104,7 +98,7 @@ void ApplicationGui::initializeWidgets() {
     const int widgetAboutW = 878 * guiScale;
     const int widgetAboutH = 945 * guiScale;
     const QRect widgetAboutRect(widgetAboutX, widgetAboutY, widgetAboutW, widgetAboutH);
-    widgetAbout = new WidgetAbout(guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
+    widgetAbout = new WidgetAbout(this, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     widgetAbout->setGeometry(widgetAboutRect);
     // records widget
     const int widgetRecordsX = 60 * guiScale;
@@ -112,7 +106,7 @@ void ApplicationGui::initializeWidgets() {
     const int widgetRecordsW = 878 * guiScale;
     const int widgetRecordsH = 945 * guiScale;
     const QRect widgetRecordsRect(widgetRecordsX, widgetRecordsY, widgetRecordsW, widgetRecordsH);
-    widgetRecords = new WidgetRecords(guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
+    widgetRecords = new WidgetRecords(this, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     widgetRecords->setGeometry(widgetRecordsRect);
     // drivers widget
     const int widgetDriversX = 60 * guiScale;
@@ -120,7 +114,7 @@ void ApplicationGui::initializeWidgets() {
     const int widgetDriversW = 878 * guiScale;
     const int widgetDriversH = 945 * guiScale;
     const QRect widgetDriversRect(widgetDriversX, widgetDriversY, widgetDriversW, widgetDriversH);
-    widgetDrivers = new WidgetDrivers(guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
+    widgetDrivers = new WidgetDrivers(this, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     widgetDrivers->setGeometry(widgetDriversRect);
     // options widget
     const int widgetOptionsX = 60 * guiScale;
@@ -128,7 +122,7 @@ void ApplicationGui::initializeWidgets() {
     const int widgetOptionsW = 878 * guiScale;
     const int widgetOptionsH = 945 * guiScale;
     const QRect widgetOptionsRect(widgetOptionsX, widgetOptionsY, widgetOptionsW, widgetOptionsH);
-    widgetOptions = new WidgetOptions(guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
+    widgetOptions = new WidgetOptions(this, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     widgetOptions->setGeometry(widgetOptionsRect);
     // connect signals and slots
     connect(widgetMenu, SIGNAL(signalPressedButtonAbout(Qt::MouseButton)), this, SLOT(slotWidgetMenuPressedButtonAbout(Qt::MouseButton)));
@@ -139,18 +133,13 @@ void ApplicationGui::initializeWidgets() {
 }
 
 void ApplicationGui::deinitializeWidgets() {
-    // disconnect signals and slots
-    disconnect(widgetMenu, SIGNAL(signalPressedButtonAbout(Qt::MouseButton)), this, SLOT(slotWidgetMenuPressedButtonAbout(Qt::MouseButton)));
-    disconnect(widgetMenu, SIGNAL(signalPressedButtonRecords(Qt::MouseButton)), this, SLOT(slotWidgetMenuPressedButtonRecords(Qt::MouseButton)));
-    disconnect(widgetMenu, SIGNAL(signalPressedButtonDrivers(Qt::MouseButton)), this, SLOT(slotWidgetMenuPressedButtonDrivers(Qt::MouseButton)));
-    disconnect(widgetMenu, SIGNAL(signalPressedButtonOptions(Qt::MouseButton)), this, SLOT(slotWidgetMenuPressedButtonOptions(Qt::MouseButton)));
-    disconnect(widgetMenu, SIGNAL(signalPressedButtonQuit(Qt::MouseButton)), this, SLOT(slotWidgetMenuPressedButtonQuit(Qt::MouseButton)));
-    // delete widgets
+#if 0
     delete widgetMenu;
     delete widgetAbout;
     delete widgetRecords;
     delete widgetDrivers;
     delete widgetOptions;
+#endif
 }
 
 void ApplicationGui::updateWidgets() {
@@ -236,11 +225,14 @@ void ApplicationGui::processMessageFinishRun(const ClientServerMessage &_message
 
 void ApplicationGui::processMessageUpdateTelemetry(const ClientServerMessage &_message) {
     if(_message.m_type != CLIENT_SERVER_MESSAGE_TYPE_UPDATE_TELEMETRY) return;
+    // acquire a pointer to the application database
+    const ApplicationDatabase *applicationDatabase = application->getApplicationDatabaseConst();
+    if(!applicationDatabase) return;
     // acquire current driver, current session, current run, and current lap
-    const Driver *driver = ApplicationDatabase::instance().getCurrentDriver();
-    const Session *session = ApplicationDatabase::instance().getCurrentSession();
-    const Run *run = ApplicationDatabase::instance().getCurrentRun();
-    const Lap *lap = ApplicationDatabase::instance().getCurrentLap();
+    const Driver *driver = applicationDatabase->getCurrentDriver();
+    const Session *session = applicationDatabase->getCurrentSession();
+    const Run *run = applicationDatabase->getCurrentRun();
+    const Lap *lap = applicationDatabase->getCurrentLap();
     // the current lap may be invalid, but if any of the other variables
     // is invalid, we hide the HUD and return without doing anything else
     if(!driver || !session || !run) {
@@ -254,9 +246,9 @@ void ApplicationGui::processMessageUpdateTelemetry(const ClientServerMessage &_m
     const int64_t localSessionTime = localTime - session->timeStart;
     const int64_t localRunTime = localTime - run->timeStart;
     const int64_t localLapTime = lap ? lap->time : 0;
-    const int64_t localLapTimeLast = ApplicationDatabase::instance().getLapTimeLast();
-    const int64_t localLapTimePersonalBest = ApplicationDatabase::instance().getLapTimePersonalBest();
-    const int64_t localLapTimeAbsoluteBest = ApplicationDatabase::instance().getLapTimeAbsoluteBest();
+    const int64_t localLapTimeLast = applicationDatabase->getLapTimeLast();
+    const int64_t localLapTimePersonalBest = applicationDatabase->getLapTimePersonalBest();
+    const int64_t localLapTimeAbsoluteBest = applicationDatabase->getLapTimeAbsoluteBest();
     // set properties
     setStringDriver(driver->name);
     setStringSessionTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localSessionTime));

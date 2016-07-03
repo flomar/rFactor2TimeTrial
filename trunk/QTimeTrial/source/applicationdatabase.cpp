@@ -1,10 +1,11 @@
 // applicationdatabase.cpp
 
 #include <applicationdatabase.h>
+#include <application.h>
 
-#include <utilities.h>
-
-ApplicationDatabase::ApplicationDatabase() :
+ApplicationDatabase::ApplicationDatabase(Application *_application) :
+    QObject(_application),
+    application(_application),
     currentDriver(0),
     currentSession(0),
     currentRun(0),
@@ -22,11 +23,6 @@ ApplicationDatabase::ApplicationDatabase() :
 
 ApplicationDatabase::~ApplicationDatabase() {
 
-}
-
-ApplicationDatabase &ApplicationDatabase::instance() {
-    static ApplicationDatabase applicationDatabase;
-    return applicationDatabase;
 }
 
 bool ApplicationDatabase::open(const QString &_fileName) {

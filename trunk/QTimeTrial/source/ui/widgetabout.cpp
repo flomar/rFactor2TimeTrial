@@ -4,13 +4,9 @@
 #include "ui_widgetabout.h"
 
 #include <application.h>
-#include <applicationgui.h>
-#include <applicationdatabase.h>
 
-#include <utilities.h>
-
-WidgetAbout::WidgetAbout(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
-    Widget(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
+WidgetAbout::WidgetAbout(ApplicationGui *_applicationGui, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
+    Widget(_applicationGui, _guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
     ui(new Ui::WidgetAbout) {
     ui->setupUi(this);
 }

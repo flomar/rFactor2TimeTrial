@@ -4,12 +4,9 @@
 #include "ui_widgetoptions.h"
 
 #include <application.h>
-#include <applicationdatabase.h>
 
-#include <utilities.h>
-
-WidgetOptions::WidgetOptions(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
-    Widget(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
+WidgetOptions::WidgetOptions(ApplicationGui *_applicationGui, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
+    Widget(_applicationGui, _guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
     ui(new Ui::WidgetOptions) {
     ui->setupUi(this);
     // connect signals and slots
@@ -42,7 +39,11 @@ void WidgetOptions::initializeGui() {
 }
 
 void WidgetOptions::updateCheckBoxes() {
-    const QMap<int64_t, Options*> &mapOptions = ApplicationDatabase::instance().getMapOptions();
+    // acquire a pointer to the application database
+    const ApplicationDatabase *applicationDatabase = getApplicationDatabase();
+    if(!applicationDatabase) return;
+    // update check boxes
+    const QMap<int64_t, Options*> &mapOptions = applicationDatabase->getMapOptions();
     if(!mapOptions.isEmpty()) {
         const Options *options = mapOptions.values().first();
         if(options) {
@@ -54,7 +55,11 @@ void WidgetOptions::updateCheckBoxes() {
 }
 
 void WidgetOptions::slotToggledCheckBoxAutoDeleteSessions(const bool _checked) {
-    const QMap<int64_t, Options*> &mapOptions = ApplicationDatabase::instance().getMapOptions();
+    // acquire a pointer to the application database
+    const ApplicationDatabase *applicationDatabase = getApplicationDatabase();
+    if(!applicationDatabase) return;
+    // toggle check box
+    const QMap<int64_t, Options*> &mapOptions = applicationDatabase->getMapOptions();
     if(!mapOptions.isEmpty()) {
         Options *options = mapOptions.values().first();
         if(options) {
@@ -64,7 +69,11 @@ void WidgetOptions::slotToggledCheckBoxAutoDeleteSessions(const bool _checked) {
 }
 
 void WidgetOptions::slotToggledCheckBoxAutoDeleteRuns(const bool _checked) {
-    const QMap<int64_t, Options*> &mapOptions = ApplicationDatabase::instance().getMapOptions();
+    // acquire a pointer to the application database
+    const ApplicationDatabase *applicationDatabase = getApplicationDatabase();
+    if(!applicationDatabase) return;
+    // toggle check box
+    const QMap<int64_t, Options*> &mapOptions = applicationDatabase->getMapOptions();
     if(!mapOptions.isEmpty()) {
         Options *options = mapOptions.values().first();
         if(options) {
@@ -74,7 +83,11 @@ void WidgetOptions::slotToggledCheckBoxAutoDeleteRuns(const bool _checked) {
 }
 
 void WidgetOptions::slotToggledCheckBoxAutoDeleteLaps(const bool _checked) {
-    const QMap<int64_t, Options*> &mapOptions = ApplicationDatabase::instance().getMapOptions();
+    // acquire a pointer to the application database
+    const ApplicationDatabase *applicationDatabase = getApplicationDatabase();
+    if(!applicationDatabase) return;
+    // toggle check box
+    const QMap<int64_t, Options*> &mapOptions = applicationDatabase->getMapOptions();
     if(!mapOptions.isEmpty()) {
         Options *options = mapOptions.values().first();
         if(options) {

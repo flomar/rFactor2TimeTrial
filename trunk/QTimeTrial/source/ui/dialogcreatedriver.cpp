@@ -8,8 +8,8 @@
 
 #include <utilities.h>
 
-DialogCreateDriver::DialogCreateDriver(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
-    Dialog(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
+DialogCreateDriver::DialogCreateDriver(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS) :
+    Dialog(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS),
     ui(new Ui::DialogCreateDriver) {
     ui->setupUi(this);
     // connect signals and slots
@@ -39,11 +39,14 @@ void DialogCreateDriver::initializeGui() {
 }
 
 void DialogCreateDriver::slotPressedPushButtonOK() {
-    if(ApplicationDatabase::instance().createDriver(ui->lineEditDriverName->text())) {
-        done(QDialog::Accepted);
-    }
+    if(ui->lineEditDriverName->text().isEmpty()) return;
+    done(QDialog::Accepted);
 }
 
 void DialogCreateDriver::slotPressedPushButtonCancel() {
     done(QDialog::Rejected);
+}
+
+QString DialogCreateDriver::getDriverName() const {
+    return ui->lineEditDriverName->text();
 }

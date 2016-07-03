@@ -14,7 +14,7 @@ namespace Ui {
 class WidgetOptions : public Widget {
     Q_OBJECT
 public:
-    WidgetOptions(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
+    WidgetOptions(ApplicationGui *_applicationGui, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
     ~WidgetOptions();
 private:
     Ui::WidgetOptions *ui;

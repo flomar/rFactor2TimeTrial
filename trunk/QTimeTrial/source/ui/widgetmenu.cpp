@@ -3,12 +3,9 @@
 #include <ui/widgetmenu.h>
 
 #include <application.h>
-#include <applicationdatabase.h>
 
-#include <utilities.h>
-
-WidgetMenu::WidgetMenu(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
-    Widget(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent) {
+WidgetMenu::WidgetMenu(ApplicationGui *_applicationGui, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
+    Widget(_applicationGui, _guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent) {
 
 }
 

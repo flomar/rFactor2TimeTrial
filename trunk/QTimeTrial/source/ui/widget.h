@@ -7,11 +7,18 @@
 
 #include <ui/uiitem.h>
 
+class ApplicationGui;
+class ApplicationDatabase;
+
 class Widget : public QWidget, public UiItem {
     Q_OBJECT
 public:
-    Widget(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
+    Widget(ApplicationGui *_applicationGui, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
     virtual ~Widget();
+protected:
+    ApplicationGui *applicationGui;
+protected:
+    ApplicationDatabase *getApplicationDatabase();
 public slots:
     virtual void update();
 protected:

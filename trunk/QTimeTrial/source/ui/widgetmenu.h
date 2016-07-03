@@ -19,7 +19,7 @@ struct Button {
 class WidgetMenu : public Widget {
     Q_OBJECT
 public:
-    WidgetMenu(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
+    WidgetMenu(ApplicationGui *_applicationGui, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
     virtual ~WidgetMenu();
 public slots:
     virtual void update();

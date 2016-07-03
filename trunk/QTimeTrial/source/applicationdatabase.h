@@ -5,13 +5,15 @@
 
 #include <main.h>
 
+class Application;
+
 class ApplicationDatabase : public QObject {
     Q_OBJECT
-protected:
-    ApplicationDatabase();
-    virtual ~ApplicationDatabase();
 public:
-    static ApplicationDatabase &instance();
+    ApplicationDatabase(Application *_application);
+    virtual ~ApplicationDatabase();
+private:
+    Application *application;
 public:
     bool open(const QString &_fileName);
     bool close();

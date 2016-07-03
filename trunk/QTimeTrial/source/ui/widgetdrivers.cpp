@@ -3,17 +3,14 @@
 #include <ui/widgetdrivers.h>
 #include "ui_widgetdrivers.h"
 
+#include <application.h>
+
 #include <ui/dialogcreatedriver.h>
 #include <ui/dialogeditdriver.h>
 #include <ui/dialogdeletedriver.h>
 
-#include <application.h>
-#include <applicationdatabase.h>
-
-#include <utilities.h>
-
-WidgetDrivers::WidgetDrivers(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
-    Widget(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
+WidgetDrivers::WidgetDrivers(ApplicationGui *_applicationGui, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
+    Widget(_applicationGui, _guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
     ui(new Ui::WidgetDrivers) {
     ui->setupUi(this);
     // connect signals and slots
@@ -52,16 +49,24 @@ void WidgetDrivers::initializeGui() {
 }
 
 void WidgetDrivers::updateLineEditCurrentDriver() {
+    // acquire a pointer to the application database
+    const ApplicationDatabase *applicationDatabase = getApplicationDatabase();
+    if(!applicationDatabase) return;
+    // update current driver
     ui->lineEditCurrentDriver->setText("-");
-    const Driver *driver = ApplicationDatabase::instance().getCurrentDriver();
+    const Driver *driver = applicationDatabase->getCurrentDriver();
     if(driver) {
         ui->lineEditCurrentDriver->setText(driver->name);
     }
 }
 
 void WidgetDrivers::updateListWidgetAvailableDrivers() {
+    // acquire a pointer to the application database
+    const ApplicationDatabase *applicationDatabase = getApplicationDatabase();
+    if(!applicationDatabase) return;
+    // update available drivers
     ui->listWidgetAvailableDrivers->clear();
-    const QMap<int64_t, Driver*> &mapDrivers = ApplicationDatabase::instance().getMapDrivers();
+    const QMap<int64_t, Driver*> &mapDrivers = applicationDatabase->getMapDrivers();
     foreach(const Driver *driver, mapDrivers.values()) {
         if(driver) {
             ui->listWidgetAvailableDrivers->addItem(driver->name);
@@ -70,21 +75,35 @@ void WidgetDrivers::updateListWidgetAvailableDrivers() {
 }
 
 void WidgetDrivers::slotDoubleClickedListWidgetAvailableDrivers(QListWidgetItem *_item) {
+    // acquire a pointer to the application database
+    ApplicationDatabase *applicationDatabase = getApplicationDatabase();
+    if(!applicationDatabase) return;
+    // set the current driver
     if(_item) {
-        ApplicationDatabase::instance().setCurrentDriver(_item->text());
+        applicationDatabase->setCurrentDriver(_item->text());
         update();
     }
 }
 
 void WidgetDrivers::slotPressedPushButtonCreateDriver() {
+    // acquire a pointer to the application database
+    ApplicationDatabase *applicationDatabase = getApplicationDatabase();
+    if(!applicationDatabase) return;
+    // fire up the dialog
     DialogCreateDriver dialogCreateDriver(guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     dialogCreateDriver.setGeometry(x(), y(), rect().width(), rect().height());
     if(dialogCreateDriver.exec() == QDialog::Accepted) {
-        update();
+        if(applicationDatabase->createDriver(dialogCreateDriver.getDriverName())) {
+            update();
+        }
     }
 }
 
 void WidgetDrivers::slotPressedPushButtonEditDriver() {
+    // acquire a pointer to the application database
+    ApplicationDatabase *applicationDatabase = getApplicationDatabase();
+    if(!applicationDatabase) return;
+    // fire up the dialog
     if(!ui->listWidgetAvailableDrivers->currentItem()) return;
     const QString driverName = ui->listWidgetAvailableDrivers->currentItem()->text();
     if(driverName.isEmpty()) return;
@@ -96,12 +115,18 @@ void WidgetDrivers::slotPressedPushButtonEditDriver() {
 }
 
 void WidgetDrivers::slotPressedPushButtonDeleteDriver() {
+    // acquire a pointer to the application database
+    ApplicationDatabase *applicationDatabase = getApplicationDatabase();
+    if(!applicationDatabase) return;
+    // fire up the dialog
     if(!ui->listWidgetAvailableDrivers->currentItem()) return;
     const QString driverName = ui->listWidgetAvailableDrivers->currentItem()->text();
     if(driverName.isEmpty()) return;
     DialogDeleteDriver dialogDeleteDriver(driverName, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
     dialogDeleteDriver.setGeometry(x(), y(), rect().width(), rect().height());
     if(dialogDeleteDriver.exec() == QDialog::Accepted) {
-        update();
+        if(applicationDatabase->deleteDriver(dialogDeleteDriver.getDriverName())) {
+            update();
+        }
     }
 }

@@ -11,6 +11,8 @@ class WidgetRecords;
 class WidgetDrivers;
 class WidgetOptions;
 
+class Application;
+
 class ApplicationGui : public QObject {
     Q_OBJECT
     Q_PROPERTY(QVector2D guiSize READ getGuiSize WRITE setGuiSize NOTIFY signalChangedGuiSize)
@@ -48,11 +50,13 @@ class ApplicationGui : public QObject {
     Q_PROPERTY(QString stringGear READ getStringGear WRITE setStringGear NOTIFY signalChangedStringGear)
     Q_PROPERTY(int intSpeed READ getIntSpeed WRITE setIntSpeed NOTIFY signalChangedIntSpeed)
     Q_PROPERTY(bool boolSpeedLimiterActive READ getBoolSpeedLimiterActive WRITE setBoolSpeedLimiterActive NOTIFY signalChangedBoolSpeedLimiterActive)
-protected:
-    ApplicationGui();
-    virtual ~ApplicationGui();
 public:
-    static ApplicationGui &instance();
+    ApplicationGui(Application *_application);
+    virtual ~ApplicationGui();
+private:
+    Application *application;
+public:
+    Application *getApplication() { return application; }
 private:
     // the size this GUI is optimized for (1920x1080)
     const QVector2D guiSizeDefault;

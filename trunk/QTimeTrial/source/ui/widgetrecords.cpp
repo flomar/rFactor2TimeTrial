@@ -4,12 +4,9 @@
 #include "ui_widgetrecords.h"
 
 #include <application.h>
-#include <applicationdatabase.h>
 
-#include <utilities.h>
-
-WidgetRecords::WidgetRecords(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
-    Widget(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
+WidgetRecords::WidgetRecords(ApplicationGui *_applicationGui, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
+    Widget(_applicationGui, _guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
     ui(new Ui::WidgetRecords) {
     ui->setupUi(this);
     // connect signals and slots
@@ -34,8 +31,11 @@ WidgetRecords::~WidgetRecords() {
 
 void WidgetRecords::update() {
     Widget::update();
+    // acquire a pointer to the application database
+    const ApplicationDatabase *applicationDatabase = getApplicationDatabase();
+    if(!applicationDatabase) return;
     // acquire data (and store it temporarily)
-    vectorRecordsUnsortedAndUnfiltered = ApplicationDatabase::instance().getVectorRecordsUnsortedAndUnfiltered();
+    vectorRecordsUnsortedAndUnfiltered = applicationDatabase->getVectorRecordsUnsortedAndUnfiltered();
     // update user interface
     updateTableViewAvailableRecords();
     updateComboBoxes();
@@ -93,6 +93,9 @@ void WidgetRecords::updateTableViewAvailableRecords() {
 }
 
 void WidgetRecords::updateComboBoxes() {
+    // acquire a pointer to the application database
+    const ApplicationDatabase *applicationDatabase = getApplicationDatabase();
+    if(!applicationDatabase) return;
     // delete all combo box entries except for the first one in each box,
     // but ignore the limit box since its content is static
     while(ui->comboBoxDriver->count() > 1)
@@ -142,7 +145,7 @@ void WidgetRecords::updateComboBoxes() {
     ui->comboBoxRearTireCompound->setCurrentIndex(0);
     // however, if we have a valid current session, we want to
     // pre-select the track corresponding to the current session
-    const Session *currentSession = ApplicationDatabase::instance().getCurrentSession();
+    const Session *currentSession = applicationDatabase->getCurrentSession();
     if(currentSession) {
         const QString track = currentSession->nameTrack;
         for(int i=0; i<ui->comboBoxTrack->count(); i++) {

@@ -8,8 +8,8 @@
 
 #include <utilities.h>
 
-DialogDeleteDriver::DialogDeleteDriver(const QString &_driverName, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
-    Dialog(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS, _parent),
+DialogDeleteDriver::DialogDeleteDriver(const QString &_driverName, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS) :
+    Dialog(_guiScale, _guiFontXL, _guiFontL, _guiFontM, _guiFontS),
     ui(new Ui::DialogDeleteDriver),
     driverName(_driverName) {
     ui->setupUi(this);
@@ -42,11 +42,14 @@ void DialogDeleteDriver::initializeGui() {
 }
 
 void DialogDeleteDriver::slotPressedPushButtonOK() {
-    if(ApplicationDatabase::instance().deleteDriver(driverName)) {
-        done(QDialog::Accepted);
-    }
+    if(ui->lineEditDriverName->text().isEmpty()) return;
+    done(QDialog::Accepted);
 }
 
 void DialogDeleteDriver::slotPressedPushButtonCancel() {
     done(QDialog::Rejected);
+}
+
+QString DialogDeleteDriver::getDriverName() const {
+    return ui->lineEditDriverName->text();
 }

@@ -10,7 +10,7 @@
 class Dialog : public QDialog, public UiItem {
     Q_OBJECT
 public:
-    Dialog(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
+    Dialog(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS);
     virtual ~Dialog();
 public slots:
     virtual int exec();

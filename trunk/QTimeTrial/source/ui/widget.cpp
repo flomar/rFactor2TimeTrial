@@ -2,10 +2,11 @@
 
 #include <ui/widget.h>
 
-#include <utilities.h>
+#include <application.h>
 
-Widget::Widget(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
+Widget::Widget(ApplicationGui *_applicationGui, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
     QWidget(_parent),
+    applicationGui(_applicationGui),
     guiScale(_guiScale),
     guiFontXL(_guiFontXL),
     guiFontL(_guiFontL),
@@ -18,6 +19,14 @@ Widget::Widget(const float _guiScale, const QFont &_guiFontXL, const QFont &_gui
 
 Widget::~Widget() {
 
+}
+
+ApplicationDatabase *Widget::getApplicationDatabase() {
+    ApplicationDatabase *applicationDatabase = 0;
+    if(applicationGui && applicationGui->getApplication()) {
+        applicationDatabase = applicationGui->getApplication()->getApplicationDatabase();
+    }
+    return applicationDatabase;
 }
 
 void Widget::update() {

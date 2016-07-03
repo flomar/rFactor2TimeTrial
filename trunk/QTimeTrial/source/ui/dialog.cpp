@@ -4,8 +4,7 @@
 
 #include <utilities.h>
 
-Dialog::Dialog(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent) :
-    QDialog(_parent),
+Dialog::Dialog(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS) :
     guiScale(_guiScale),
     guiFontXL(_guiFontXL),
     guiFontL(_guiFontL),

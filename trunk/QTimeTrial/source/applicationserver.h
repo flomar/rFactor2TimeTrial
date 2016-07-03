@@ -5,13 +5,15 @@
 
 #include <main.h>
 
+class Application;
+
 class ApplicationServer : public QTcpServer {
     Q_OBJECT
-protected:
-    ApplicationServer();
-    virtual ~ApplicationServer();
 public:
-    static ApplicationServer &instance();
+    ApplicationServer(Application *_application);
+    virtual ~ApplicationServer();
+private:
+    Application *application;
 public:
     bool start(const quint16 _port);
     bool stop();

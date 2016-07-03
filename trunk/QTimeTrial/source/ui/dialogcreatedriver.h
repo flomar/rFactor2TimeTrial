@@ -14,7 +14,7 @@ namespace Ui {
 class DialogCreateDriver : public Dialog {
     Q_OBJECT
 public:
-    DialogCreateDriver(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
+    DialogCreateDriver(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS);
     virtual ~DialogCreateDriver();
 private:
     Ui::DialogCreateDriver *ui;
@@ -25,6 +25,8 @@ protected:
 private slots:
     void slotPressedPushButtonOK();
     void slotPressedPushButtonCancel();
+public:
+    QString getDriverName() const;
 };
 
 #endif

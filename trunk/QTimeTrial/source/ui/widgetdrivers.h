@@ -14,7 +14,7 @@ namespace Ui {
 class WidgetDrivers : public Widget {
     Q_OBJECT
 public:
-    WidgetDrivers(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
+    WidgetDrivers(ApplicationGui *_applicationGui, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
     ~WidgetDrivers();
 private:
     Ui::WidgetDrivers *ui;

@@ -5,6 +5,12 @@
 
 #include <main.h>
 
+#include <applicationdatabase.h>
+#include <applicationserver.h>
+#include <applicationgui.h>
+
+#include <utilities.h>
+
 class Application : public QApplication {
     Q_OBJECT
 public:
@@ -14,15 +20,33 @@ public:
     bool initialize();
     bool deinitialize();
 private:
+    QQmlApplicationEngine *qmlApplicationEngine;
+private:
+    ApplicationDatabase *applicationDatabase;
+    ApplicationServer *applicationServer;
+    ApplicationGui *applicationGui;
+public:
+    ApplicationDatabase *getApplicationDatabase() { return applicationDatabase; }
+    ApplicationServer *getApplicationServer() { return applicationServer; }
+    ApplicationGui *getApplicationGui() { return applicationGui; }
+public:
+    const ApplicationDatabase *getApplicationDatabaseConst() const { return applicationDatabase; }
+    const ApplicationServer *getApplicationServerConst() const { return applicationServer; }
+    const ApplicationGui *getApplicationGuiConst() const { return applicationGui; }
+private:
     // this variable is set at construction, as the application
     // expects that the absolute path to the configuration file
     // is passed to the executable by the user
     const QString configurationFileName;
+    // this function parses the configuration file; it is called
+    // during initialization and returns false if not all variables
+    // can be properly extracted
+    bool parseConfigurationFile(const QString &_configurationFileName);
 private:
-    // the following variables are all extracted after having
-    // read the configuration file: the application root is the
-    // folder in which the configuration file is living (this is
-    // very important for locating resource files if the application
+    // the following variables are all extracted through parsing
+    // the configuration file: the application root is the folder
+    // in which the configuration file is living (this is very
+    // important for locating resource files if the application
     // is executed from an arbitrary folder), and all other
     // variables are extracted from the configuration file and
     // should be more or less self-explanatory
@@ -32,8 +56,6 @@ private:
     QString applicationCopyright;
     QString applicationServerAddress;
     QString applicationServerPort;
-private:
-    ConfigurationFile configurationFile;
 };
 
 #endif

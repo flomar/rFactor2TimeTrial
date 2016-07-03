@@ -1,20 +1,15 @@
 // applicationserver.cpp
 
 #include <applicationserver.h>
+#include <application.h>
 
-#include <utilities.h>
-
-ApplicationServer::ApplicationServer() {
+ApplicationServer::ApplicationServer(Application *_application) :
+    QTcpServer(_application) {
 
 }
 
 ApplicationServer::~ApplicationServer() {
 
-}
-
-ApplicationServer &ApplicationServer::instance() {
-    static ApplicationServer applicationServer;
-    return applicationServer;
 }
 
 bool ApplicationServer::start(const quint16 _port) {

@@ -14,7 +14,7 @@ namespace Ui {
 class WidgetRecords : public Widget {
     Q_OBJECT
 public:
-    WidgetRecords(const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
+    WidgetRecords(ApplicationGui *_applicationGui, const float _guiScale, const QFont &_guiFontXL, const QFont &_guiFontL, const QFont &_guiFontM, const QFont &_guiFontS, QWidget *_parent = 0);
     ~WidgetRecords();
 private:
     Ui::WidgetRecords *ui;
