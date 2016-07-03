@@ -41,12 +41,7 @@ bool Application::initialize() {
     qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationServer", applicationServer);
     qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationGui", applicationGui);
     // initialize application QML engine
-
-
-//qmlApplicationEngine->load(QUrl::fromLocalFile(getAbsoluteFilePath("resources/qml/application.qml")));
-    qmlApplicationEngine->load(QUrl("qrc:///qml/application.qml"));
-
-
+    qmlApplicationEngine->load(QUrl("qrc:/qml/application.qml"));
     // connect signals and slots between server and database: due to the design of this
     // application it is VERY IMPORTANT that messages from the server are first processed
     // by the database; after the database is finished processing the messages, it forwards
