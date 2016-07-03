@@ -18,7 +18,7 @@ Item {
         Image {
             id: idImageHud
             anchors.fill: parent
-            source: "../png/HUD.png"
+            source: "../png/hud.png"
         }
         Item {
             id: idItemLap
@@ -167,10 +167,10 @@ Item {
                 source: {
                     var fuel = gui.intFuelCurrent / gui.intFuelMaximum
                     var limitRed = 0.10
-                    if(fuel < limitRed) return "../png/LED_RED.png"
+                    if(fuel < limitRed) return "../png/led_red.png"
                     var limitYellow = 0.50
-                    if(fuel < limitYellow) return "../png/LED_YELLOW.png"
-                    return "../png/LED_OFF.png"
+                    if(fuel < limitYellow) return "../png/led_yellow.png"
+                    return "../png/led_off.png"
                 }
             }
         }
@@ -183,8 +183,8 @@ Item {
             Image {
                 anchors.fill: parent
                 source: {
-                    if(gui.boolEngineOverheating) return "../png/LED_RED.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.boolEngineOverheating) return "../png/led_red.png"
+                    return "../png/led_off.png"
                 }
             }
         }
@@ -198,16 +198,16 @@ Item {
                 anchors.fill: parent
                 source: {
                     var limitRed = 750.0
-                    if(gui.intBrakeTemperatureFrontLeft > limitRed) return "../png/LED_RED.png"
-                    if(gui.intBrakeTemperatureFrontRight > limitRed) return "../png/LED_RED.png"
-                    if(gui.intBrakeTemperatureRearLeft > limitRed) return "../png/LED_RED.png"
-                    if(gui.intBrakeTemperatureRearRight > limitRed) return "../png/LED_RED.png"
+                    if(gui.intBrakeTemperatureFrontLeft > limitRed) return "../png/led_red.png"
+                    if(gui.intBrakeTemperatureFrontRight > limitRed) return "../png/led_red.png"
+                    if(gui.intBrakeTemperatureRearLeft > limitRed) return "../png/led_red.png"
+                    if(gui.intBrakeTemperatureRearRight > limitRed) return "../png/led_red.png"
                     var limitYellow = 500.0
-                    if(gui.intBrakeTemperatureFrontLeft > limitYellow) return "../png/LED_YELLOW.png"
-                    if(gui.intBrakeTemperatureFrontRight > limitYellow) return "../png/LED_YELLOW.png"
-                    if(gui.intBrakeTemperatureRearLeft > limitYellow) return "../png/LED_YELLOW.png"
-                    if(gui.intBrakeTemperatureRearRight > limitYellow) return "../png/LED_YELLOW.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intBrakeTemperatureFrontLeft > limitYellow) return "../png/led_yellow.png"
+                    if(gui.intBrakeTemperatureFrontRight > limitYellow) return "../png/led_yellow.png"
+                    if(gui.intBrakeTemperatureRearLeft > limitYellow) return "../png/led_yellow.png"
+                    if(gui.intBrakeTemperatureRearRight > limitYellow) return "../png/led_yellow.png"
+                    return "../png/led_off.png"
                 }
             }
         }
@@ -221,16 +221,16 @@ Item {
                 anchors.fill: parent
                 source: {
                     var limitRed = 10.0
-                    if(gui.intTireWearFrontLeft < limitRed) return "../png/LED_RED.png"
-                    if(gui.intTireWearFrontRight < limitRed) return "../png/LED_RED.png"
-                    if(gui.intTireWearRearLeft < limitRed) return "../png/LED_RED.png"
-                    if(gui.intTireWearRearRight < limitRed) return "../png/LED_RED.png"
+                    if(gui.intTireWearFrontLeft < limitRed) return "../png/led_red.png"
+                    if(gui.intTireWearFrontRight < limitRed) return "../png/led_red.png"
+                    if(gui.intTireWearRearLeft < limitRed) return "../png/led_red.png"
+                    if(gui.intTireWearRearRight < limitRed) return "../png/led_red.png"
                     var limitYellow = 50.0
-                    if(gui.intTireWearFrontLeft < limitYellow) return "../png/LED_YELLOW.png"
-                    if(gui.intTireWearFrontRight < limitYellow) return "../png/LED_YELLOW.png"
-                    if(gui.intTireWearRearLeft < limitYellow) return "../png/LED_YELLOW.png"
-                    if(gui.intTireWearRearRight < limitYellow) return "../png/LED_YELLOW.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intTireWearFrontLeft < limitYellow) return "../png/led_yellow.png"
+                    if(gui.intTireWearFrontRight < limitYellow) return "../png/led_yellow.png"
+                    if(gui.intTireWearRearLeft < limitYellow) return "../png/led_yellow.png"
+                    if(gui.intTireWearRearRight < limitYellow) return "../png/led_yellow.png"
+                    return "../png/led_off.png"
                 }
             }
         }
@@ -246,8 +246,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 0) return "../png/LED_GREEN.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 0) return "../png/led_green.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -256,8 +256,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 1) return "../png/LED_GREEN.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 1) return "../png/led_green.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -266,8 +266,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 2) return "../png/LED_GREEN.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 2) return "../png/led_green.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -276,8 +276,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 3) return "../png/LED_GREEN.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 3) return "../png/led_green.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -286,8 +286,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 4) return "../png/LED_GREEN.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 4) return "../png/led_green.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -296,8 +296,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 5) return "../png/LED_GREEN.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 5) return "../png/led_green.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -306,8 +306,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 6) return "../png/LED_GREEN.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 6) return "../png/led_green.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -316,8 +316,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 7) return "../png/LED_GREEN.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 7) return "../png/led_green.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -326,8 +326,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 8) return "../png/LED_GREEN.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 8) return "../png/led_green.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -336,8 +336,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 9) return "../png/LED_GREEN.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 9) return "../png/led_green.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -346,8 +346,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 10) return "../png/LED_YELLOW.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 10) return "../png/led_yellow.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -356,8 +356,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 11) return "../png/LED_YELLOW.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 11) return "../png/led_yellow.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -366,8 +366,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 12) return "../png/LED_YELLOW.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 12) return "../png/led_yellow.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -376,8 +376,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 13) return "../png/LED_YELLOW.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 13) return "../png/led_yellow.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -386,8 +386,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 14) return "../png/LED_YELLOW.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 14) return "../png/led_yellow.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -396,8 +396,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 15) return "../png/LED_YELLOW.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 15) return "../png/led_yellow.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -406,8 +406,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 16) return "../png/LED_YELLOW.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 16) return "../png/led_yellow.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -416,8 +416,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 17) return "../png/LED_YELLOW.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 17) return "../png/led_yellow.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -426,8 +426,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 18) return "../png/LED_YELLOW.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 18) return "../png/led_yellow.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -436,8 +436,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 19) return "../png/LED_YELLOW.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 19) return "../png/led_yellow.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -446,8 +446,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 20) return "../png/LED_RED.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 20) return "../png/led_red.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -456,8 +456,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 21) return "../png/LED_RED.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 21) return "../png/led_red.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -466,8 +466,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 22) return "../png/LED_RED.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 22) return "../png/led_red.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -476,8 +476,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 23) return "../png/LED_RED.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 23) return "../png/led_red.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -486,8 +486,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 24) return "../png/LED_RED.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 24) return "../png/led_red.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -496,8 +496,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 25) return "../png/LED_RED.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 25) return "../png/led_red.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -506,8 +506,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 26) return "../png/LED_RED.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 26) return "../png/led_red.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -516,8 +516,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 27) return "../png/LED_RED.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 27) return "../png/led_red.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -526,8 +526,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 28) return "../png/LED_RED.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 28) return "../png/led_red.png"
+                    return "../png/led_off.png"
                 }
             }
             Image {
@@ -536,8 +536,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 29) return "../png/LED_RED.png"
-                    return "../png/LED_OFF.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 29) return "../png/led_red.png"
+                    return "../png/led_off.png"
                 }
             }
 
