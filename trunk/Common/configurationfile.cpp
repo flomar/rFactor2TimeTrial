@@ -12,6 +12,7 @@ ConfigurationFile::~ConfigurationFile() {
 
 bool ConfigurationFile::read(const std::string &_fileName) {
     mapVariables.clear();
+    if(_fileName.empty()) return false;
     std::string line;
     std::ifstream infile;
     infile.open(_fileName, std::ios::in);

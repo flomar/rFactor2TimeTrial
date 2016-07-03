@@ -31,6 +31,9 @@
 #include <QListWidgetItem>
 #include <QPushButton>
 #include <QDateTime>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
 
 #include <stdint.h>
 

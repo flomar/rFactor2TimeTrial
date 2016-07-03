@@ -8,7 +8,14 @@
 #include <utilities.h>
 
 Application::Application(int &_argc, char **_argv) :
-    QApplication(_argc, _argv) {
+    QApplication(_argc, _argv),
+    configurationFileName(_argc == 2 ? QString(_argv[1]) : QString::null),
+    applicationRoot(QString::null),
+    applicationName(QString::null),
+    applicationVersion(QString::null),
+    applicationCopyright(QString::null),
+    applicationServerAddress(QString::null),
+    applicationServerPort(QString::null) {
 
 }
 
@@ -17,10 +24,33 @@ Application::~Application() {
 }
 
 bool Application::initialize() {
+    // try to open the configuration file
+    if(!configurationFile.read(configurationFileName.toStdString())) {
+        qCritical() << QString("[CRITICAL] could not read configuration file, please make sure to supply the absolute path to the configuration file as argument to the executable");
+        return false;
+    }
+    // the next thing we need to do is extract the application root
+    QFileInfo configurationFileInfo(configurationFileName);
+    applicationRoot = configurationFileInfo.absoluteDir().absolutePath();
+    // then we extract the remaining variables
+    applicationName = configurationFile.getVariable("QTIMETRIAL_APPLICATION_NAME").c_str();
+    applicationVersion = configurationFile.getVariable("QTIMETRIAL_APPLICATION_VERSION").c_str();
+    applicationCopyright = configurationFile.getVariable("QTIMETRIAL_APPLICATION_COPYRIGHT").c_str();
+    applicationServerAddress = configurationFile.getVariable("QTIMETRIAL_APPLICATION_SERVER_ADDRESS").c_str();
+    applicationServerPort = configurationFile.getVariable("QTIMETRIAL_APPLICATION_SERVER_PORT").c_str();
+    // make sure all required variables are non-empty
+    if(applicationRoot.isEmpty()) return false;
+    if(applicationName.isEmpty()) return false;
+    if(applicationVersion.isEmpty()) return false;
+    if(applicationCopyright.isEmpty()) return false;
+    if(applicationServerAddress.isEmpty()) return false;
+    if(applicationServerPort.isEmpty()) return false;
+
+    // TODO/FIXME: honor application root when using relative resource paths (fonts, images, etc.),
+    // not just in the Qt code here, but also in the QML code all over the place
+
     // add some fonts
     QFontDatabase::addApplicationFont("resources/fonts/Bitwise.ttf");
-    QFontDatabase::addApplicationFont("resources/fonts/Copperplate.ttf");
-    QFontDatabase::addApplicationFont("resources/fonts/Impact.ttf");
     // create application QML engine
     QQmlApplicationEngine *qmlApplicationEngine = new QQmlApplicationEngine(this);
     // register individual components with application QML engine

@@ -31,6 +31,6 @@ void WidgetAbout::initializeGui() {
     ui->labelApplicationCopyright->setFont(guiFontM);
     ui->labelProjectInformation->setFont(guiFontM);
     // initialize GUI elements
-    ui->labelApplicationName->setText(APPLICATION_NAME);
-    ui->labelApplicationCopyright->setText(APPLICATION_COPYRIGHT);
+    ui->labelApplicationName->setText("TODO/FIXME: APPLICATION_NAME");
+    ui->labelApplicationCopyright->setText("TODO/FIXME: APPLICATION_COPYRIGHT");
 }
