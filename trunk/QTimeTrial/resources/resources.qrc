@@ -12,7 +12,5 @@
     </qresource>
     <qresource prefix="/qml">
         <file alias="application.qml">qml/application.qml</file>
-        <file alias="applicationhud.qml">qml/applicationhud.qml</file>
-        <file>qml/qmldir</file>
     </qresource>
 </RCC>
