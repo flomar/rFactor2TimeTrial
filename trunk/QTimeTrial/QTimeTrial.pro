@@ -64,10 +64,7 @@ RESOURCES += \
 resources/resources.qrc
 
 OTHER_FILES += \
-resources/qml/application.qml \
-resources/qml/applicationhud.qml
-
-OTHER_FILES += resources/qml/qmldir
+resources/qml/application.qml
 
 OTHER_FILES += \
 ../../README.md \
