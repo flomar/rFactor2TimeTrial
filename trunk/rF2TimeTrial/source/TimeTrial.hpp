@@ -6,12 +6,11 @@
 // include plugin base class header
 #include "InternalsPlugin.hpp"
 
-// include TimeTrial headers
-#include "TimeTrialClient.hpp"
-#include "TimeTrialUtilities.hpp"
-
-// include Windows headers
-#include <windows.h>
+// include common headers
+#include "../Common/client.h"
+#include "../Common/clientserverprotocol.h"
+#include "../Common/configurationfile.h"
+#include "../Common/logfile.h"
 
 // include STL headers
 #include <limits>
@@ -22,8 +21,7 @@
 #include <vector>
 #include <map>
 
-// include client/server protocol headers
-#include "../ClientServerProtocol/clientserverprotocol.h"
+#define RF2TIMETRIAL_CONFIGURATION_FILE_NAME "rF2TimeTrial.cfg"
 
 class TimeTrialPlugin : public InternalsPluginV07 {
 public:
@@ -50,6 +48,10 @@ private:
 	// this function is called periodically during a session and transmits 
 	// telemetry updates to the server
 	void updateTimeTrialTelemetry(const TelemInfoV01 &_info);
+private:
+	ConfigurationFile configurationFile;
+	LogFile logFile;
+	Client client;
 };
 
 #endif

@@ -34,8 +34,11 @@
 
 #include <stdint.h>
 
-// include client/server protocol headers
-#include "../ClientServerProtocol/clientserverprotocol.h"
+// include common headers
+#include <../Common/client.h>
+#include <../Common/clientserverprotocol.h>
+#include <../Common/configurationfile.h>
+#include <../Common/logfile.h>
 
 struct Options {
     Options() : identifier(0), autoDeleteSessions(0), autoDeleteRuns(0), autoDeleteLaps(0) { }

@@ -5,20 +5,20 @@
 #include <math.h>
 #include <stdio.h>
 
-extern "C" __declspec( dllexport )
-const char * __cdecl GetPluginName()                   { return( "rF2TimeTrial Plugin (c) 2016 flomar" ); }
+extern "C" __declspec(dllexport)
+const char * __cdecl GetPluginName() { return("rF2TimeTrial Plugin (c) 2016 flomar"); }
 
-extern "C" __declspec( dllexport )
-PluginObjectType __cdecl GetPluginType()               { return( PO_INTERNALS ); }
+extern "C" __declspec(dllexport)
+PluginObjectType __cdecl GetPluginType() { return(PO_INTERNALS); }
 
-extern "C" __declspec( dllexport )
-int __cdecl GetPluginVersion()                         { return( 7 ); }
+extern "C" __declspec(dllexport)
+int __cdecl GetPluginVersion() { return(7); }
 
-extern "C" __declspec( dllexport )
-PluginObject * __cdecl CreatePluginObject()            { return( (PluginObject *) new TimeTrialPlugin); }
+extern "C" __declspec(dllexport)
+PluginObject * __cdecl CreatePluginObject() { return((PluginObject*)(new TimeTrialPlugin)); }
 
-extern "C" __declspec( dllexport )
-void __cdecl DestroyPluginObject( PluginObject *obj )  { delete( (TimeTrialPlugin *) obj ); }
+extern "C" __declspec(dllexport)
+void __cdecl DestroyPluginObject(PluginObject *obj) { delete((TimeTrialPlugin*)(obj)); }
 
 
 
@@ -64,37 +64,53 @@ void TimeTrialPlugin::UpdateTelemetry(const TelemInfoV01 &_info) {
 }
 
 void TimeTrialPlugin::startGame() {
-	Utilities::instance().logMessage("START GAME");
-	Client::instance().connectToServer(9999);
+	// try to read the configuration file
+	if (!configurationFile.read(RF2TIMETRIAL_CONFIGURATION_FILE_NAME)) {
+		return;
+	}
+	// try to open the log file
+	const std::string logFileName = configurationFile.getVariable("RF2TIMETRIAL_LOG_FILE_NAME");
+	if (!logFile.open(logFileName)) {
+		return;
+	}
+	// dump log information
+	logFile.logMessage("START GAME");
+	// try to connect to server
+	const std::string serverAddress = configurationFile.getVariable("RF2TIMETRIAL_SERVER_ADDRESS");
+	const std::string serverPort = configurationFile.getVariable("RF2TIMETRIAL_SERVER_PORT");
+	if (!client.connectToServer(serverAddress, serverPort)) {
+		logFile.logMessage("could not connect to " + serverAddress + ":" + serverPort);
+		return;
+	}
 }
 
 void TimeTrialPlugin::finishGame() {
-	Utilities::instance().logMessage("FINISH GAME");
-	Client::instance().disconnectFromServer();
+	logFile.logMessage("FINISH GAME");
+	client.disconnectFromServer();
 }
 
 void TimeTrialPlugin::startSession() {
-	Utilities::instance().logMessage("START SESSION");
+	logFile.logMessage("START SESSION");
 	ClientServerMessage message(CLIENT_SERVER_MESSAGE_TYPE_START_SESSION);
-	Client::instance().sendMessage(message);
+	client.sendMessage(message);
 }
 
 void TimeTrialPlugin::finishSession() {
-	Utilities::instance().logMessage("FINISH SESSION");
+	logFile.logMessage("FINISH SESSION");
 	ClientServerMessage message(CLIENT_SERVER_MESSAGE_TYPE_FINISH_SESSION);
-	Client::instance().sendMessage(message);
+	client.sendMessage(message);
 }
 
 void TimeTrialPlugin::startRun() {
-	Utilities::instance().logMessage("START RUN");
+	logFile.logMessage("START RUN");
 	ClientServerMessage message(CLIENT_SERVER_MESSAGE_TYPE_START_RUN);
-	Client::instance().sendMessage(message);
+	client.sendMessage(message);
 }
 
 void TimeTrialPlugin::finishRun() {
-	Utilities::instance().logMessage("FINISH RUN");
+	logFile.logMessage("FINISH RUN");
 	ClientServerMessage message(CLIENT_SERVER_MESSAGE_TYPE_FINISH_RUN);
-	Client::instance().sendMessage(message);
+	client.sendMessage(message);
 }
 
 void TimeTrialPlugin::updateTimeTrialTelemetry(const TelemInfoV01 &_info) {
@@ -129,5 +145,5 @@ void TimeTrialPlugin::updateTimeTrialTelemetry(const TelemInfoV01 &_info) {
 	message.m_speed = (double)(sqrt(_info.mLocalVel[0] * _info.mLocalVel[0] + _info.mLocalVel[1] * _info.mLocalVel[1] + _info.mLocalVel[2] * _info.mLocalVel[2]));
 	message.m_speedLimiterActive = (bool)(_info.mSpeedLimiter > 0);
 	// send update message to the server
-	Client::instance().sendMessage(message);
+	client.sendMessage(message);
 }

@@ -273,18 +273,20 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\ClientServerProtocol\clientserverprotocol.cpp" />
+    <ClCompile Include="..\Common\client.cpp" />
+    <ClCompile Include="..\Common\clientserverprotocol.cpp" />
+    <ClCompile Include="..\Common\configurationfile.cpp" />
+    <ClCompile Include="..\Common\logfile.cpp" />
     <ClCompile Include="source\TimeTrial.cpp" />
-    <ClCompile Include="source\TimeTrialClient.cpp" />
-    <ClCompile Include="source\TimeTrialUtilities.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\ClientServerProtocol\clientserverprotocol.h" />
+    <ClInclude Include="..\Common\client.h" />
+    <ClInclude Include="..\Common\clientserverprotocol.h" />
+    <ClInclude Include="..\Common\configurationfile.h" />
+    <ClInclude Include="..\Common\logfile.h" />
     <ClInclude Include="source\InternalsPlugin.hpp" />
     <ClInclude Include="source\PluginObjects.hpp" />
     <ClInclude Include="source\TimeTrial.hpp" />
-    <ClInclude Include="source\TimeTrialClient.hpp" />
-    <ClInclude Include="source\TimeTrialUtilities.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
