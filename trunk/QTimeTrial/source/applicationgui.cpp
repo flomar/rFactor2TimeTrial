@@ -15,7 +15,6 @@ ApplicationGui::ApplicationGui(Application *_application) :
     guiSizeDefault(QVector2D(1920.0, 1080.0)),
     guiSize(QVector2D(1920.0, 1080.0)),
     guiScale(1.0),
-    guiFontFamily(QString::null),
     widgetMenu(0),
     widgetAbout(0),
     widgetRecords(0),
@@ -77,11 +76,12 @@ ApplicationGui::~ApplicationGui() {
 
 void ApplicationGui::initializeFonts() {
     const int fontId = QFontDatabase::addApplicationFont(application->getAbsoluteFilePath("resources/fonts/Bitwise.ttf"));
-    if(fontId != -1) setGuiFontFamily(QFontDatabase::applicationFontFamilies(fontId).at(0));
-    guiFontXL = QFont(guiFontFamily, 32 * guiScale);
-    guiFontL = QFont(guiFontFamily, 24 * guiScale);
-    guiFontM = QFont(guiFontFamily, 16 * guiScale);
-    guiFontS = QFont(guiFontFamily, 12 * guiScale);
+    if(fontId == -1) return;
+    const QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
+    guiFontXL = QFont(fontFamily, 32 * guiScale);
+    guiFontL = QFont(fontFamily, 24 * guiScale);
+    guiFontM = QFont(fontFamily, 16 * guiScale);
+    guiFontS = QFont(fontFamily, 12 * guiScale);
 }
 
 void ApplicationGui::initializeWidgets() {

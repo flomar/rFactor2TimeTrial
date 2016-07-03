@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/png">
+        <file alias="hud.png">png/hud.png</file>
+        <file alias="led_green.png">png/led_green.png</file>
+        <file alias="led_off.png">png/led_off.png</file>
+        <file alias="led_red.png">png/led_red.png</file>
+        <file alias="led_yellow.png">png/led_yellow.png</file>
+        <file alias="logo.png">png/logo.png</file>
+    </qresource>
+    <qresource prefix="/fonts">
+        <file alias="Bitwise.ttf">fonts/Bitwise.ttf</file>
+    </qresource>
+</RCC>

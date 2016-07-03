@@ -11,6 +11,11 @@ Item {
     anchors.fill: parent
     visible: gui.showHud
     property var gui: QTimeTrialApplicationGui
+    // fonts
+    FontLoader {
+        id: idFontBitwise
+        source: "qrc:///fonts/Bitwise.ttf"
+    }
     // HUD
     Item {
         id: idItemHud
@@ -18,7 +23,7 @@ Item {
         Image {
             id: idImageHud
             anchors.fill: parent
-            source: "../png/hud.png"
+            source: "qrc:///png/hud.png"
         }
         Item {
             id: idItemLap
@@ -33,7 +38,7 @@ Item {
                 horizontalAlignment: Qt.AlignLeft
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: gui.guiFontFamily
+                font.family: idFontBitwise.name
                 font.pixelSize: 20 * gui.guiScale
             }
         }
@@ -50,7 +55,7 @@ Item {
                 horizontalAlignment: Qt.AlignLeft
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: gui.guiFontFamily
+                font.family: idFontBitwise.name
                 font.pixelSize: 20 * gui.guiScale
             }
         }
@@ -67,7 +72,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: gui.guiFontFamily
+                font.family: idFontBitwise.name
                 font.pixelSize: 36 * gui.guiScale
             }
         }
@@ -84,7 +89,7 @@ Item {
                 horizontalAlignment: Qt.AlignRight
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: gui.guiFontFamily
+                font.family: idFontBitwise.name
                 font.pixelSize: 20 * gui.guiScale
             }
         }
@@ -101,7 +106,7 @@ Item {
                 horizontalAlignment: Qt.AlignRight
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: gui.guiFontFamily
+                font.family: idFontBitwise.name
                 font.pixelSize: 20 * gui.guiScale
             }
         }
@@ -118,7 +123,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: gui.guiFontFamily
+                font.family: idFontBitwise.name
                 font.pixelSize: 48 * gui.guiScale
             }
         }
@@ -135,7 +140,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: gui.guiFontFamily
+                font.family: idFontBitwise.name
                 font.pixelSize: 60 * gui.guiScale
             }
         }
@@ -152,7 +157,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 color: gui.boolSpeedLimiterActive ? Qt.rgba(1.0, 0.0, 0.0, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: gui.guiFontFamily
+                font.family: idFontBitwise.name
                 font.pixelSize: 48 * gui.guiScale
             }
         }
@@ -167,10 +172,10 @@ Item {
                 source: {
                     var fuel = gui.intFuelCurrent / gui.intFuelMaximum
                     var limitRed = 0.10
-                    if(fuel < limitRed) return "../png/led_red.png"
+                    if(fuel < limitRed) return "qrc:///png/led_red.png"
                     var limitYellow = 0.50
-                    if(fuel < limitYellow) return "../png/led_yellow.png"
-                    return "../png/led_off.png"
+                    if(fuel < limitYellow) return "qrc:///png/led_yellow.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
         }
@@ -183,8 +188,8 @@ Item {
             Image {
                 anchors.fill: parent
                 source: {
-                    if(gui.boolEngineOverheating) return "../png/led_red.png"
-                    return "../png/led_off.png"
+                    if(gui.boolEngineOverheating) return "qrc:///png/led_red.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
         }
@@ -198,16 +203,16 @@ Item {
                 anchors.fill: parent
                 source: {
                     var limitRed = 750.0
-                    if(gui.intBrakeTemperatureFrontLeft > limitRed) return "../png/led_red.png"
-                    if(gui.intBrakeTemperatureFrontRight > limitRed) return "../png/led_red.png"
-                    if(gui.intBrakeTemperatureRearLeft > limitRed) return "../png/led_red.png"
-                    if(gui.intBrakeTemperatureRearRight > limitRed) return "../png/led_red.png"
+                    if(gui.intBrakeTemperatureFrontLeft > limitRed) return "qrc:///png/led_red.png"
+                    if(gui.intBrakeTemperatureFrontRight > limitRed) return "qrc:///png/led_red.png"
+                    if(gui.intBrakeTemperatureRearLeft > limitRed) return "qrc:///png/led_red.png"
+                    if(gui.intBrakeTemperatureRearRight > limitRed) return "qrc:///png/led_red.png"
                     var limitYellow = 500.0
-                    if(gui.intBrakeTemperatureFrontLeft > limitYellow) return "../png/led_yellow.png"
-                    if(gui.intBrakeTemperatureFrontRight > limitYellow) return "../png/led_yellow.png"
-                    if(gui.intBrakeTemperatureRearLeft > limitYellow) return "../png/led_yellow.png"
-                    if(gui.intBrakeTemperatureRearRight > limitYellow) return "../png/led_yellow.png"
-                    return "../png/led_off.png"
+                    if(gui.intBrakeTemperatureFrontLeft > limitYellow) return "qrc:///png/led_yellow.png"
+                    if(gui.intBrakeTemperatureFrontRight > limitYellow) return "qrc:///png/led_yellow.png"
+                    if(gui.intBrakeTemperatureRearLeft > limitYellow) return "qrc:///png/led_yellow.png"
+                    if(gui.intBrakeTemperatureRearRight > limitYellow) return "qrc:///png/led_yellow.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
         }
@@ -221,16 +226,16 @@ Item {
                 anchors.fill: parent
                 source: {
                     var limitRed = 10.0
-                    if(gui.intTireWearFrontLeft < limitRed) return "../png/led_red.png"
-                    if(gui.intTireWearFrontRight < limitRed) return "../png/led_red.png"
-                    if(gui.intTireWearRearLeft < limitRed) return "../png/led_red.png"
-                    if(gui.intTireWearRearRight < limitRed) return "../png/led_red.png"
+                    if(gui.intTireWearFrontLeft < limitRed) return "qrc:///png/led_red.png"
+                    if(gui.intTireWearFrontRight < limitRed) return "qrc:///png/led_red.png"
+                    if(gui.intTireWearRearLeft < limitRed) return "qrc:///png/led_red.png"
+                    if(gui.intTireWearRearRight < limitRed) return "qrc:///png/led_red.png"
                     var limitYellow = 50.0
-                    if(gui.intTireWearFrontLeft < limitYellow) return "../png/led_yellow.png"
-                    if(gui.intTireWearFrontRight < limitYellow) return "../png/led_yellow.png"
-                    if(gui.intTireWearRearLeft < limitYellow) return "../png/led_yellow.png"
-                    if(gui.intTireWearRearRight < limitYellow) return "../png/led_yellow.png"
-                    return "../png/led_off.png"
+                    if(gui.intTireWearFrontLeft < limitYellow) return "qrc:///png/led_yellow.png"
+                    if(gui.intTireWearFrontRight < limitYellow) return "qrc:///png/led_yellow.png"
+                    if(gui.intTireWearRearLeft < limitYellow) return "qrc:///png/led_yellow.png"
+                    if(gui.intTireWearRearRight < limitYellow) return "qrc:///png/led_yellow.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
         }
@@ -246,8 +251,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 0) return "../png/led_green.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 0) return "qrc:///png/led_green.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -256,8 +261,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 1) return "../png/led_green.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 1) return "qrc:///png/led_green.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -266,8 +271,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 2) return "../png/led_green.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 2) return "qrc:///png/led_green.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -276,8 +281,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 3) return "../png/led_green.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 3) return "qrc:///png/led_green.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -286,8 +291,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 4) return "../png/led_green.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 4) return "qrc:///png/led_green.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -296,8 +301,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 5) return "../png/led_green.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 5) return "qrc:///png/led_green.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -306,8 +311,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 6) return "../png/led_green.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 6) return "qrc:///png/led_green.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -316,8 +321,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 7) return "../png/led_green.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 7) return "qrc:///png/led_green.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -326,8 +331,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 8) return "../png/led_green.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 8) return "qrc:///png/led_green.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -336,8 +341,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 9) return "../png/led_green.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 9) return "qrc:///png/led_green.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -346,8 +351,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 10) return "../png/led_yellow.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 10) return "qrc:///png/led_yellow.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -356,8 +361,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 11) return "../png/led_yellow.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 11) return "qrc:///png/led_yellow.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -366,8 +371,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 12) return "../png/led_yellow.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 12) return "qrc:///png/led_yellow.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -376,8 +381,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 13) return "../png/led_yellow.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 13) return "qrc:///png/led_yellow.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -386,8 +391,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 14) return "../png/led_yellow.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 14) return "qrc:///png/led_yellow.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -396,8 +401,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 15) return "../png/led_yellow.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 15) return "qrc:///png/led_yellow.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -406,8 +411,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 16) return "../png/led_yellow.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 16) return "qrc:///png/led_yellow.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -416,8 +421,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 17) return "../png/led_yellow.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 17) return "qrc:///png/led_yellow.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -426,8 +431,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 18) return "../png/led_yellow.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 18) return "qrc:///png/led_yellow.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -436,8 +441,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 19) return "../png/led_yellow.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 19) return "qrc:///png/led_yellow.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -446,8 +451,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 20) return "../png/led_red.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 20) return "qrc:///png/led_red.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -456,8 +461,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 21) return "../png/led_red.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 21) return "qrc:///png/led_red.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -466,8 +471,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 22) return "../png/led_red.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 22) return "qrc:///png/led_red.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -476,8 +481,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 23) return "../png/led_red.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 23) return "qrc:///png/led_red.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -486,8 +491,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 24) return "../png/led_red.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 24) return "qrc:///png/led_red.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -496,8 +501,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 25) return "../png/led_red.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 25) return "qrc:///png/led_red.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -506,8 +511,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 26) return "../png/led_red.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 26) return "qrc:///png/led_red.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -516,8 +521,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 27) return "../png/led_red.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 27) return "qrc:///png/led_red.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -526,8 +531,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 28) return "../png/led_red.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 28) return "qrc:///png/led_red.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
             Image {
@@ -536,8 +541,8 @@ Item {
                 width: 16 * gui.guiScale
                 height: 16 * gui.guiScale
                 source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 29) return "../png/led_red.png"
-                    return "../png/led_off.png"
+                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 29) return "qrc:///png/led_red.png"
+                    return "qrc:///png/led_off.png"
                 }
             }
 
@@ -556,7 +561,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: gui.guiFontFamily
+                font.family: idFontBitwise.name
                 font.pixelSize: 40 * gui.guiScale
                 style: Text.Raised
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
@@ -569,7 +574,7 @@ Item {
                 text: "00:00:000"
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
-                font.family: gui.guiFontFamily
+                font.family: idFontBitwise.name
                 font.pixelSize: 28 * gui.guiScale
                 style: Text.Raised
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
@@ -581,7 +586,7 @@ Item {
                 text: "00:00:000"
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
-                font.family: gui.guiFontFamily
+                font.family: idFontBitwise.name
                 font.pixelSize: 28 * gui.guiScale
                 style: Text.Raised
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)

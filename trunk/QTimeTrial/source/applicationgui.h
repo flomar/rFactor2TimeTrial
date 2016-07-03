@@ -17,7 +17,6 @@ class ApplicationGui : public QObject {
     Q_OBJECT
     Q_PROPERTY(QVector2D guiSize READ getGuiSize WRITE setGuiSize NOTIFY signalChangedGuiSize)
     Q_PROPERTY(float guiScale READ getGuiScale WRITE setGuiScale NOTIFY signalChangedGuiScale)
-    Q_PROPERTY(QString guiFontFamily READ getGuiFontFamily WRITE setGuiFontFamily NOTIFY signalChangedGuiFontFamily)
     Q_PROPERTY(bool showWidgetMenu READ getShowWidgetMenu WRITE setShowWidgetMenu NOTIFY signalChangedShowWidgetMenu)
     Q_PROPERTY(bool showWidgetAbout READ getShowWidgetAbout WRITE setShowWidgetAbout NOTIFY signalChangedShowWidgetAbout)
     Q_PROPERTY(bool showWidgetRecords READ getShowWidgetRecords WRITE setShowWidgetRecords NOTIFY signalChangedShowWidgetRecords)
@@ -72,20 +71,15 @@ private:
     // always represent the dimension with the smaller proportional
     // size
     float guiScale;
-    // the application-wide font family
-    QString guiFontFamily;
 public:
     const QVector2D &getGuiSize() const { return guiSize; }
     float getGuiScale() const { return guiScale; }
-    const QString &getGuiFontFamily() const { return guiFontFamily; }
 public:
     void setGuiSize(const QVector2D &_guiSize) { guiSize = _guiSize; emit signalChangedGuiSize(); }
     void setGuiScale(const float _guiScale) { guiScale = _guiScale; emit signalChangedGuiScale(); }
-    void setGuiFontFamily(const QString &_guiFontFamily) { guiFontFamily = _guiFontFamily; emit signalChangedGuiFontFamily(); }
 signals:
     void signalChangedGuiSize();
     void signalChangedGuiScale();
-    void signalChangedGuiFontFamily();
 private:
     // fonts depending on the GUI scale, initialized at application
     // start and injected into widgets and dialogs at construction
