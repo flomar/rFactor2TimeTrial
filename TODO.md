@@ -2,6 +2,10 @@
 
 This document contains the most important TODOs for the project.
 
+## URGENT
+
+- Continue refactoring the code base (see commit 35c7155cb9debb002906edd29507c6be683c52ff): After refactoring is completed, explain in detail (README.md) what steps the user has to follow to make everything work, in particular the placement and adaption of the existing configuration files (QTimeTrial.cfg and rF2TimeTrial.cfg).
+
 ## TODOs
 
 - The "Drivers" widget provides an "Edit Driver" button, but for now there's no functionality behind it.

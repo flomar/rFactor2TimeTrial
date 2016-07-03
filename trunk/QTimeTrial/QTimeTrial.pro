@@ -71,4 +71,6 @@ resources/qml/applicationhud.qml
 
 OTHER_FILES += resources/qml/qmldir
 
-OTHER_FILES += ../../TODO.md
+OTHER_FILES += \
+../../README.md \
+../../TODO.md

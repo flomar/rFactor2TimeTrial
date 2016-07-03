@@ -22,9 +22,9 @@ Enjoy!
 
 ## Overview
 
-rFactor2TimeTrial consists of two projects: **rF2TimeTrial** and **QTimeTrial**. rF2TimeTrial provides a DLL which is integrated into rFactor2 as a plugin, and QTimeTrial provides the corresponding user interface.
+rFactor2TimeTrial consists of two projects: **rF2TimeTrial** and **QTimeTrial**.
 
-Both components, the DLL and the GUI, communicate through a one-way network connection where the DLL acts as client and the GUI acts as server.
+rF2TimeTrial provides a DLL which is integrated into rFactor2 as a plugin, and QTimeTrial provides the corresponding user interface. Both components, the DLL and the GUI, communicate through a one-way network connection where the DLL acts as client and the GUI acts as server.
 
 ## Build Instructions
 
