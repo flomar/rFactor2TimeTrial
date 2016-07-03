@@ -1,5 +1,3 @@
 module QTimeTrial
 
-singleton ApplicationStyle 1.0 applicationstyle.qml
-
 ApplicationHud 1.0 applicationhud.qml

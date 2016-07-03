@@ -15,7 +15,7 @@ public:
 private:
     Application *application;
 public:
-    bool start(const quint16 _port);
+    bool start(const QString &_serverAddress, const QString &_serverPort);
     bool stop();
 protected:
     virtual void incomingConnection(qintptr _socketDescriptor);

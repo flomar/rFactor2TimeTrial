@@ -12,9 +12,8 @@ ApplicationServer::~ApplicationServer() {
 
 }
 
-bool ApplicationServer::start(const quint16 _port) {
-    if(!QTcpServer::listen(QHostAddress::LocalHost, _port)) {
-        qCritical() << QString("[CRITICAL] could not listen to port %1").arg(_port);
+bool ApplicationServer::start(const QString &_serverAddress, const QString &_serverPort) {
+    if(!QTcpServer::listen(QHostAddress(_serverAddress), _serverPort.toUInt())) {
         return false;
     }
     return true;

@@ -33,7 +33,7 @@ Item {
                 horizontalAlignment: Qt.AlignLeft
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
+                font.family: gui.guiFontFamily
                 font.pixelSize: 20 * gui.guiScale
             }
         }
@@ -50,7 +50,7 @@ Item {
                 horizontalAlignment: Qt.AlignLeft
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
+                font.family: gui.guiFontFamily
                 font.pixelSize: 20 * gui.guiScale
             }
         }
@@ -67,7 +67,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
+                font.family: gui.guiFontFamily
                 font.pixelSize: 36 * gui.guiScale
             }
         }
@@ -84,7 +84,7 @@ Item {
                 horizontalAlignment: Qt.AlignRight
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
+                font.family: gui.guiFontFamily
                 font.pixelSize: 20 * gui.guiScale
             }
         }
@@ -101,7 +101,7 @@ Item {
                 horizontalAlignment: Qt.AlignRight
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
+                font.family: gui.guiFontFamily
                 font.pixelSize: 20 * gui.guiScale
             }
         }
@@ -118,7 +118,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
+                font.family: gui.guiFontFamily
                 font.pixelSize: 48 * gui.guiScale
             }
         }
@@ -135,7 +135,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
+                font.family: gui.guiFontFamily
                 font.pixelSize: 60 * gui.guiScale
             }
         }
@@ -152,7 +152,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 color: gui.boolSpeedLimiterActive ? Qt.rgba(1.0, 0.0, 0.0, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
+                font.family: gui.guiFontFamily
                 font.pixelSize: 48 * gui.guiScale
             }
         }
@@ -556,7 +556,7 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
+                font.family: gui.guiFontFamily
                 font.pixelSize: 40 * gui.guiScale
                 style: Text.Raised
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
@@ -569,7 +569,7 @@ Item {
                 text: "00:00:000"
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
-                font.family: ApplicationStyle.fontBitwise.name
+                font.family: gui.guiFontFamily
                 font.pixelSize: 28 * gui.guiScale
                 style: Text.Raised
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
@@ -581,7 +581,7 @@ Item {
                 text: "00:00:000"
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
-                font.family: ApplicationStyle.fontBitwise.name
+                font.family: gui.guiFontFamily
                 font.pixelSize: 28 * gui.guiScale
                 style: Text.Raised
                 styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)

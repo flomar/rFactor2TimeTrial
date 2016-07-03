@@ -54,8 +54,14 @@ private:
     QString applicationName;
     QString applicationVersion;
     QString applicationCopyright;
+    QString applicationDatabaseFileName;
     QString applicationServerAddress;
     QString applicationServerPort;
+public:
+    // this function creates an absolute file path out of the
+    // specified relative file path by prepending the application
+    // root folder (as initialized through the configuration file)
+    QString getAbsoluteFilePath(const QString &_relativeFilePath) const;
 };
 
 #endif

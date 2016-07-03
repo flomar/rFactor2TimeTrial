@@ -13,6 +13,7 @@ Application::Application(int &_argc, char **_argv) :
     applicationName(QString::null),
     applicationVersion(QString::null),
     applicationCopyright(QString::null),
+    applicationDatabaseFileName(QString::null),
     applicationServerAddress(QString::null),
     applicationServerPort(QString::null) {
 
@@ -23,21 +24,15 @@ Application::~Application() {
 }
 
 bool Application::initialize() {
-    // create application components
-    applicationDatabase = new ApplicationDatabase(this);
-    applicationServer = new ApplicationServer(this);
-    applicationGui = new ApplicationGui(this);
     // try to parse the configuration file
     if(!parseConfigurationFile(configurationFileName)) {
         qCritical() << QString("[CRITICAL] could not parse configuration file, please make sure to supply the absolute path to the configuration file as argument to the executable");
         return false;
     }
-
-    // TODO/FIXME: honor application root when using relative resource paths (fonts, images, etc.),
-    // not just in the Qt code here, but also in the QML code all over the place
-
-    // add some fonts
-    QFontDatabase::addApplicationFont("resources/fonts/Bitwise.ttf");
+    // create application components
+    applicationDatabase = new ApplicationDatabase(this);
+    applicationServer = new ApplicationServer(this);
+    applicationGui = new ApplicationGui(this);
     // create application QML engine
     qmlApplicationEngine = new QQmlApplicationEngine(this);
     // register individual components with application QML engine
@@ -46,7 +41,7 @@ bool Application::initialize() {
     qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationServer", applicationServer);
     qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationGui", applicationGui);
     // initialize application QML engine
-    qmlApplicationEngine->load(QUrl("resources/qml/application.qml"));
+    qmlApplicationEngine->load(getAbsoluteFilePath("resources/qml/application.qml"));
     // connect signals and slots between server and database: due to the design of this
     // application it is VERY IMPORTANT that messages from the server are first processed
     // by the database; after the database is finished processing the messages, it forwards
@@ -55,11 +50,13 @@ bool Application::initialize() {
     // connect signals and slots between database and other internal components
     connect(applicationDatabase, SIGNAL(signalReceivedClientServerMessage(ClientServerMessage)), applicationGui, SLOT(slotReceivedClientServerMessage(ClientServerMessage)));
     // open the database
-    if(!applicationDatabase->open("QTimeTrialDatabase.sqlite")) {
+    if(!applicationDatabase->open(applicationDatabaseFileName)) {
+        qCritical() << QString("[CRITICAL] could not open database file \"%1\"").arg(applicationDatabaseFileName);
         return false;
     }
     // start the server
-    if(!applicationServer->start(9999)) {
+    if(!applicationServer->start(applicationServerAddress, applicationServerPort)) {
+        qCritical() << QString("[CRITICAL] could not listen to \"%1:%2\"").arg(applicationServerAddress).arg(applicationServerPort);
         return false;
     }
     // update the GUI
@@ -93,6 +90,7 @@ bool Application::parseConfigurationFile(const QString &_configurationFileName) 
     applicationName = configurationFile.getVariable("QTIMETRIAL_APPLICATION_NAME").c_str();
     applicationVersion = configurationFile.getVariable("QTIMETRIAL_APPLICATION_VERSION").c_str();
     applicationCopyright = configurationFile.getVariable("QTIMETRIAL_APPLICATION_COPYRIGHT").c_str();
+    applicationDatabaseFileName = getAbsoluteFilePath("resources/sqlite/QTimeTrialDatabase.sqlite");
     applicationServerAddress = configurationFile.getVariable("QTIMETRIAL_APPLICATION_SERVER_ADDRESS").c_str();
     applicationServerPort = configurationFile.getVariable("QTIMETRIAL_APPLICATION_SERVER_PORT").c_str();
     // make sure all required variables are non-empty
@@ -103,4 +101,8 @@ bool Application::parseConfigurationFile(const QString &_configurationFileName) 
     if(applicationServerAddress.isEmpty()) return false;
     if(applicationServerPort.isEmpty()) return false;
     return true;
+}
+
+QString Application::getAbsoluteFilePath(const QString &_relativeFilePath) const {
+    return QString("%1/%2").arg(applicationRoot).arg(_relativeFilePath);
 }

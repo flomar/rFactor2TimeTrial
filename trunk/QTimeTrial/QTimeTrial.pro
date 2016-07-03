@@ -60,11 +60,8 @@ resources/ui/dialogcreatedriver.ui \
 resources/ui/dialogeditdriver.ui \
 resources/ui/dialogdeletedriver.ui
 
-RESOURCES += resources/resources.qrc
-
 OTHER_FILES += \
 resources/qml/application.qml \
-resources/qml/applicationstyle.qml \
 resources/qml/applicationhud.qml
 
 OTHER_FILES += resources/qml/qmldir

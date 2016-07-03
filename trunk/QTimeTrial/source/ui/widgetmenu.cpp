@@ -21,8 +21,6 @@ void WidgetMenu::update() {
 
 void WidgetMenu::initializeGui() {
     Widget::initializeGui();
-    // initialize GUI elements
-    // TODO/FIXME
 }
 
 void WidgetMenu::enterEvent(QEvent *_event) {
