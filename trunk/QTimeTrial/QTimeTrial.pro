@@ -27,8 +27,7 @@ source/ui/dialog.h \
 source/ui/dialogcreatedriver.h \
 source/ui/dialogeditdriver.h \
 source/ui/dialogdeletedriver.h \
-../Common/clientserverprotocol.h \
-../Common/configurationfile.h
+../Common/clientserverprotocol.h
 
 SOURCES += \
 source/main.cpp \
@@ -48,8 +47,7 @@ source/ui/dialog.cpp \
 source/ui/dialogcreatedriver.cpp \
 source/ui/dialogeditdriver.cpp \
 source/ui/dialogdeletedriver.cpp \
-../Common/clientserverprotocol.cpp \
-../Common/configurationfile.cpp
+../Common/clientserverprotocol.cpp
 
 FORMS += \
 resources/ui/widgetabout.ui \

@@ -11,6 +11,10 @@
 
 #include <utilities.h>
 
+#define QTIMETRIAL_APPLICATION_NAME "QTimeTrial"
+#define QTIMETRIAL_APPLICATION_VERSION "1.0"
+#define QTIMETRIAL_APPLICATION_COPYRIGHT "(C) 2016 flomar"
+
 class Application : public QApplication {
     Q_OBJECT
 public:
@@ -34,42 +38,13 @@ public:
     const ApplicationServer *getApplicationServerConst() const { return applicationServer; }
     const ApplicationGui *getApplicationGuiConst() const { return applicationGui; }
 private:
-    // this variable is set at construction, as the application
-    // expects that the absolute path to the configuration file
-    // is passed to the executable by the user
-    const QString configurationFileName;
-    // this function parses the configuration file; it is called
-    // during initialization and returns false if not all variables
-    // can be properly extracted
-    bool parseConfigurationFile(const QString &_configurationFileName);
-private:
-    // the following variables are all extracted through parsing
-    // the configuration file: the application root is the folder
-    // in which the configuration file is living (this is very
-    // important for locating resource files if the application
-    // is executed from an arbitrary folder), and all other
-    // variables are extracted from the configuration file and
-    // should be more or less self-explanatory
-    QString applicationRoot;
-    QString applicationName;
-    QString applicationVersion;
-    QString applicationCopyright;
-    QString applicationDatabaseFileName;
-    QString applicationServerAddress;
-    QString applicationServerPort;
+    const QString applicationDatabaseFileName;
+    const QString applicationServerAddress;
+    const QString applicationServerPort;
 public:
-    const QString &getApplicationRoot() const { return applicationRoot; }
-    const QString &getApplicationName() const { return applicationName; }
-    const QString &getApplicationVersion() const { return applicationVersion; }
-    const QString &getApplicationCopyright() const { return applicationCopyright; }
     const QString &getApplicationDatabaseFileName() const { return applicationDatabaseFileName; }
     const QString &getApplicationServerAddress() const { return applicationServerAddress; }
     const QString &getApplicationServerPort() const { return applicationServerPort; }
-public:
-    // this function creates an absolute file path out of the
-    // specified relative file path by prepending the application
-    // root folder (as initialized through the configuration file)
-    QString getAbsoluteFilePath(const QString &_relativeFilePath) const;
 };
 
 #endif
