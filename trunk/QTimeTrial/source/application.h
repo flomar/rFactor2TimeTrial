@@ -58,6 +58,15 @@ private:
     QString applicationServerAddress;
     QString applicationServerPort;
 public:
+    const QString &getApplicationRoot() const { return applicationRoot; }
+    const QString &getApplicationName() const { return applicationName; }
+    const QString &getApplicationVersion() const { return applicationVersion; }
+    const QString &getApplicationCopyright() const { return applicationCopyright; }
+    const QString &getApplicationDatabaseFileName() const { return applicationDatabaseFileName; }
+    const QString &getApplicationServerAddress() const { return applicationServerAddress; }
+    const QString &getApplicationServerPort() const { return applicationServerPort; }
+
+public:
     // this function creates an absolute file path out of the
     // specified relative file path by prepending the application
     // root folder (as initialized through the configuration file)
