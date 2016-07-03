@@ -75,7 +75,7 @@ ApplicationGui::~ApplicationGui() {
 }
 
 void ApplicationGui::initializeFonts() {
-    const int fontId = QFontDatabase::addApplicationFont(application->getAbsoluteFilePath("resources/fonts/Bitwise.ttf"));
+    const int fontId = QFontDatabase::addApplicationFont(":/fonts/Bitwise.ttf");
     if(fontId == -1) return;
     const QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
     guiFontXL = QFont(fontFamily, 32 * guiScale);
