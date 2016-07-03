@@ -65,7 +65,6 @@ public:
     const QString &getApplicationDatabaseFileName() const { return applicationDatabaseFileName; }
     const QString &getApplicationServerAddress() const { return applicationServerAddress; }
     const QString &getApplicationServerPort() const { return applicationServerPort; }
-
 public:
     // this function creates an absolute file path out of the
     // specified relative file path by prepending the application

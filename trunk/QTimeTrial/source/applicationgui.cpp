@@ -337,6 +337,20 @@ void ApplicationGui::slotWidgetMenuPressedButtonOptions(const Qt::MouseButton _m
 
 void ApplicationGui::slotWidgetMenuPressedButtonQuit(const Qt::MouseButton _mouseButton) {
     if(_mouseButton == Qt::LeftButton) {
+        // normally we just quit the application if the user says so;
+        // however, if there's still a session running (i.e. when the
+        // quit button is pressed from within the box/garage), we omit
+        // the user command without doing anything else; this shall
+        // prevent data corruption for entries in the Sessions table
+        if(application) {
+            const ApplicationDatabase *database = application->getApplicationDatabaseConst();
+            if(database) {
+                if(database->getCurrentSession()) {
+                    return;
+                }
+            }
+        }
+        // at this point we're saft to quit
         qApp->quit();
     }
 }
