@@ -267,6 +267,23 @@ void ApplicationDatabase::autoDeleteSessionsAndRunsAndLaps() {
             }
         }
     }
+    // now that we have cleared the database of unwanted remainders,
+    // we also need to make sure we don't introduce corrupted data;
+    // one form of corrupted data are sessions which don't have a
+    // valid finish time, for example when the user quits the
+    // application when in the box (at this point, naturally,
+    // a session is currently running); therefore we go through
+    // all remaining sessions and correct the finish times if
+    // necessary (finish times of 0 get corrected to the
+    // current time)
+    const int64_t timeNow = Utilities::Core::getMillisecondsSinceEpoch();
+    foreach(Session *session, mapSessions.values()) {
+        if(session) {
+            if(session->timeFinish == 0) {
+                session->timeFinish = timeNow;
+            }
+        }
+    }
 }
 
 void ApplicationDatabase::autoDeleteSessions() {
