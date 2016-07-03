@@ -58,13 +58,9 @@ void WidgetMenu::mousePressEvent(QMouseEvent *_event) {
     foreach(Button *button, vectorButtons) {
         if(button) {
             if(button->hovered) {
-                Qt::MouseButton mouseButton;
-                if(_event->buttons() & Qt::LeftButton) {
-                    mouseButton = Qt::LeftButton;
-                }
-                if(_event->buttons() & Qt::RightButton) {
-                    mouseButton = Qt::RightButton;
-                }
+                Qt::MouseButton mouseButton = Qt::NoButton;
+                if(_event->buttons() & Qt::LeftButton) mouseButton = Qt::LeftButton;
+                else if(_event->buttons() & Qt::RightButton) mouseButton = Qt::RightButton;
                 if(mouseButton == Qt::LeftButton || mouseButton == Qt::RightButton) {
                     if(button->text == "ABOUT") {
                         emit signalPressedButtonAbout(mouseButton);
