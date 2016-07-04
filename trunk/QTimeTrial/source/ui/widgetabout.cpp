@@ -27,6 +27,6 @@ void WidgetAbout::initializeGui() {
     ui->labelApplicationCopyright->setFont(guiFontM);
     ui->labelProjectInformation->setFont(guiFontM);
     // initialize GUI elements
-    ui->labelApplicationName->setText(QString("%1 %2").arg(QTIMETRIAL_APPLICATION_NAME).arg(QTIMETRIAL_APPLICATION_VERSION));
+    ui->labelApplicationName->setText(QString("%1").arg(QTIMETRIAL_APPLICATION_NAME));
     ui->labelApplicationCopyright->setText(QString("%1").arg(QTIMETRIAL_APPLICATION_COPYRIGHT));
 }
