@@ -36,4 +36,4 @@ Using two different compilers doesn't do any harm: The common code (the client/s
 
 ## Run Instructions
 
-The easiest way to get rFactor2TimeTrial up and running is by grabbing on of the release archives and following the INSTALL instructions.
+The easiest way to get rFactor2TimeTrial up and running is by grabbing one of the release archives and following the INSTALL instructions.
