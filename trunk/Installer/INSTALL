@@ -1,0 +1,93 @@
+rFactor2TimeTrial
+=================
+
+Follow these steps to get rFactor2TimeTrial up an running.
+
+1. COPY FILES
+=============
+
+First, extract the rFactor2TimeTrial ZIP archive somewhere on your machine. 
+It doesn't really matter where you put it, but you should remember the 
+location.
+
+Note that [rFactor2TimeTrial] refers to the root of the extracted archive, 
+and [rF2] refers to the root of your rFactor2 installation.
+
+Then, copy the following files:
+
+   [rFactor2TimeTrial]/rF2TimeTrial/win32/rF2TimeTrial.dll ===> [rF2]/Bin32/Plugins
+   [rFactor2TimeTrial]/rF2TimeTrial/win64/rF2TimeTrial.dll ===> [rF2]/Bin64/Plugins
+   [rFactor2TimeTrial]/rf2TimeTrial/rF2TimeTrial.cfg ===> [rF2]
+
+
+2. CONFIGURE CLIENT/SERVER SETTINGS
+===================================
+
+This step should be optional, as in: normally you don't need to do anything. 
+However, if you experience weird behavior, or if the QTimeTrial HUD isn't 
+showing up at all, make sure the settings in the ".bat" and ".cfg" files 
+below match.
+
+In both files, in [rFactor2TimeTrial]/QTimeTrial/QTimeTrial.bat as well as 
+in [rF2]/rF2TimeTrial.cfg, you can set the parameters for the network 
+connection. "127.0.0.1" and "9999" should work out of the box. If it 
+doesn't, adapt both files accordingly.
+
+
+3. CONFIGURE VISUALS
+====================
+
+For the user interface to work correctly, the resolution of your Windows 
+desktop must be a multiple of FULL HD resolution (1920x1080), and rFactor2 
+must be run in BORDERLESS mode (the video mode can be changed from within 
+the rFactor2 launcher).
+
+The following desktop resolutions are valid, but basically every resolution 
+is supported as long as the aspect ratio is equal to FULL HD:
+
+	960x540
+	1280x720
+	1600x900
+	1920x1080
+	3840x2160
+
+
+4. START THE APPLICATION
+========================
+
+First, you need to start the QTimeTrial application. You can do this by 
+double-clicking the [rFactor2TimeTrial]/QTimeTrial/QTimeTrial.bat file.
+
+As soon as you can see the QTimeTrial menu bar on the left of your screen, 
+you can proceed to start rFactor2 as usual. However, make sure you have 
+configured the visuals as explained above.
+
+Sometimes, and unfortunately I don't have found the source of the problem 
+yet, the QTimeTrial user interface doesn't stay on top of the rFactor2 
+user interface like it is inteded to. In that case you have no other 
+option but to exit rFactor2 and try again (QTimeTrial will be exited 
+automatically if rFactor2 is).
+
+Note that it seems to help if you keep clicking into the QTimeTrial menu 
+bar while you can see the rFactor2 splash screen. It doesn't always help, 
+but it does most of the time.
+
+
+5. BEST PRACTICES
+=================
+
+Since QTimeTrial comes with its own HUD, I recommend to disable all 
+graphical overlays of rFactor2. Furthermore, since nobody wants to be 
+distracted during a time trial, disable the transparent trainer and 
+untick all session settings (PRACTICE, QUALIFYING, and RACE) before 
+starting a new session.
+
+IMPORTANT: When you are in the box/garage, don't just hit the RACE button. 
+Make sure you have selected a driver before doing so, otherwise nothing at 
+all will be tracked, and you won't even see a HUD.
+
+You can easily create drivers using the DRIVERS widget, and you can 
+select the current driver by double-clicking. When you have selected a 
+current driver, you are safe to hit the RACE button.
+
+The rest should be more or less self-explanatory.
