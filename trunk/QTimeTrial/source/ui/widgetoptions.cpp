@@ -34,8 +34,11 @@ void WidgetOptions::initializeGui() {
     ui->labelTitle->setFont(guiFontXL);
     ui->groupBoxDatabase->setFont(guiFontM);
     ui->checkBoxAutoDeleteSessions->setFont(guiFontM);
+    ui->labelAutoDeleteSessions->setFont(guiFontS);
     ui->checkBoxAutoDeleteRuns->setFont(guiFontM);
+    ui->labelAutoDeleteRuns->setFont(guiFontS);
     ui->checkBoxAutoDeleteLaps->setFont(guiFontM);
+    ui->labelAutoDeleteLaps->setFont(guiFontS);
 }
 
 void WidgetOptions::updateCheckBoxes() {

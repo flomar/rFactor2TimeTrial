@@ -117,6 +117,28 @@
            </widget>
           </item>
           <item>
+           <widget class="QLabel" name="labelAutoDeleteSessions">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>If this option is enabled, all empty sessions (the ones not containing at least a single run) will be deleted upon closing the database.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line01">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="checkBoxAutoDeleteRuns">
             <property name="font">
              <font>
@@ -135,6 +157,28 @@
            </widget>
           </item>
           <item>
+           <widget class="QLabel" name="labelAutoDeleteRuns">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>If this option is enabled, all empty runs (the ones not containing at least a single lap) will be deleted upon closing the database.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line02">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="checkBoxAutoDeleteLaps">
             <property name="font">
              <font>
@@ -149,6 +193,21 @@
             </property>
             <property name="text">
              <string>Auto-Delete Laps</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelAutoDeleteLaps">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>If this option is enabled, all laps except for the very best one in the corresponding run will be deleted upon closing the database.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
