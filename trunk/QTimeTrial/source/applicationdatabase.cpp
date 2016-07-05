@@ -706,14 +706,51 @@ bool ApplicationDatabase::createDriver(const QString &_name) {
 }
 
 bool ApplicationDatabase::deleteDriver(const QString &_name) {
-    foreach(const Driver *driver, mapDrivers.values()) {
+    // when deleting a driver we need to be careful not just to delete
+    // the driver, but we also want to delete any laps and runs which
+    // are associated with the driver
+    Driver *driverToBeDeleted = 0;
+    QVector<Run*> vectorRunsToBeDeleted;
+    QVector<Lap*> vectorLapsToBeDeleted;
+    // find the driver, the runs, and the laps to be deleted
+    foreach(Driver *driver, mapDrivers.values()) {
         if(driver) {
             if(driver->name == _name) {
-                mapDrivers.remove(driver->identifier);
-                delete driver;
-                return true;
+                driverToBeDeleted = driver;
+                foreach(Run *run, mapRuns.values()) {
+                    if(run) {
+                        if(run->identifierDriver == driverToBeDeleted->identifier) {
+                            foreach(Lap *lap, mapLaps.values()) {
+                                if(lap) {
+                                    if(lap->identifierRun == run->identifier) {
+                                        vectorRunsToBeDeleted.push_back(run);
+                                        vectorLapsToBeDeleted.push_back(lap);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
+    }
+    // delete the driver, runs, and laps if required
+    if(driverToBeDeleted) {
+        mapDrivers.remove(driverToBeDeleted->identifier);
+        delete driverToBeDeleted;
+        foreach(const Run *run, vectorRunsToBeDeleted) {
+            if(run) {
+                mapRuns.remove(run->identifier);
+                delete run;
+            }
+        }
+        foreach(const Lap *lap, vectorLapsToBeDeleted) {
+            if(lap) {
+                mapLaps.remove(lap->identifier);
+                delete lap;
+            }
+        }
+        return true;
     }
     return false;
 }
