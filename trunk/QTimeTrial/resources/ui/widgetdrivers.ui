@@ -110,6 +110,21 @@
            <number>10</number>
           </property>
           <item>
+           <widget class="QLabel" name="labelAvailableDrivers">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Create, edit, and delete drivers using the buttons below.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QListWidget" name="listWidgetAvailableDrivers">
             <property name="font">
              <font>
@@ -154,6 +169,21 @@
           <property name="bottomMargin">
            <number>10</number>
           </property>
+          <item>
+           <widget class="QLabel" name="labelCurrentDriver">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Double-click a driver in the list above to make him the current driver.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="QLineEdit" name="lineEditCurrentDriver">
             <property name="readOnly">

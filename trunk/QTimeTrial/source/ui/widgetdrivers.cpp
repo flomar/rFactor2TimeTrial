@@ -40,8 +40,10 @@ void WidgetDrivers::initializeGui() {
     // initialize GUI elements
     ui->labelTitle->setFont(guiFontXL);
     ui->groupBoxAvailableDrivers->setFont(guiFontM);
+    ui->labelAvailableDrivers->setFont(guiFontS);
     ui->listWidgetAvailableDrivers->setFont(guiFontM);
     ui->groupBoxCurrentDriver->setFont(guiFontM);
+    ui->labelCurrentDriver->setFont(guiFontS);
     ui->lineEditCurrentDriver->setFont(guiFontM);
     ui->pushButtonCreateDriver->setFont(guiFontM);
     ui->pushButtonEditDriver->setFont(guiFontM);
@@ -53,7 +55,7 @@ void WidgetDrivers::updateLineEditCurrentDriver() {
     const ApplicationDatabase *applicationDatabase = getApplicationDatabase();
     if(!applicationDatabase) return;
     // update current driver
-    ui->lineEditCurrentDriver->setText("-");
+    ui->lineEditCurrentDriver->setText(QString::null);
     const Driver *driver = applicationDatabase->getCurrentDriver();
     if(driver) {
         ui->lineEditCurrentDriver->setText(driver->name);
