@@ -577,8 +577,8 @@ void ApplicationDatabase::updateLapTimeLastAndLapTimePersonalBestAndLapTimeAbsol
     const bool isPersonalBest = lapTimePersonalBest && lapTimePersonalBest >= _lap->time;
     const bool isAbsoluteBest = lapTimeAbsoluteBest && lapTimeAbsoluteBest >= _lap->time;
     const QString infoLapTime = Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(_lap->time);
-    const QString infoLapTimePersonalBest = isPersonalBest ? "PERSONAL BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - lapTimePersonalBest));
-    const QString infoLapTimeAbsoluteBest = isAbsoluteBest ? "ABSOLUTE BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - lapTimeAbsoluteBest));
+    const QString infoLapTimePersonalBest = isPersonalBest ? "PERSONAL BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - lapTimePersonalBest)) + " " + "[PER]";
+    const QString infoLapTimeAbsoluteBest = isAbsoluteBest ? "ABSOLUTE BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - lapTimeAbsoluteBest)) + " " + "[ABS]";
     // emit signal to the HUD
     emit signalLapInformation(isPersonalBest, isAbsoluteBest, infoLapTime, infoLapTimePersonalBest, infoLapTimeAbsoluteBest);
 }

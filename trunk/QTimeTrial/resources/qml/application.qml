@@ -560,8 +560,8 @@ ApplicationWindow {
             Item {
                 id: idItemLapInformation
                 anchors.centerIn: parent
-                width: 256 * gui.guiScale
-                height: 128 * gui.guiScale
+                width: 300 * gui.guiScale
+                height: 150 * gui.guiScale
                 opacity: 0.0
                 Text {
                     id: idTextItemLapInformation
@@ -572,7 +572,7 @@ ApplicationWindow {
                     verticalAlignment: Qt.AlignVCenter
                     color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                     font.family: idFontBitwise.name
-                    font.pixelSize: 40 * gui.guiScale
+                    font.pixelSize: 50 * gui.guiScale
                     style: Text.Raised
                     styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
                 }
@@ -584,8 +584,9 @@ ApplicationWindow {
                     text: "00:00:000"
                     horizontalAlignment: Qt.AlignHCenter
                     verticalAlignment: Qt.AlignVCenter
+                    color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                     font.family: idFontBitwise.name
-                    font.pixelSize: 28 * gui.guiScale
+                    font.pixelSize: 32 * gui.guiScale
                     style: Text.Raised
                     styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
                 }
@@ -596,8 +597,9 @@ ApplicationWindow {
                     text: "00:00:000"
                     horizontalAlignment: Qt.AlignHCenter
                     verticalAlignment: Qt.AlignVCenter
+                    color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                     font.family: idFontBitwise.name
-                    font.pixelSize: 28 * gui.guiScale
+                    font.pixelSize: 32 * gui.guiScale
                     style: Text.Raised
                     styleColor: Qt.rgba(0.0, 0.0, 0.0, 1.0)
                 }
