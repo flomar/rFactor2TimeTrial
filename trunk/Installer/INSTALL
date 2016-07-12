@@ -87,7 +87,7 @@ Make sure you have selected a driver before doing so, otherwise nothing at
 all will be tracked, and you won't even see a HUD.
 
 You can easily create drivers using the DRIVERS widget, and you can 
-select the current driver by double-clicking. When you have selected a 
-current driver, you are safe to hit the RACE button.
+select the current driver by clicking the corresponding name. When 
+you have selected a current driver, you are safe to hit the RACE button.
 
 The rest should be more or less self-explanatory.

@@ -11,9 +11,6 @@
 
 #include <utilities.h>
 
-#define QTIMETRIAL_APPLICATION_NAME "QTimeTrial"
-#define QTIMETRIAL_APPLICATION_COPYRIGHT "(C) 2016 flomar"
-
 class Application : public QApplication {
     Q_OBJECT
 public:

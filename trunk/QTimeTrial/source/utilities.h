@@ -9,32 +9,31 @@ namespace Utilities {
 
     namespace Core {
 
-        int64_t getMillisecondsSinceEpoch();
+        qint64 getMillisecondsSinceEpoch();
 
-        QString timeInMillisecondsToStringInMinutesSecondsMilliseconds(const int64_t _time);
+        QString timeInMillisecondsToStringInMinutesSecondsMilliseconds(const qint64 _time);
 
-        QString timeInMillisecondsToStringDate(const int64_t _time);
-
-    }
-
-    namespace Containers {
-
-        template<class TypeKey, class TypeValue>
-        TypeKey getSmallestAvailableIdentifier(const QMap<TypeKey, TypeValue*> &_map) {
-            const TypeKey biggestIdentifier = std::numeric_limits<TypeKey>::max();
-            for (TypeKey identifier = 1; identifier < biggestIdentifier; identifier++) {
-                if (!_map.contains(identifier)) {
-                    return identifier;
-                }
-            }
-            return 0;
-        }
+        QString timeInMillisecondsToStringDate(const qint64 _time);
 
     }
 
-    namespace Graphics {
+    namespace Database {
 
-        QRect getRectInset(const QRect &_rect, const int _insetThickness);
+        QVariantMap convertSqlRecordToVariantMap(const QSqlRecord &_record);
+
+        QSqlRecord convertVariantMapToSqlRecord(const QVariantMap &_variantMap, const QStringList &_listFieldNames);
+
+        qint64 createSmallestAvailableIdentifier(QSqlRelationalTableModel *_model);
+
+        QSqlRecord getRecord(QSqlRelationalTableModel *_model, const qint64 _identifier);
+
+        qint64 addRecord(QSqlRelationalTableModel *_model, const QSqlRecord &_record);
+
+        qint64 setRecord(QSqlRelationalTableModel *_model, const QSqlRecord &_record);
+
+        qint64 removeRecord(QSqlRelationalTableModel *_model, const qint64 _identifier);
+
+        bool compareLapsByTime(const QVariantMap &_lapA, const QVariantMap &_lapB);
 
     }
 

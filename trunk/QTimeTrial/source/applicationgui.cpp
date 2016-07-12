@@ -3,23 +3,12 @@
 #include <applicationgui.h>
 #include <application.h>
 
-#include <ui/widgetmenu.h>
-#include <ui/widgetabout.h>
-#include <ui/widgetrecords.h>
-#include <ui/widgetdrivers.h>
-#include <ui/widgetoptions.h>
-
 ApplicationGui::ApplicationGui(Application *_application) :
     QObject(_application),
     application(_application),
     guiSizeDefault(QVector2D(1920.0, 1080.0)),
     guiSize(QVector2D(1920.0, 1080.0)),
     guiScale(1.0),
-    widgetMenu(0),
-    widgetAbout(0),
-    widgetRecords(0),
-    widgetDrivers(0),
-    widgetOptions(0),
     showWidgetMenu(true),
     showWidgetAbout(false),
     showWidgetRecords(false),
@@ -62,100 +51,30 @@ ApplicationGui::ApplicationGui(Application *_application) :
     // update both properties
     setGuiSize(guiSize);
     setGuiScale(guiScale);
-    // initialize fonts
-    initializeFonts();
     // initialize widgets
     initializeWidgets();
-    // update widgets
-    updateWidgets();
 }
 
 ApplicationGui::~ApplicationGui() {
     deinitializeWidgets();
 }
 
-void ApplicationGui::initializeFonts() {
-    const int fontId = QFontDatabase::addApplicationFont(":/fonts/Bitwise.ttf");
-    if(fontId == -1) return;
-    const QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
-    guiFontXL = QFont(fontFamily, 32 * guiScale);
-    guiFontL = QFont(fontFamily, 24 * guiScale);
-    guiFontM = QFont(fontFamily, 16 * guiScale);
-    guiFontS = QFont(fontFamily, 12 * guiScale);
-}
-
 void ApplicationGui::initializeWidgets() {
-    // menu widget
-    const int widgetMenuX = 14 * guiScale;
-    const int widgetMenuY = 43 * guiScale;
-    const int widgetMenuW = 32 * guiScale;
-    const int widgetMenuH = 945 * guiScale;
-    const QRect widgetMenuRect(widgetMenuX, widgetMenuY, widgetMenuW, widgetMenuH);
-    widgetMenu = new WidgetMenu(this, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
-    widgetMenu->setGeometry(widgetMenuRect);
-    // about widget
-    const int widgetAboutX = 60 * guiScale;
-    const int widgetAboutY = 43 * guiScale;
-    const int widgetAboutW = 878 * guiScale;
-    const int widgetAboutH = 945 * guiScale;
-    const QRect widgetAboutRect(widgetAboutX, widgetAboutY, widgetAboutW, widgetAboutH);
-    widgetAbout = new WidgetAbout(this, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
-    widgetAbout->setGeometry(widgetAboutRect);
-    // records widget
-    const int widgetRecordsX = 60 * guiScale;
-    const int widgetRecordsY = 43 * guiScale;
-    const int widgetRecordsW = 878 * guiScale;
-    const int widgetRecordsH = 945 * guiScale;
-    const QRect widgetRecordsRect(widgetRecordsX, widgetRecordsY, widgetRecordsW, widgetRecordsH);
-    widgetRecords = new WidgetRecords(this, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
-    widgetRecords->setGeometry(widgetRecordsRect);
-    // drivers widget
-    const int widgetDriversX = 60 * guiScale;
-    const int widgetDriversY = 43 * guiScale;
-    const int widgetDriversW = 878 * guiScale;
-    const int widgetDriversH = 945 * guiScale;
-    const QRect widgetDriversRect(widgetDriversX, widgetDriversY, widgetDriversW, widgetDriversH);
-    widgetDrivers = new WidgetDrivers(this, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
-    widgetDrivers->setGeometry(widgetDriversRect);
-    // options widget
-    const int widgetOptionsX = 60 * guiScale;
-    const int widgetOptionsY = 43 * guiScale;
-    const int widgetOptionsW = 878 * guiScale;
-    const int widgetOptionsH = 945 * guiScale;
-    const QRect widgetOptionsRect(widgetOptionsX, widgetOptionsY, widgetOptionsW, widgetOptionsH);
-    widgetOptions = new WidgetOptions(this, guiScale, guiFontXL, guiFontL, guiFontM, guiFontS);
-    widgetOptions->setGeometry(widgetOptionsRect);
     // connect signals and slots
-    connect(widgetMenu, SIGNAL(signalPressedButtonAbout(Qt::MouseButton)), this, SLOT(slotWidgetMenuPressedButtonAbout(Qt::MouseButton)));
-    connect(widgetMenu, SIGNAL(signalPressedButtonRecords(Qt::MouseButton)), this, SLOT(slotWidgetMenuPressedButtonRecords(Qt::MouseButton)));
-    connect(widgetMenu, SIGNAL(signalPressedButtonDrivers(Qt::MouseButton)), this, SLOT(slotWidgetMenuPressedButtonDrivers(Qt::MouseButton)));
-    connect(widgetMenu, SIGNAL(signalPressedButtonOptions(Qt::MouseButton)), this, SLOT(slotWidgetMenuPressedButtonOptions(Qt::MouseButton)));
-    connect(widgetMenu, SIGNAL(signalPressedButtonQuit(Qt::MouseButton)), this, SLOT(slotWidgetMenuPressedButtonQuit(Qt::MouseButton)));
+    connect(this, SIGNAL(signalWidgetMenuClickedButtonAbout()), this, SLOT(slotWidgetMenuClickedButtonAbout()));
+    connect(this, SIGNAL(signalWidgetMenuClickedButtonDrivers()), this, SLOT(slotWidgetMenuClickedButtonDrivers()));
+    connect(this, SIGNAL(signalWidgetMenuClickedButtonRecords()), this, SLOT(slotWidgetMenuClickedButtonRecords()));
+    connect(this, SIGNAL(signalWidgetMenuClickedButtonOptions()), this, SLOT(slotWidgetMenuClickedButtonOptions()));
+    connect(this, SIGNAL(signalWidgetMenuClickedButtonQuit()), this, SLOT(slotWidgetMenuClickedButtonQuit()));
 }
 
 void ApplicationGui::deinitializeWidgets() {
-#if 0
-    delete widgetMenu;
-    delete widgetAbout;
-    delete widgetRecords;
-    delete widgetDrivers;
-    delete widgetOptions;
-#endif
-}
-
-void ApplicationGui::updateWidgets() {
-    // show/hide widgets
-    widgetMenu->setVisible(getShowWidgetMenu());
-    widgetAbout->setVisible(getShowWidgetAbout());
-    widgetRecords->setVisible(getShowWidgetRecords());
-    widgetDrivers->setVisible(getShowWidgetDrivers());
-    widgetOptions->setVisible(getShowWidgetOptions());
-    // update widgets if necessary
-    if(getShowWidgetMenu()) widgetMenu->update();
-    if(getShowWidgetAbout()) widgetAbout->update();
-    if(getShowWidgetRecords()) widgetRecords->update();
-    if(getShowWidgetDrivers()) widgetDrivers->update();
-    if(getShowWidgetOptions()) widgetOptions->update();
+    // disconnect signals and slots
+    disconnect(this, SIGNAL(signalWidgetMenuClickedButtonAbout()), this, SLOT(slotWidgetMenuClickedButtonAbout()));
+    disconnect(this, SIGNAL(signalWidgetMenuClickedButtonDrivers()), this, SLOT(slotWidgetMenuClickedButtonDrivers()));
+    disconnect(this, SIGNAL(signalWidgetMenuClickedButtonRecords()), this, SLOT(slotWidgetMenuClickedButtonRecords()));
+    disconnect(this, SIGNAL(signalWidgetMenuClickedButtonOptions()), this, SLOT(slotWidgetMenuClickedButtonOptions()));
+    disconnect(this, SIGNAL(signalWidgetMenuClickedButtonQuit()), this, SLOT(slotWidgetMenuClickedButtonQuit()));
 }
 
 void ApplicationGui::slotReceivedClientServerMessage(const ClientServerMessage &_message) {
@@ -188,7 +107,6 @@ void ApplicationGui::processMessageStartSession(const ClientServerMessage &_mess
     setShowWidgetRecords(false);
     setShowWidgetDrivers(false);
     setShowWidgetOptions(false);
-    updateWidgets();
     setShowHud(false);
 }
 
@@ -199,7 +117,6 @@ void ApplicationGui::processMessageFinishSession(const ClientServerMessage &_mes
     setShowWidgetRecords(false);
     setShowWidgetDrivers(false);
     setShowWidgetOptions(false);
-    updateWidgets();
     setShowHud(false);
 }
 
@@ -210,7 +127,6 @@ void ApplicationGui::processMessageStartRun(const ClientServerMessage &_message)
     setShowWidgetRecords(false);
     setShowWidgetDrivers(false);
     setShowWidgetOptions(false);
-    updateWidgets();
 }
 
 void ApplicationGui::processMessageFinishRun(const ClientServerMessage &_message) {
@@ -220,23 +136,22 @@ void ApplicationGui::processMessageFinishRun(const ClientServerMessage &_message
     setShowWidgetRecords(false);
     setShowWidgetDrivers(false);
     setShowWidgetOptions(false);
-    updateWidgets();
     setShowHud(false);
 }
 
 void ApplicationGui::processMessageUpdateTelemetry(const ClientServerMessage &_message) {
     if(_message.m_type != CLIENT_SERVER_MESSAGE_TYPE_UPDATE_TELEMETRY) return;
     // acquire a pointer to the application database
-    const ApplicationDatabase *applicationDatabase = application->getApplicationDatabaseConst();
+    ApplicationDatabase *applicationDatabase = application->getApplicationDatabase();
     if(!applicationDatabase) return;
     // acquire current driver, current session, current run, and current lap
-    const Driver *driver = applicationDatabase->getCurrentDriver();
-    const Session *session = applicationDatabase->getCurrentSession();
-    const Run *run = applicationDatabase->getCurrentRun();
-    const Lap *lap = applicationDatabase->getCurrentLap();
+    const QVariantMap driver = application->getApplicationDatabase()->getCurrentDriver();
+    const QVariantMap session = application->getApplicationDatabase()->getCurrentSession();
+    const QVariantMap run = application->getApplicationDatabase()->getCurrentRun();
+    const QVariantMap lap = application->getApplicationDatabase()->getCurrentLap();
     // the current lap may be invalid, but if any of the other variables
     // is invalid, we hide the HUD and return without doing anything else
-    if(!driver || !session || !run) {
+    if(driver.isEmpty() || session.isEmpty() || run.isEmpty()) {
         setShowHud(false);
         return;
     }
@@ -244,14 +159,14 @@ void ApplicationGui::processMessageUpdateTelemetry(const ClientServerMessage &_m
     setShowHud(true);
     // calculate session time, run time, and lap time, and acquire lst time, bst time, and rec time
     const int64_t localTime = Utilities::Core::getMillisecondsSinceEpoch();
-    const int64_t localSessionTime = localTime - session->timeStart;
-    const int64_t localRunTime = localTime - run->timeStart;
-    const int64_t localLapTime = lap ? lap->time : 0;
+    const int64_t localSessionTime = localTime - session.value("TimeStart").toLongLong();
+    const int64_t localRunTime = localTime - run.value("TimeStart").toLongLong();
+    const int64_t localLapTime = lap.isEmpty() ? 0 : lap.value("Time").toLongLong();
     const int64_t localLapTimeLast = applicationDatabase->getLapTimeLast();
     const int64_t localLapTimePersonalBest = applicationDatabase->getLapTimePersonalBest();
     const int64_t localLapTimeAbsoluteBest = applicationDatabase->getLapTimeAbsoluteBest();
     // set properties
-    setStringDriver(driver->name);
+    setStringDriver(driver.value("Name").toString());
     setStringSessionTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localSessionTime));
     setStringRunTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localRunTime));
     setStringLapTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localLapTime));
@@ -279,64 +194,42 @@ void ApplicationGui::processMessageUpdateTelemetry(const ClientServerMessage &_m
     setBoolSpeedLimiterActive(_message.m_speedLimiterActive);
 }
 
-void ApplicationGui::update() {
-    widgetMenu->update();
-    widgetAbout->update();
-    widgetRecords->update();
-    widgetDrivers->update();
-    widgetOptions->update();
+void ApplicationGui::slotWidgetMenuClickedButtonAbout() {
+    const bool visibleAbout = getShowWidgetAbout();
+    setShowWidgetMenu(true);
+    setShowWidgetAbout(!visibleAbout);
+    setShowWidgetDrivers(false);
+    setShowWidgetRecords(false);
+    setShowWidgetOptions(false);
 }
 
-void ApplicationGui::slotWidgetMenuPressedButtonAbout(const Qt::MouseButton _mouseButton) {
-    if(_mouseButton == Qt::LeftButton) {
-        const bool visibleAbout = getShowWidgetAbout();
-        setShowWidgetMenu(true);
-        setShowWidgetAbout(!visibleAbout);
-        setShowWidgetRecords(false);
-        setShowWidgetDrivers(false);
-        setShowWidgetOptions(false);
-        updateWidgets();
-    }
+void ApplicationGui::slotWidgetMenuClickedButtonDrivers() {
+    const bool visibleDrivers = getShowWidgetDrivers();
+    setShowWidgetMenu(true);
+    setShowWidgetAbout(false);
+    setShowWidgetDrivers(!visibleDrivers);
+    setShowWidgetRecords(false);
+    setShowWidgetOptions(false);
 }
 
-void ApplicationGui::slotWidgetMenuPressedButtonRecords(const Qt::MouseButton _mouseButton) {
-    if(_mouseButton == Qt::LeftButton) {
-        const bool visibleRecords = getShowWidgetRecords();
-        setShowWidgetMenu(true);
-        setShowWidgetAbout(false);
-        setShowWidgetRecords(!visibleRecords);
-        setShowWidgetDrivers(false);
-        setShowWidgetOptions(false);
-        updateWidgets();
-    }
+void ApplicationGui::slotWidgetMenuClickedButtonRecords() {
+    const bool visibleRecords = getShowWidgetRecords();
+    setShowWidgetMenu(true);
+    setShowWidgetAbout(false);
+    setShowWidgetDrivers(false);
+    setShowWidgetRecords(!visibleRecords);
+    setShowWidgetOptions(false);
 }
 
-void ApplicationGui::slotWidgetMenuPressedButtonDrivers(const Qt::MouseButton _mouseButton) {
-    if(_mouseButton == Qt::LeftButton) {
-        const bool visibleDrivers = getShowWidgetDrivers();
-        setShowWidgetMenu(true);
-        setShowWidgetAbout(false);
-        setShowWidgetRecords(false);
-        setShowWidgetDrivers(!visibleDrivers);
-        setShowWidgetOptions(false);
-        updateWidgets();
-    }
+void ApplicationGui::slotWidgetMenuClickedButtonOptions() {
+    const bool visibleOptions = getShowWidgetOptions();
+    setShowWidgetMenu(true);
+    setShowWidgetAbout(false);
+    setShowWidgetDrivers(false);
+    setShowWidgetRecords(false);
+    setShowWidgetOptions(!visibleOptions);
 }
 
-void ApplicationGui::slotWidgetMenuPressedButtonOptions(const Qt::MouseButton _mouseButton) {
-    if(_mouseButton == Qt::LeftButton) {
-        const bool visibleOptions = getShowWidgetOptions();
-        setShowWidgetMenu(true);
-        setShowWidgetAbout(false);
-        setShowWidgetRecords(false);
-        setShowWidgetDrivers(false);
-        setShowWidgetOptions(!visibleOptions);
-        updateWidgets();
-    }
-}
-
-void ApplicationGui::slotWidgetMenuPressedButtonQuit(const Qt::MouseButton _mouseButton) {
-    if(_mouseButton == Qt::LeftButton) {
-        qApp->quit();
-    }
+void ApplicationGui::slotWidgetMenuClickedButtonQuit() {
+    qApp->quit();
 }

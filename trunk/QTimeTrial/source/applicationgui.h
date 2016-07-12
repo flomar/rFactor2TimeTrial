@@ -5,12 +5,6 @@
 
 #include <main.h>
 
-class WidgetMenu;
-class WidgetAbout;
-class WidgetRecords;
-class WidgetDrivers;
-class WidgetOptions;
-
 class Application;
 
 class ApplicationGui : public QObject {
@@ -81,25 +75,8 @@ signals:
     void signalChangedGuiSize();
     void signalChangedGuiScale();
 private:
-    // fonts depending on the GUI scale, initialized at application
-    // start and injected into widgets and dialogs at construction
-    QFont guiFontXL;
-    QFont guiFontL;
-    QFont guiFontM;
-    QFont guiFontS;
-private:
-    void initializeFonts();
-private:
     void initializeWidgets();
     void deinitializeWidgets();
-private:
-    void updateWidgets();
-private:
-    WidgetMenu *widgetMenu;
-    WidgetAbout *widgetAbout;
-    WidgetRecords *widgetRecords;
-    WidgetDrivers *widgetDrivers;
-    WidgetOptions *widgetOptions;
 private slots:
     void slotReceivedClientServerMessage(const ClientServerMessage &_message);
 private:
@@ -138,14 +115,18 @@ public:
     void setShowHud(const bool _showHud) { showHud = _showHud; emit signalChangedShowHud(); }
 signals:
     void signalChangedShowHud();
-public:
-    void update();
+signals:
+    void signalWidgetMenuClickedButtonAbout();
+    void signalWidgetMenuClickedButtonDrivers();
+    void signalWidgetMenuClickedButtonRecords();
+    void signalWidgetMenuClickedButtonOptions();
+    void signalWidgetMenuClickedButtonQuit();
 private slots:
-    void slotWidgetMenuPressedButtonAbout(const Qt::MouseButton _mouseButton);
-    void slotWidgetMenuPressedButtonRecords(const Qt::MouseButton _mouseButton);
-    void slotWidgetMenuPressedButtonDrivers(const Qt::MouseButton _mouseButton);
-    void slotWidgetMenuPressedButtonOptions(const Qt::MouseButton _mouseButton);
-    void slotWidgetMenuPressedButtonQuit(const Qt::MouseButton _mouseButton);
+    void slotWidgetMenuClickedButtonAbout();
+    void slotWidgetMenuClickedButtonDrivers();
+    void slotWidgetMenuClickedButtonRecords();
+    void slotWidgetMenuClickedButtonOptions();
+    void slotWidgetMenuClickedButtonQuit();
 private:
     QString stringDriver;
     QString stringSessionTime;

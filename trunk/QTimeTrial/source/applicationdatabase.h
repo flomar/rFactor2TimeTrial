@@ -7,8 +7,23 @@
 
 class Application;
 
+class SqlRelationalTableModel : public QSqlRelationalTableModel {
+    Q_OBJECT
+public:
+    SqlRelationalTableModel(QObject *_parent = 0);
+    virtual ~SqlRelationalTableModel();
+public:
+    virtual QHash<int, QByteArray> roleNames() const;
+public:
+    virtual QVariant data(const QModelIndex &_index, int _role) const;
+};
+
 class ApplicationDatabase : public QObject {
     Q_OBJECT
+    Q_PROPERTY(QVariantMap currentDriver READ getCurrentDriver WRITE setCurrentDriver NOTIFY signalChangedCurrentDriver)
+    Q_PROPERTY(QVariantMap currentSession READ getCurrentSession WRITE setCurrentSession NOTIFY signalChangedCurrentSession)
+    Q_PROPERTY(QVariantMap currentRun READ getCurrentRun WRITE setCurrentRun NOTIFY signalChangedCurrentRun)
+    Q_PROPERTY(QVariantMap currentLap READ getCurrentLap WRITE setCurrentLap NOTIFY signalChangedCurrentLap)
 public:
     ApplicationDatabase(Application *_application);
     virtual ~ApplicationDatabase();
@@ -18,38 +33,23 @@ public:
     bool open(const QString &_fileName);
     bool close();
 private:
-    bool readOptions();
-    bool readDrivers();
-    bool readSessions();
-    bool readRuns();
-    bool readLaps();
-private:
-    bool writeOptions() const;
-    bool writeDrivers() const;
-    bool writeSessions() const;
-    bool writeRuns() const;
-    bool writeLaps() const;
+    void sanitize();
 private:
     QSqlDatabase database;
 private:
-    void deleteData();
-private:
-    void autoDeleteSessionsAndRunsAndLaps();
-    void autoDeleteSessions();
-    void autoDeleteRuns();
-    void autoDeleteLaps();
-private:
-    QMap<int64_t, Options*> mapOptions;
-    QMap<int64_t, Driver*> mapDrivers;
-    QMap<int64_t, Session*> mapSessions;
-    QMap<int64_t, Run*> mapRuns;
-    QMap<int64_t, Lap*> mapLaps;
+    QSqlRelationalTableModel *modelOptions;
+    QSqlRelationalTableModel *modelDrivers;
+    QSqlRelationalTableModel *modelSessions;
+    QSqlRelationalTableModel *modelRuns;
+    QSqlRelationalTableModel *modelLaps;
+    QSqlRelationalTableModel *modelRecords;
 public:
-    const QMap<int64_t, Options*> &getMapOptions() const { return mapOptions; }
-    const QMap<int64_t, Driver*> &getMapDrivers() const { return mapDrivers; }
-    const QMap<int64_t, Session*> &getMapSessions() const { return mapSessions; }
-    const QMap<int64_t, Run*> &getMapRuns() const { return mapRuns; }
-    const QMap<int64_t, Lap*> &getMapLaps() const { return mapLaps; }
+    QSqlRelationalTableModel *getModelOptions() { return modelOptions; }
+    QSqlRelationalTableModel *getModelDrivers() { return modelDrivers; }
+    QSqlRelationalTableModel *getModelSessions() { return modelSessions; }
+    QSqlRelationalTableModel *getModelRuns() { return modelRuns; }
+    QSqlRelationalTableModel *getModelLaps() { return modelLaps; }
+    QSqlRelationalTableModel *getModelRecords() { return modelRecords; }
 private slots:
     void slotReceivedClientServerMessage(const ClientServerMessage &_message);
 private:
@@ -61,45 +61,61 @@ private:
 signals:
     void signalReceivedClientServerMessage(const ClientServerMessage &_message);
 private:
-    Driver *currentDriver;
-    Session *currentSession;
-    Run *currentRun;
-    Lap *currentLap;
+    QVariantMap currentDriver;
+    QVariantMap currentSession;
+    QVariantMap currentRun;
+    QVariantMap currentLap;
 public:
-    const Driver *getCurrentDriver() const { return currentDriver; }
-    const Session *getCurrentSession() const { return currentSession; }
-    const Run *getCurrentRun() const { return currentRun; }
-    const Lap *getCurrentLap() const { return currentLap; }
+    const QVariantMap &getCurrentDriver() const { return currentDriver; }
+    const QVariantMap &getCurrentSession() const { return currentSession; }
+    const QVariantMap &getCurrentRun() const { return currentRun; }
+    const QVariantMap &getCurrentLap() const { return currentLap; }
+public:
+    void setCurrentDriver(const QVariantMap &_currentDriver) { currentDriver = _currentDriver; emit signalChangedCurrentDriver(); }
+    void setCurrentSession(const QVariantMap &_currentSession) { currentSession = _currentSession; emit signalChangedCurrentSession(); }
+    void setCurrentRun(const QVariantMap &_currentRun) { currentRun = _currentRun; emit signalChangedCurrentRun(); }
+    void setCurrentLap(const QVariantMap &_currentLap) { currentLap = _currentLap; emit signalChangedCurrentLap(); }
+signals:
+    void signalChangedCurrentDriver();
+    void signalChangedCurrentSession();
+    void signalChangedCurrentRun();
+    void signalChangedCurrentLap();
+signals:
+    void signalSelectCurrentDriver(const qint64 _identifierCurrentDriver);
+    void signalCreateDriver(const QString &_nameDriver);
+    void signalDeleteDriver(const qint64 _identifierDriver);
+    void signalUpdateDrivers();
+    void signalDeleteRecord(const qint64 _identifierRecord);
+    void signalUpdateRecords(const bool _showOnlyCurrentDriver, const bool _showOnlyCurrentTrack, const bool _showOnlyCurrentCar);
+private slots:
+    void slotSelectCurrentDriver(const qint64 _identifierCurrentDriver);
+    void slotCreateDriver(const QString &_nameDriver);
+    void slotDeleteDriver(const qint64 _identifierDriver);
+    void slotUpdateDrivers();
+    void slotDeleteRecord(const qint64 _identifierRecord);
+    void slotUpdateRecords(const bool _showOnlyCurrentDriver, const bool _showOnlyCurrentTrack, const bool _showOnlyCurrentCar);
 private:
-    int64_t lapTimeLast;
-    int64_t lapTimePersonalBest;
-    int64_t lapTimeAbsoluteBest;
+    qint64 lapTimeLast;
+    qint64 lapTimePersonalBest;
+    qint64 lapTimeAbsoluteBest;
 public:
-    int64_t getLapTimeLast() const { return lapTimeLast; }
-    int64_t getLapTimePersonalBest() const { return lapTimePersonalBest; }
-    int64_t getLapTimeAbsoluteBest() const { return lapTimeAbsoluteBest; }
+    qint64 getLapTimeLast() const { return lapTimeLast; }
+    qint64 getLapTimePersonalBest() const { return lapTimePersonalBest; }
+    qint64 getLapTimeAbsoluteBest() const { return lapTimeAbsoluteBest; }
 private:
     bool initializedLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest;
     void initializeLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest();
-    void updateLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest(const Lap *_lap);
+    void updateLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest(const QVariantMap &_lap);
 private:
     // for the current setup (track, car, tires), this function extracts
     // the personal best lap time (for the current driver) and the absolute
     // best lap time (for any driver); if a result value is zero, then the
     // corresponding lap time could not be extracted
-    void getLapTimePersonalBestAndLapTimeAbsoluteBest(int64_t &_lapTimePersonalBest, int64_t &_lapTimeAbsoluteBest) const;
+    void getLapTimePersonalBestAndLapTimeAbsoluteBest(qint64 &_lapTimePersonalBest, qint64 &_lapTimeAbsoluteBest);
 signals:
     // this signal is emitted after each finished lap to temporarily
     // display some additional information to the user in the HUD
     void signalLapInformation(const bool _isPersonalBest, const bool _isAbsoluteBest, const QString &_infoLapTime, const QString &_infoLapTimePersonalBest, const QString &_infoLapTimeAbsoluteBest);
-public:
-    void setCurrentDriver(const QString &_name);
-public:
-    QString getCurrentTrackName() const;
-    QVector<Record> getVectorRecordsUnsortedAndUnfiltered() const;
-public:
-    bool createDriver(const QString &_name);
-    bool deleteDriver(const QString &_name);
 private:
     // ATTENTION: these are internal variables used to find out whether
     // a new lap has been started or not based on the "lapNumber" variable
@@ -108,10 +124,10 @@ private:
     // represents the lap number in which our calculations are started;
     // the "lnsTreshold" variable is required to cope with rF2's antics
     // of starting new laps right after the box has been left
-    int64_t lnc;
-    int64_t lno;
-    int64_t lns;
-    const int64_t lnsThreshold;
+    qint64 lnc;
+    qint64 lno;
+    qint64 lns;
+    const qint64 lnsThreshold;
 };
 
 #endif

@@ -35,15 +35,6 @@ bool Application::initialize() {
     applicationDatabase = new ApplicationDatabase(this);
     applicationServer = new ApplicationServer(this);
     applicationGui = new ApplicationGui(this);
-    // create application QML engine
-    qmlApplicationEngine = new QQmlApplicationEngine(this);
-    // register individual components with application QML engine
-    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplication", this);
-    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationDatabase", applicationDatabase);
-    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationServer", applicationServer);
-    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationGui", applicationGui);
-    // initialize application QML engine
-    qmlApplicationEngine->load(QUrl("qrc:/qml/application.qml"));
     // connect signals and slots between server and database: due to the design of this
     // application it is VERY IMPORTANT that messages from the server are first processed
     // by the database; after the database is finished processing the messages, it forwards
@@ -67,8 +58,22 @@ bool Application::initialize() {
         messageBox.exec();
         return false;
     }
-    // initial update for the GUI
-    applicationGui->update();
+    // create application QML engine
+    qmlApplicationEngine = new QQmlApplicationEngine(this);
+    // register individual components with application QML engine
+    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplication", this);
+    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationDatabase", applicationDatabase);
+    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationServer", applicationServer);
+    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationGui", applicationGui);
+    // register database models with application QML engine
+    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationDatabaseModelOptions", applicationDatabase->getModelOptions());
+    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationDatabaseModelDrivers", applicationDatabase->getModelDrivers());
+    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationDatabaseModelSessions", applicationDatabase->getModelSessions());
+    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationDatabaseModelRuns", applicationDatabase->getModelRuns());
+    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationDatabaseModelLaps", applicationDatabase->getModelLaps());
+    qmlApplicationEngine->rootContext()->setContextProperty("QTimeTrialApplicationDatabaseModelRecords", applicationDatabase->getModelRecords());
+    // initialize application QML engine
+    qmlApplicationEngine->load(QUrl("qrc:/qml/application.qml"));
     return true;
 }
 

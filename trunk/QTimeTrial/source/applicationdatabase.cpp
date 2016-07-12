@@ -3,13 +3,49 @@
 #include <applicationdatabase.h>
 #include <application.h>
 
+SqlRelationalTableModel::SqlRelationalTableModel(QObject *_parent) :
+    QSqlRelationalTableModel(_parent) {
+
+}
+
+SqlRelationalTableModel::~SqlRelationalTableModel() {
+
+}
+
+QHash<int, QByteArray> SqlRelationalTableModel::roleNames() const {
+    QHash<int, QByteArray> hashRoleNames = QSqlRelationalTableModel::roleNames();
+    for(int indexColumn=0; indexColumn<columnCount(); indexColumn++) {
+        hashRoleNames[Qt::UserRole + indexColumn + 1] = headerData(indexColumn, Qt::Horizontal).toByteArray();
+    }
+    return hashRoleNames;
+}
+
+QVariant SqlRelationalTableModel::data(const QModelIndex &_index, int _role) const {
+    if(_index.row() >= rowCount()) {
+        return QVariant(QString::null);
+    }
+    else if(_role < Qt::UserRole) {
+        return QSqlRelationalTableModel::data(_index, _role);
+    }
+    else {
+        for(int indexColumn=0; indexColumn<columnCount(); indexColumn++) {
+            if(relation(indexColumn).isValid()) {
+                return record(_index.row()).value(QString(roleNames().value(_role)));
+            }
+        }
+    }
+    return QSqlRelationalTableModel::data(index(_index.row(), _role - Qt::UserRole - 1));
+}
+
 ApplicationDatabase::ApplicationDatabase(Application *_application) :
     QObject(_application),
     application(_application),
-    currentDriver(0),
-    currentSession(0),
-    currentRun(0),
-    currentLap(0),
+    modelOptions(0),
+    modelDrivers(0),
+    modelSessions(0),
+    modelRuns(0),
+    modelLaps(0),
+    modelRecords(0),
     lapTimeLast(0),
     lapTimePersonalBest(0),
     lapTimeAbsoluteBest(0),
@@ -18,353 +54,99 @@ ApplicationDatabase::ApplicationDatabase(Application *_application) :
     lno(0),
     lns(0),
     lnsThreshold(5000) {
-
+    // connect signals and slots
+    connect(this, SIGNAL(signalSelectCurrentDriver(qint64)), this, SLOT(slotSelectCurrentDriver(qint64)));
+    connect(this, SIGNAL(signalCreateDriver(QString)), this, SLOT(slotCreateDriver(QString)));
+    connect(this, SIGNAL(signalDeleteDriver(qint64)), this, SLOT(slotDeleteDriver(qint64)));
+    connect(this, SIGNAL(signalUpdateDrivers()), this, SLOT(slotUpdateDrivers()));
+    connect(this, SIGNAL(signalDeleteRecord(qint64)), this, SLOT(slotDeleteRecord(qint64)));
+    connect(this, SIGNAL(signalUpdateRecords(bool,bool,bool)), this, SLOT(slotUpdateRecords(bool,bool,bool)));
 }
 
 ApplicationDatabase::~ApplicationDatabase() {
-
+    // disconnect signals and slots
+    disconnect(this, SIGNAL(signalSelectCurrentDriver(qint64)), this, SLOT(slotSelectCurrentDriver(qint64)));
+    disconnect(this, SIGNAL(signalCreateDriver(QString)), this, SLOT(slotCreateDriver(QString)));
+    disconnect(this, SIGNAL(signalDeleteDriver(qint64)), this, SLOT(slotDeleteDriver(qint64)));
+    disconnect(this, SIGNAL(signalUpdateDrivers()), this, SLOT(slotUpdateDrivers()));
+    disconnect(this, SIGNAL(signalDeleteRecord(qint64)), this, SLOT(slotDeleteRecord(qint64)));
+    disconnect(this, SIGNAL(signalUpdateRecords(bool,bool,bool)), this, SLOT(slotUpdateRecords(bool,bool,bool)));
 }
 
 bool ApplicationDatabase::open(const QString &_fileName) {
     database = QSqlDatabase::addDatabase("QSQLITE");
     database.setDatabaseName(_fileName);
     if(!database.open()) return false;
-    // clear existing data
-    deleteData();
-    // read data
-    if(!readOptions()) return false;
-    if(!readDrivers()) return false;
-    if(!readSessions()) return false;
-    if(!readRuns()) return false;
-    if(!readLaps()) return false;
+    // create models (NOTE: derived, non-standard-Qt class)
+    if(!modelOptions) modelOptions = new SqlRelationalTableModel(this);
+    if(!modelDrivers) modelDrivers = new SqlRelationalTableModel(this);
+    if(!modelSessions) modelSessions = new SqlRelationalTableModel(this);
+    if(!modelRuns) modelRuns = new SqlRelationalTableModel(this);
+    if(!modelLaps) modelLaps = new SqlRelationalTableModel(this);
+    if(!modelRecords) modelRecords = new SqlRelationalTableModel(this);
+    // initialize models
+    modelOptions->setTable("Options");
+    modelDrivers->setTable("Drivers");
+    modelSessions->setTable("Sessions");
+    modelRuns->setTable("Runs");
+    modelLaps->setTable("Laps");
+    modelRecords->setTable("Records");
+    // select models
+    if(!modelOptions->select()) return false;
+    if(!modelDrivers->select()) return false;
+    if(!modelSessions->select()) return false;
+    if(!modelRuns->select()) return false;
+    if(!modelLaps->select()) return false;
+    if(!modelRecords->select()) return false;
     return true;
 }
 
 bool ApplicationDatabase::close() {
-    // depending on the options we need to do some special stuff
-    // before actually writing the database
-    autoDeleteSessionsAndRunsAndLaps();
-    // write data
-    if(!writeOptions()) return false;
-    if(!writeDrivers()) return false;
-    if(!writeSessions()) return false;
-    if(!writeRuns()) return false;
-    if(!writeLaps()) return false;
+    sanitize();
     database.close();
     return true;
 }
 
-bool ApplicationDatabase::readOptions() {
-    QSqlQuery query("SELECT * FROM Options");
-    while(query.next()) {
-        if(!query.isValid()) return false;
-        Options *options = new Options;
-        QSqlRecord record = query.record();
-        options->identifier = record.value("Identifier").toLongLong();
-        options->autoDeleteSessions = record.value("AutoDeleteSessions").toLongLong();
-        options->autoDeleteRuns = record.value("AutoDeleteRuns").toLongLong();
-        options->autoDeleteLaps = record.value("AutoDeleteLaps").toLongLong();
-        mapOptions.insert(options->identifier, options);
+void ApplicationDatabase::sanitize() {
+    // find all runs with laps
+    QSet<qint64> setIdentifiersRunsWithLaps;
+    for(int indexRowLap=0; indexRowLap<modelLaps->rowCount(); indexRowLap++) {
+        const QSqlRecord recordLap = modelLaps->record(indexRowLap);
+        const QVariantMap lap = Utilities::Database::convertSqlRecordToVariantMap(recordLap);
+        setIdentifiersRunsWithLaps.insert(lap.value("IdentifierRun").toLongLong());
     }
-    return true;
-}
-
-bool ApplicationDatabase::readDrivers() {
-    QSqlQuery query("SELECT * FROM Drivers");
-    while(query.next()) {
-        if(!query.isValid()) return false;
-        Driver *driver = new Driver;
-        QSqlRecord record = query.record();
-        driver->identifier = record.value("Identifier").toLongLong();
-        driver->name = record.value("Name").toString();
-        mapDrivers.insert(driver->identifier, driver);
-    }
-    return true;
-}
-
-bool ApplicationDatabase::readSessions() {
-    QSqlQuery query("SELECT * FROM Sessions");
-    while(query.next()) {
-        if(!query.isValid()) return false;
-        Session *session = new Session;
-        QSqlRecord record = query.record();
-        session->identifier = record.value("Identifier").toLongLong();
-        session->timeStart = record.value("TimeStart").toLongLong();
-        session->timeFinish = record.value("TimeFinish").toLongLong();
-        session->nameTrack = record.value("NameTrack").toString();
-        session->nameCar = record.value("NameCar").toString();
-        mapSessions.insert(session->identifier, session);
-    }
-    return true;
-}
-
-bool ApplicationDatabase::readRuns() {
-    QSqlQuery query("SELECT * FROM Runs");
-    while(query.next()) {
-        if(!query.isValid()) return false;
-        Run *run = new Run;
-        QSqlRecord record = query.record();
-        run->identifier = record.value("Identifier").toLongLong();
-        run->identifierDriver = record.value("IdentifierDriver").toLongLong();
-        run->identifierSession = record.value("IdentifierSession").toLongLong();
-        run->timeStart = record.value("TimeStart").toLongLong();
-        run->timeFinish = record.value("TimeFinish").toLongLong();
-        run->nameFrontTireCompound = record.value("NameFrontTireCompound").toString();
-        run->nameRearTireCompound = record.value("NameRearTireCompound").toString();
-        mapRuns.insert(run->identifier, run);
-    }
-    return true;
-}
-
-bool ApplicationDatabase::readLaps() {
-    QSqlQuery query("SELECT * FROM Laps");
-    while(query.next()) {
-        if(!query.isValid()) return false;
-        Lap *lap = new Lap;
-        QSqlRecord record = query.record();
-        lap->identifier = record.value("Identifier").toLongLong();
-        lap->identifierRun = record.value("IdentifierRun").toLongLong();
-        lap->time = record.value("Time").toLongLong();
-        mapLaps.insert(lap->identifier, lap);
-    }
-    return true;
-}
-
-bool ApplicationDatabase::writeOptions() const {
-    QSqlQuery queryDelete;
-    if(!queryDelete.exec("DELETE FROM Options"))
-        return false;
-    for(QMap<int64_t, Options*>::const_iterator iter=mapOptions.begin(); iter!=mapOptions.end(); iter++) {
-        const Options *options = iter.value();
-        if(!options) return false;
-        QSqlQuery query;
-        query.prepare("INSERT INTO Options(Identifier, AutoDeleteSessions, AutoDeleteRuns, AutoDeleteLaps) VALUES(:identifier, :autoDeleteSessions, :autoDeleteRuns, :autoDeleteLaps)");
-        query.bindValue(":identifier", QVariant::fromValue(options->identifier));
-        query.bindValue(":autoDeleteSessions", QVariant::fromValue(options->autoDeleteSessions));
-        query.bindValue(":autoDeleteRuns", QVariant::fromValue(options->autoDeleteRuns));
-        query.bindValue(":autoDeleteLaps", QVariant::fromValue(options->autoDeleteLaps));
-        if(!query.exec())
-            return false;
-    }
-    return true;
-}
-
-bool ApplicationDatabase::writeDrivers() const {
-    QSqlQuery queryDelete;
-    if(!queryDelete.exec("DELETE FROM Drivers"))
-        return false;
-    for(QMap<int64_t, Driver*>::const_iterator iter=mapDrivers.begin(); iter!=mapDrivers.end(); iter++) {
-        const Driver *driver = iter.value();
-        if(!driver) return false;
-        QSqlQuery query;
-        query.prepare("INSERT INTO Drivers(Identifier, Name) VALUES(:identifier, :name)");
-        query.bindValue(":identifier", QVariant::fromValue(driver->identifier));
-        query.bindValue(":name", driver->name);
-        if(!query.exec())
-            return false;
-    }
-    return true;
-}
-
-bool ApplicationDatabase::writeSessions() const {
-    QSqlQuery queryDelete;
-    if(!queryDelete.exec("DELETE FROM Sessions"))
-        return false;
-    for(QMap<int64_t, Session*>::const_iterator iter=mapSessions.begin(); iter!=mapSessions.end(); iter++) {
-        const Session *session = iter.value();
-        QSqlQuery query;
-        query.prepare("INSERT INTO Sessions(Identifier, TimeStart, TimeFinish, NameTrack, NameCar) VALUES(:identifier, :timeStart, :timeFinish, :nameTrack, :nameCar)");
-        query.bindValue(":identifier", QVariant::fromValue(session->identifier));
-        query.bindValue(":timeStart", QVariant::fromValue(session->timeStart));
-        query.bindValue(":timeFinish", QVariant::fromValue(session->timeFinish));
-        query.bindValue(":nameTrack", session->nameTrack);
-        query.bindValue(":nameCar", session->nameCar);
-        if(!query.exec())
-            return false;
-    }
-    return true;
-}
-
-bool ApplicationDatabase::writeRuns() const {
-    QSqlQuery queryDelete;
-    if(!queryDelete.exec("DELETE FROM Runs"))
-        return false;
-    for(QMap<int64_t, Run*>::const_iterator iter=mapRuns.begin(); iter!=mapRuns.end(); iter++) {
-        const Run *run = iter.value();
-        QSqlQuery query;
-        query.prepare("INSERT INTO Runs(Identifier, IdentifierDriver, IdentifierSession, TimeStart, TimeFinish, NameFrontTireCompound, NameRearTireCompound) VALUES(:identifier, :identifierDriver, :identifierSession, :timeStart, :timeFinish, :nameFrontTireCompound, :nameRearTireCompound)");
-        query.bindValue(":identifier", QVariant::fromValue(run->identifier));
-        query.bindValue(":identifierDriver", QVariant::fromValue(run->identifierDriver));
-        query.bindValue(":identifierSession", QVariant::fromValue(run->identifierSession));
-        query.bindValue(":timeStart", QVariant::fromValue(run->timeStart));
-        query.bindValue(":timeFinish", QVariant::fromValue(run->timeFinish));
-        query.bindValue(":nameFrontTireCompound", run->nameFrontTireCompound);
-        query.bindValue(":nameRearTireCompound", run->nameRearTireCompound);
-        if(!query.exec())
-            return false;
-    }
-    return true;
-}
-
-bool ApplicationDatabase::writeLaps() const {
-    QSqlQuery queryDelete;
-    if(!queryDelete.exec("DELETE FROM Laps"))
-        return false;
-    for(QMap<int64_t, Lap*>::const_iterator iter=mapLaps.begin(); iter!=mapLaps.end(); iter++) {
-        const Lap *lap = iter.value();
-        QSqlQuery query;
-        query.prepare("INSERT INTO Laps(Identifier, IdentifierRun, Time) VALUES(:identifier, :identifierRun, :time)");
-        query.bindValue(":identifier", QVariant::fromValue(lap->identifier));
-        query.bindValue(":identifierRun", QVariant::fromValue(lap->identifierRun));
-        query.bindValue(":time", QVariant::fromValue(lap->time));
-        if(!query.exec())
-            return false;
-    }
-    return true;
-}
-
-void ApplicationDatabase::deleteData() {
-    for(QMap<int64_t, Driver*>::const_iterator iter=mapDrivers.begin(); iter!=mapDrivers.end(); iter++) {
-        const Driver *driver = iter.value();
-        delete driver;
-    }
-    for(QMap<int64_t, Session*>::const_iterator iter=mapSessions.begin(); iter!=mapSessions.end(); iter++) {
-        const Session *session = iter.value();
-        delete session;
-    }
-    for(QMap<int64_t, Run*>::const_iterator iter=mapRuns.begin(); iter!=mapRuns.end(); iter++) {
-        const Run *run = iter.value();
-        delete run;
-    }
-    for(QMap<int64_t, Lap*>::const_iterator iter=mapLaps.begin(); iter!=mapLaps.end(); iter++) {
-        const Lap *lap = iter.value();
-        delete lap;
-    }
-    mapDrivers.clear();
-    mapSessions.clear();
-    mapRuns.clear();
-    mapLaps.clear();
-}
-
-void ApplicationDatabase::autoDeleteSessionsAndRunsAndLaps() {
-    // the order of execution is important here: first we need to
-    // auto-delete the laps, then the runs, and then the sessions,
-    // otherwise unwanted artifacts may remain in the database
-    if(!mapOptions.isEmpty()) {
-        const Options *options = mapOptions.values().first();
-        if(options) {
-            // auto-delete laps: for every run, keep only the very best lap
-            if(options->autoDeleteLaps == 1) {
-                autoDeleteLaps();
-            }
-            // auto-delete runs: for every session, keep only non-empty runs
-            if(options->autoDeleteRuns == 1) {
-                autoDeleteRuns();
-            }
-            // auto-delete sessions: keep only non-empty sessions
-            if(options->autoDeleteSessions == 1) {
-                autoDeleteSessions();
-            }
+    // find all runs without laps
+    QSet<qint64> setIdentifiersRunsWithoutLaps;
+    for(int indexRowRun=0; indexRowRun<modelRuns->rowCount(); indexRowRun++) {
+        const QSqlRecord recordRun = modelRuns->record(indexRowRun);
+        const QVariantMap run = Utilities::Database::convertSqlRecordToVariantMap(recordRun);
+        if(!setIdentifiersRunsWithLaps.contains(run.value("Identifier").toLongLong())) {
+            setIdentifiersRunsWithoutLaps.insert(run.value("Identifier").toLongLong());
         }
     }
-    // now that we have cleared the database of unwanted remainders,
-    // we also need to make sure we don't introduce corrupted data;
-    // one form of corrupted data are sessions which don't have a
-    // valid finish time, for example when the user quits the
-    // application when in the box (at this point, naturally,
-    // a session is currently running); therefore we go through
-    // all remaining sessions and correct the finish times if
-    // necessary (finish times of 0 get corrected to the
-    // current time)
-    const int64_t timeNow = Utilities::Core::getMillisecondsSinceEpoch();
-    foreach(Session *session, mapSessions.values()) {
-        if(session) {
-            if(session->timeFinish == 0) {
-                session->timeFinish = timeNow;
-            }
+    // remove all runs without laps
+    foreach(const qint64 identifierRun, setIdentifiersRunsWithoutLaps.values()) {
+        Utilities::Database::removeRecord(modelRuns, identifierRun);
+    }
+    // find all sessions with runs
+    QSet<qint64> setIdentifiersSessionsWithRuns;
+    for(int indexRowRun=0; indexRowRun<modelRuns->rowCount(); indexRowRun++) {
+        const QSqlRecord recordRun = modelRuns->record(indexRowRun);
+        const QVariantMap run = Utilities::Database::convertSqlRecordToVariantMap(recordRun);
+        setIdentifiersSessionsWithRuns.insert(run.value("IdentifierSession").toLongLong());
+    }
+    // find all sessions without runs
+    QSet<qint64> setIdentifiersSessionsWithoutRuns;
+    for(int indexRowSession=0; indexRowSession<modelSessions->rowCount(); indexRowSession++) {
+        const QSqlRecord recordSession = modelSessions->record(indexRowSession);
+        const QVariantMap session = Utilities::Database::convertSqlRecordToVariantMap(recordSession);
+        if(!setIdentifiersSessionsWithRuns.contains(session.value("Identifier").toLongLong())) {
+            setIdentifiersSessionsWithoutRuns.insert(session.value("Identifier").toLongLong());
         }
     }
-}
-
-void ApplicationDatabase::autoDeleteSessions() {
-    QVector<Session*> vectorSessionsEmpty;
-    foreach(Session *session, mapSessions.values()) {
-        if(session) {
-            bool empty = true;
-            foreach(Run *run, mapRuns.values()) {
-                if(run) {
-                    if(run->identifierSession == session->identifier) {
-                        empty = false;
-                    }
-                }
-            }
-            if(empty) {
-                vectorSessionsEmpty.push_back(session);
-            }
-        }
-    }
-    foreach(Session *session, vectorSessionsEmpty) {
-        if(session) {
-            mapSessions.remove(session->identifier);
-            delete session;
-        }
-    }
-}
-
-void ApplicationDatabase::autoDeleteRuns() {
-    QVector<Run*> vectorRunsEmpty;
-    foreach(Run *run, mapRuns.values()) {
-        if(run) {
-            bool empty = true;
-            foreach(Lap *lap, mapLaps.values()) {
-                if(lap) {
-                    if(lap->identifierRun == run->identifier) {
-                        empty = false;
-                    }
-                }
-            }
-            if(empty) {
-                vectorRunsEmpty.push_back(run);
-            }
-        }
-    }
-    foreach(Run *run, vectorRunsEmpty) {
-        if(run) {
-            mapRuns.remove(run->identifier);
-            delete run;
-        }
-    }
-}
-
-void ApplicationDatabase::autoDeleteLaps() {
-    QVector<Lap*> vectorLaps;
-    QVector<Lap*> vectorLapsToBeDeleted;
-    foreach(Run *run, mapRuns.values()) {
-        if(run) {
-            foreach(Lap *lap, mapLaps.values()) {
-                if(lap) {
-                    if(lap->identifierRun == run->identifier) {
-                        vectorLaps.push_back(lap);
-                    }
-                }
-            }
-            qSort(vectorLaps.begin(), vectorLaps.end(), Lap::lessThanPointers);
-            if(!vectorLaps.isEmpty()) {
-                vectorLaps.pop_front();
-                foreach(Lap *lap, vectorLaps) {
-                    if(lap) {
-                        vectorLapsToBeDeleted.push_back(lap);
-                    }
-                }
-                vectorLaps.clear();
-            }
-        }
-    }
-    foreach(Lap *lap, vectorLapsToBeDeleted) {
-        if(lap) {
-            mapLaps.remove(lap->identifier);
-            delete lap;
-        }
+    // remove all sessions without runs
+    foreach(const qint64 identifierSession, setIdentifiersSessionsWithoutRuns.values()) {
+        Utilities::Database::removeRecord(modelSessions, identifierSession);
     }
 }
 
@@ -394,17 +176,19 @@ void ApplicationDatabase::slotReceivedClientServerMessage(const ClientServerMess
 void ApplicationDatabase::processMessageStartSession(const ClientServerMessage &_message) {
     if(_message.m_type != CLIENT_SERVER_MESSAGE_TYPE_START_SESSION) return;
     // create new session
-    Session *session = new Session();
-    session->identifier = Utilities::Containers::getSmallestAvailableIdentifier<int64_t, Session>(mapSessions);
-    session->timeStart = Utilities::Core::getMillisecondsSinceEpoch();
-    // add session to the database
-    mapSessions.insert(session->identifier, session);
-    // temporarily store current session
-    currentSession = session;
+    QVariantMap newSession;
+    newSession.insert("Identifier", Utilities::Database::createSmallestAvailableIdentifier(modelSessions));
+    newSession.insert("TimeStart", Utilities::Core::getMillisecondsSinceEpoch());
+    newSession.insert("TimeFinish", 0);
+    newSession.insert("NameTrack", QString(QString::null));
+    newSession.insert("NameCar", QString(QString::null));
+    // write new session to database (Identifier, TimeStart, TimeFinish, NameTrack, NameCar)
+    Utilities::Database::addRecord(modelSessions, Utilities::Database::convertVariantMapToSqlRecord(newSession, QStringList() << "Identifier" << "TimeStart" << "TimeFinish" << "NameTrack" << "NameCar"));
     // reset variables
-    currentDriver = 0;
-    currentRun = 0;
-    currentLap = 0;
+    setCurrentDriver(QVariantMap());
+    setCurrentSession(newSession);
+    setCurrentRun(QVariantMap());
+    setCurrentLap(QVariantMap());
     // reset internal variables
     lnc = 0;
     lno = 0;
@@ -416,16 +200,16 @@ void ApplicationDatabase::processMessageStartSession(const ClientServerMessage &
 void ApplicationDatabase::processMessageFinishSession(const ClientServerMessage &_message) {
     if(_message.m_type != CLIENT_SERVER_MESSAGE_TYPE_FINISH_SESSION) return;
     // we need a valid session
-    if(currentSession) {
+    if(!currentSession.isEmpty()) {
         // update current session
-        currentSession->timeFinish = Utilities::Core::getMillisecondsSinceEpoch();
-        // delete current lap if necessary
-        delete currentLap;
+        currentSession.insert("TimeFinish", Utilities::Core::getMillisecondsSinceEpoch());
+        // update current session in database (Identifier, TimeStart, TimeFinish, NameTrack, NameCar)
+        Utilities::Database::setRecord(modelSessions, Utilities::Database::convertVariantMapToSqlRecord(currentSession, QStringList() << "Identifier" << "TimeStart" << "TimeFinish" << "NameTrack" << "NameCar"));
         // reset variables
-        currentDriver = 0;
-        currentSession = 0;
-        currentRun = 0;
-        currentLap = 0;
+        setCurrentDriver(QVariantMap());
+        setCurrentSession(QVariantMap());
+        setCurrentRun(QVariantMap());
+        setCurrentLap(QVariantMap());
         // reset internal variables
         lnc = 0;
         lno = 0;
@@ -438,20 +222,22 @@ void ApplicationDatabase::processMessageFinishSession(const ClientServerMessage 
 void ApplicationDatabase::processMessageStartRun(const ClientServerMessage &_message) {
     if(_message.m_type != CLIENT_SERVER_MESSAGE_TYPE_START_RUN) return;
     // we need a valid driver and a valid session
-    if(currentDriver && currentSession) {
+    if(!currentDriver.isEmpty() && !currentSession.isEmpty()) {
         // create new run
-        Run *run = new Run();
-        run->identifier = Utilities::Containers::getSmallestAvailableIdentifier<int64_t, Run>(mapRuns);
-        run->identifierDriver = currentDriver->identifier;
-        run->identifierSession = currentSession->identifier;
-        run->timeStart = Utilities::Core::getMillisecondsSinceEpoch();
-        // add run to the database
-        mapRuns.insert(run->identifier, run);
-        // temporarily store current run
-        currentRun = run;
+        QVariantMap newRun;
+        newRun.insert("Identifier", Utilities::Database::createSmallestAvailableIdentifier(modelRuns));
+        newRun.insert("IdentifierDriver", currentDriver.value("Identifier").toLongLong());
+        newRun.insert("IdentifierSession", currentSession.value("Identifier").toLongLong());
+        newRun.insert("TimeStart", Utilities::Core::getMillisecondsSinceEpoch());
+        newRun.insert("TimeFinish", 0);
+        newRun.insert("NameFrontTireCompound", QString(QString::null));
+        newRun.insert("NameRearTireCompound", QString(QString::null));
+        // write new run to database (Identifier, IdentifierDriver, IdentifierSession, TimeStart, TimeFinish, NameFrontTireCompound, NameRearTireCompound)
+        Utilities::Database::addRecord(modelRuns, Utilities::Database::convertVariantMapToSqlRecord(newRun, QStringList() << "Identifier" << "IdentifierDriver" << "IdentifierSession" << "TimeStart" << "TimeFinish" << "NameFrontTireCompound" << "NameRearTireCompound"));
         // reset variables
-        currentLap = 0;
-        // reset variables
+        setCurrentRun(newRun);
+        setCurrentLap(QVariantMap());
+        // reset internal variables
         initializedLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest = false;
     }
     // emit signal to other internal components
@@ -461,14 +247,14 @@ void ApplicationDatabase::processMessageStartRun(const ClientServerMessage &_mes
 void ApplicationDatabase::processMessageFinishRun(const ClientServerMessage &_message) {
     if(_message.m_type != CLIENT_SERVER_MESSAGE_TYPE_FINISH_RUN) return;
     // we need a valid run
-    if(currentRun) {
+    if(!currentRun.isEmpty()) {
         // update current run
-        currentRun->timeFinish = Utilities::Core::getMillisecondsSinceEpoch();
-        // delete current lap if necessary
-        delete currentLap;
+        currentRun.insert("TimeFinish", Utilities::Core::getMillisecondsSinceEpoch());
+        // update current run in database (Identifier, IdentifierDriver, IdentifierSession, TimeStart, TimeFinish, NameFrontTireCompound, NameRearTireCompound)
+        Utilities::Database::setRecord(modelRuns, Utilities::Database::convertVariantMapToSqlRecord(currentRun, QStringList() << "Identifier" << "IdentifierDriver" << "IdentifierSession" << "TimeStart" << "TimeFinish" << "NameFrontTireCompound" << "NameRearTireCompound"));
         // reset variables
-        currentRun = 0;
-        currentLap = 0;
+        setCurrentRun(QVariantMap());
+        setCurrentLap(QVariantMap());
     }
     // emit signal to other internal components
     emit signalReceivedClientServerMessage(_message);
@@ -476,26 +262,32 @@ void ApplicationDatabase::processMessageFinishRun(const ClientServerMessage &_me
 
 void ApplicationDatabase::processMessageUpdateTelemetry(const ClientServerMessage &_message) {
     if(_message.m_type != CLIENT_SERVER_MESSAGE_TYPE_UPDATE_TELEMETRY) return;
-    // acquire data from the message
-    if(currentSession) {
-        const QString nameTrackNew = _message.m_nameTrack;
-        const QString nameCarNew = _message.m_nameCar;
-        if(!nameTrackNew.isEmpty() && nameTrackNew != currentSession->nameTrack)
-            currentSession->nameTrack = nameTrackNew;
-        if(!nameCarNew.isEmpty() && nameCarNew != currentSession->nameCar)
-            currentSession->nameCar = nameCarNew;
+    // acquire data from the message (session-specific)
+    if(!currentSession.isEmpty()) {
+        const QString nameTrack = _message.m_nameTrack;
+        const QString nameCar = _message.m_nameCar;
+        if(!nameTrack.isEmpty() && nameTrack != currentSession.value("NameTrack").toString() && !nameCar.isEmpty() && nameCar != currentSession.value("NameCar").toString()) {
+            // update current session
+            currentSession.insert("NameTrack", nameTrack);
+            currentSession.insert("NameCar", nameCar);
+            // update current session in database (Identifier, TimeStart, TimeFinish, NameTrack, NameCar)
+            Utilities::Database::setRecord(modelSessions, Utilities::Database::convertVariantMapToSqlRecord(currentSession, QStringList() << "Identifier" << "TimeStart" << "TimeFinish" << "NameTrack" << "NameCar"));
+        }
     }
-    // acquire data from the message
-    if(currentRun) {
-        const QString nameFrontTireCompoundNew = _message.m_nameFrontTireCompound;
-        const QString nameRearTireCompoundNew = _message.m_nameRearTireCompound;
-        if(!nameFrontTireCompoundNew.isEmpty() && nameFrontTireCompoundNew != currentRun->nameFrontTireCompound)
-            currentRun->nameFrontTireCompound = nameFrontTireCompoundNew;
-        if(!nameRearTireCompoundNew.isEmpty() && nameRearTireCompoundNew != currentRun->nameRearTireCompound)
-            currentRun->nameRearTireCompound = nameRearTireCompoundNew;
+    // acquire data from the message (run-specific)
+    if(!currentRun.isEmpty()) {
+        const QString nameFrontTireCompound = _message.m_nameFrontTireCompound;
+        const QString nameRearTireCompound = _message.m_nameRearTireCompound;
+        if(!nameFrontTireCompound.isEmpty() && nameFrontTireCompound != currentRun.value("NameFrontTireCompound").toString() && !nameRearTireCompound.isEmpty() && nameRearTireCompound != currentRun.value("NameRearTireCompound").toString()) {
+            // update current run
+            currentRun.insert("NameFrontTireCompound", nameFrontTireCompound);
+            currentRun.insert("NameRearTireCompound", nameRearTireCompound);
+            // update current run in database (Identifier, IdentifierDriver, IdentifierSession, TimeStart, TimeFinish, NameFrontTireCompound, NameRearTireCompound)
+            Utilities::Database::setRecord(modelRuns, Utilities::Database::convertVariantMapToSqlRecord(currentRun, QStringList() << "Identifier" << "IdentifierDriver" << "IdentifierSession" << "TimeStart" << "TimeFinish" << "NameFrontTireCompound" << "NameRearTireCompound"));
+        }
     }
     // we need a valid session and a valid run
-    if(currentSession && currentRun) {
+    if(!currentSession.isEmpty() && !currentRun.isEmpty()) {
         // IMPORTANT: initializing the following does not work unless
         // we have a valid session and a valid run, but it should be
         // called only once (the control variable is reset to false
@@ -507,11 +299,11 @@ void ApplicationDatabase::processMessageUpdateTelemetry(const ClientServerMessag
         // do some magic with internal variables to find out
         // when exactly a lap has been started; see header
         // file for some more explanation
-        const int64_t now = Utilities::Core::getMillisecondsSinceEpoch();
+        const qint64 now = Utilities::Core::getMillisecondsSinceEpoch();
         lnc = _message.m_lapNumber;
         if(lnc > lno) {
             lns = 0;
-            if(now - currentRun->timeStart > lnsThreshold) {
+            if(now - currentRun.value("TimeStart").toLongLong() > lnsThreshold) {
                 lns = lnc;
             }
             lno = lnc;
@@ -520,41 +312,181 @@ void ApplicationDatabase::processMessageUpdateTelemetry(const ClientServerMessag
         const qint64 elapsedTime = _message.m_elapsedTime;
         const qint64 elapsedTimeLapStart = _message.m_elapsedTimeLapStart;
         // check whether a new lap has been started (without an already existing one)
-        if(!currentLap && lns == lnc && lns != 0) {
-            // create a new lap
-            Lap *lap = new Lap();
-            lap->identifier = Utilities::Containers::getSmallestAvailableIdentifier<int64_t, Lap>(mapLaps);
-            lap->identifierRun = currentRun->identifier;
-            lap->elapsedTime = elapsedTime;
-            lap->elapsedTimeStart = elapsedTimeLapStart;
-            lap->time = lap->elapsedTime - lap->elapsedTimeStart;
-            currentLap = lap;
+        if(currentLap.isEmpty() && lns == lnc && lns != 0) {
+            // create new lap
+            QVariantMap newLap;
+            newLap.insert("Identifier", Utilities::Database::createSmallestAvailableIdentifier(modelLaps));
+            newLap.insert("IdentifierRun", currentRun.value("Identifier").toLongLong());
+            newLap.insert("ElapsedTimeStart", elapsedTimeLapStart);
+            // update current lap
+            currentLap = newLap;
         }
         // check whether a new lap has been started (with an already existing one)
-        else if(currentLap && elapsedTimeLapStart != currentLap->elapsedTimeStart) {
-            // add lap to the database
-            currentLap->elapsedTimeFinish = elapsedTimeLapStart;
-            currentLap->time = currentLap->elapsedTimeFinish - currentLap->elapsedTimeStart;
-            mapLaps.insert(currentLap->identifier, currentLap);
+        else if(!currentLap.isEmpty() && elapsedTimeLapStart != currentLap.value("ElapsedTimeStart").toLongLong()) {
+            // update current lap
+            currentLap.insert("ElapsedTimeFinish", elapsedTimeLapStart);
+            currentLap.insert("Time", elapsedTimeLapStart - currentLap.value("ElapsedTimeStart").toLongLong());
+            // write current lap to database (Identifier, IdentifierRun, Time)
+            Utilities::Database::addRecord(modelLaps, Utilities::Database::convertVariantMapToSqlRecord(currentLap, QStringList() << "Identifier" << "IdentifierRun" << "Time"));
+            // create new record
+            QVariantMap newRecord;
+            newRecord.insert("Identifier", Utilities::Database::createSmallestAvailableIdentifier(modelRecords));
+            newRecord.insert("IdentifierDriver", currentDriver.value("Identifier").toLongLong());
+            newRecord.insert("IdentifierSession", currentSession.value("Identifier").toLongLong());
+            newRecord.insert("IdentifierRun", currentRun.value("Identifier").toLongLong());
+            newRecord.insert("IdentifierLap", currentLap.value("Identifier").toLongLong());
+            newRecord.insert("Time", currentLap.value("Time").toLongLong());
+            newRecord.insert("Date", now);
+            newRecord.insert("TimeHumanReadable", Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(currentLap.value("Time").toLongLong()));
+            newRecord.insert("DateHumanReadable", Utilities::Core::timeInMillisecondsToStringDate(now));
+            newRecord.insert("NameDriver", currentDriver.value("Name").toString());
+            newRecord.insert("NameTrack", currentSession.value("NameTrack").toString());
+            newRecord.insert("NameCar", currentSession.value("NameCar").toString());
+            newRecord.insert("NameFrontTireCompound", currentRun.value("NameFrontTireCompound").toString());
+            newRecord.insert("NameRearTireCompound", currentRun.value("NameRearTireCompound").toString());
+            // write new record to database (Identifier, IdentifierDriver, IdentifierSession, IdentifierRun, IdentifierLap, Time, Date, TimeHumanReadable, DateHumanReadable, NameDriver, NameTrack, NameCar, NameFrontTireCompound, NameRearTireCompound)
+            Utilities::Database::addRecord(modelRecords, Utilities::Database::convertVariantMapToSqlRecord(newRecord, QStringList() << "Identifier" << "IdentifierDriver" << "IdentifierSession" << "IdentifierRun" << "IdentifierLap" << "Time" << "Date" << "TimeHumanReadable" << "DateHumanReadable" << "NameDriver" << "NameTrack" << "NameCar" << "NameFrontTireCompound" << "NameRearTireCompound"));
             // update last lap time, personal best lap time, and absolute best lap time in the HUD
             updateLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest(currentLap);
-            // create a new lap
-            Lap *lap = new Lap();
-            lap->identifier = Utilities::Containers::getSmallestAvailableIdentifier<int64_t, Lap>(mapLaps);
-            lap->identifierRun = currentRun->identifier;
-            lap->elapsedTime = elapsedTime;
-            lap->elapsedTimeStart = elapsedTimeLapStart;
-            lap->time = lap->elapsedTime - lap->elapsedTimeStart;
-            currentLap = lap;
+            // create new lap
+            QVariantMap newLap;
+            newLap.insert("Identifier", Utilities::Database::createSmallestAvailableIdentifier(modelLaps));
+            newLap.insert("IdentifierRun", currentRun.value("Identifier").toLongLong());
+            newLap.insert("ElapsedTimeStart", elapsedTimeLapStart);
+            // update current lap
+            currentLap = newLap;
         }
         // update an existing lap
-        else if(currentLap) {
-            currentLap->elapsedTime = elapsedTime;
-            currentLap->time = currentLap->elapsedTime - currentLap->elapsedTimeStart;
+        else if(!currentLap.isEmpty()) {
+            currentLap.insert("ElapsedTime", elapsedTime);
+            currentLap.insert("Time", currentLap.value("ElapsedTime").toLongLong() - currentLap.value("ElapsedTimeStart").toLongLong());
         }
     }
     // emit signal to other internal components
     emit signalReceivedClientServerMessage(_message);
+}
+
+void ApplicationDatabase::slotSelectCurrentDriver(const qint64 _identifierCurrentDriver) {
+    if(!_identifierCurrentDriver) return;
+    const QVariantMap selectedCurrentDriver = Utilities::Database::convertSqlRecordToVariantMap(Utilities::Database::getRecord(modelDrivers, _identifierCurrentDriver));
+    if(selectedCurrentDriver.isEmpty()) return;
+    setCurrentDriver(selectedCurrentDriver);
+}
+
+void ApplicationDatabase::slotCreateDriver(const QString &_nameDriver) {
+    // don't allow empty driver names
+    if(_nameDriver.isEmpty()) return;
+    // don't allow duplicate driver names
+    for(int indexRow=0; indexRow<modelDrivers->rowCount(); indexRow++) {
+        const QSqlRecord recordDriver = modelDrivers->record(indexRow);
+        if(recordDriver.value("Name").toString() == _nameDriver) {
+            return;
+        }
+    }
+    // create new driver
+    QVariantMap newDriver;
+    newDriver.insert("Identifier", Utilities::Database::createSmallestAvailableIdentifier(modelDrivers));
+    newDriver.insert("Name", _nameDriver);
+    // write new driver to database (Identifier, Name)
+    Utilities::Database::addRecord(modelDrivers, Utilities::Database::convertVariantMapToSqlRecord(newDriver, QStringList() << "Identifier" << "Name"));
+    modelDrivers->select();
+}
+
+void ApplicationDatabase::slotDeleteDriver(const qint64 _identifierDriver) {
+    // collect all runs, laps, and records associated with the specified driver
+    QVector<qint64> vectorIdentifiersRuns;
+    QVector<qint64> vectorIdentifiersLaps;
+    QVector<qint64> vectorIdentifiersRecords;
+    for(int indexRowRun=0; indexRowRun<modelRuns->rowCount(); indexRowRun++) {
+        const QSqlRecord recordRun = modelRuns->record(indexRowRun);
+        const QVariantMap run = Utilities::Database::convertSqlRecordToVariantMap(recordRun);
+        if(run.value("IdentifierDriver").toLongLong() == _identifierDriver) {
+            vectorIdentifiersRuns.append(run.value("Identifier").toLongLong());
+        }
+    }
+    for(int indexRowLap=0; indexRowLap<modelLaps->rowCount(); indexRowLap++) {
+        const QSqlRecord recordLap = modelLaps->record(indexRowLap);
+        const QVariantMap lap = Utilities::Database::convertSqlRecordToVariantMap(recordLap);
+        if(vectorIdentifiersRuns.contains(lap.value("IdentifierRun").toLongLong())) {
+            vectorIdentifiersLaps.append(lap.value("Identifier").toLongLong());
+        }
+    }
+    for(int indexRowRecord=0; indexRowRecord<modelRecords->rowCount(); indexRowRecord++) {
+        const QSqlRecord recordRecord = modelRecords->record(indexRowRecord);
+        const QVariantMap record = Utilities::Database::convertSqlRecordToVariantMap(recordRecord);
+        if(vectorIdentifiersLaps.contains(record.value("IdentifierLap").toLongLong())) {
+            vectorIdentifiersRecords.append(record.value("Identifier").toLongLong());
+        }
+    }
+    // delete records, laps, runs, and the driver
+    foreach(const qint64 identifierRecord, vectorIdentifiersRecords) {
+        Utilities::Database::removeRecord(modelRecords, identifierRecord);
+    }
+    foreach(const qint64 identifierRun, vectorIdentifiersRuns) {
+        Utilities::Database::removeRecord(modelRuns, identifierRun);
+    }
+    foreach(const qint64 identifierLap, vectorIdentifiersLaps) {
+        Utilities::Database::removeRecord(modelLaps, identifierLap);
+    }
+    Utilities::Database::removeRecord(modelDrivers, _identifierDriver);
+}
+
+void ApplicationDatabase::slotUpdateDrivers() {
+    modelDrivers->select();
+}
+
+void ApplicationDatabase::slotDeleteRecord(const qint64 _identifierRecord) {
+    // delete not only the record itself, but also the lap associated with it
+    for(int indexRowRecord=0; indexRowRecord<modelRecords->rowCount(); indexRowRecord++) {
+        const QSqlRecord recordRecord = modelRecords->record(indexRowRecord);
+        const QVariantMap record = Utilities::Database::convertSqlRecordToVariantMap(recordRecord);
+        if(record.value("Identifier").toLongLong() == _identifierRecord) {
+            // delete the record
+            Utilities::Database::removeRecord(modelRecords, record.value("Identifier").toLongLong());
+            // delete the lap
+            Utilities::Database::removeRecord(modelLaps, record.value("IdentifierLap").toLongLong());
+        }
+    }
+}
+
+void ApplicationDatabase::slotUpdateRecords(const bool _showOnlyCurrentDriver, const bool _showOnlyCurrentTrack, const bool _showOnlyCurrentCar) {
+    // this slot is invoked from the outside to update the records to be displayed; based
+    // on the input parameters, we either show all records or only those pertaining to the
+    // current driver, the current track, or the current car, respectively; if the variables
+    // for current driver or current session (which holds the track and the car) are invalid,
+    // the corresponding input parameters are ignored and no filtering is applied
+    QString stringFilter = QString::null;
+    QString stringFilterDriver = QString::null;
+    QString stringFilterTrack = QString::null;
+    QString stringFilterCar = QString::null;
+    // try to create filter for current driver
+    if(!currentDriver.isEmpty() && _showOnlyCurrentDriver) {
+        stringFilterDriver.append(QString("NameDriver='%1'").arg(currentDriver.value("Name").toString()));
+    }
+    // try to create filter for current track
+    if(!currentSession.isEmpty() && !currentSession.value("NameTrack").toString().isEmpty() && _showOnlyCurrentTrack) {
+        stringFilterTrack.append(QString("NameTrack='%1'").arg(currentSession.value("NameTrack").toString()));
+    }
+    // try to create filter for current car
+    if(!currentSession.isEmpty() && !currentSession.value("NameCar").toString().isEmpty() && _showOnlyCurrentCar) {
+        stringFilterCar.append(QString("NameCar='%1'").arg(currentSession.value("NameCar").toString()));
+    }
+    // construct final filter
+    if(!stringFilterDriver.isEmpty()) {
+        stringFilter.append(stringFilterDriver);
+    }
+    if(!stringFilterTrack.isEmpty()) {
+        if(stringFilter.isEmpty()) stringFilter.append(stringFilterTrack);
+        else stringFilter.append(QString(" AND ") + stringFilterTrack);
+    }
+    if(!stringFilterCar.isEmpty()) {
+        if(stringFilter.isEmpty()) stringFilter.append(stringFilterCar);
+        else stringFilter.append(QString(" AND " ) + stringFilterCar);
+    }
+    // apply the filter, and then sort and re-select the model
+    modelRecords->setFilter(stringFilter);
+    modelRecords->setSort(modelRecords->fieldIndex("Time"), Qt::AscendingOrder);
+    modelRecords->select();
 }
 
 void ApplicationDatabase::initializeLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest() {
@@ -567,190 +499,51 @@ void ApplicationDatabase::initializeLapTimeLastAndLapTimePersonalBestAndLapTimeA
     getLapTimePersonalBestAndLapTimeAbsoluteBest(lapTimePersonalBest, lapTimeAbsoluteBest);
 }
 
-void ApplicationDatabase::updateLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest(const Lap *_lap) {
-    if(!_lap) return;
+void ApplicationDatabase::updateLapTimeLastAndLapTimePersonalBestAndLapTimeAbsoluteBest(const QVariantMap &_lap) {
     // update times for last lap, personal best lap, and absolute best lap
-    lapTimeLast = _lap->time;
-    lapTimePersonalBest = lapTimePersonalBest == 0 ? _lap->time : _lap->time < lapTimePersonalBest ? _lap->time : lapTimePersonalBest;
-    lapTimeAbsoluteBest = lapTimeAbsoluteBest == 0 ? _lap->time : _lap->time < lapTimeAbsoluteBest ? _lap->time : lapTimeAbsoluteBest;
+    const qint64 lapTime = _lap.value("Time").toLongLong();
+    lapTimeLast = lapTime;
+    lapTimePersonalBest = lapTimePersonalBest == 0 ? lapTime : lapTime < lapTimePersonalBest ? lapTime : lapTimePersonalBest;
+    lapTimeAbsoluteBest = lapTimeAbsoluteBest == 0 ? lapTime : lapTime < lapTimeAbsoluteBest ? lapTime : lapTimeAbsoluteBest;
     // these variables will be signaled to the outside
-    const bool isPersonalBest = lapTimePersonalBest && lapTimePersonalBest >= _lap->time;
-    const bool isAbsoluteBest = lapTimeAbsoluteBest && lapTimeAbsoluteBest >= _lap->time;
-    const QString infoLapTime = Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(_lap->time);
-    const QString infoLapTimePersonalBest = isPersonalBest ? "PERSONAL BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - lapTimePersonalBest)) + " " + "[PER]";
-    const QString infoLapTimeAbsoluteBest = isAbsoluteBest ? "ABSOLUTE BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(_lap->time - lapTimeAbsoluteBest)) + " " + "[ABS]";
+    const bool isPersonalBest = lapTimePersonalBest && lapTimePersonalBest >= lapTime;
+    const bool isAbsoluteBest = lapTimeAbsoluteBest && lapTimeAbsoluteBest >= lapTime;
+    const QString infoLapTime = Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(lapTime);
+    const QString infoLapTimePersonalBest = isPersonalBest ? "PERSONAL BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(lapTime - lapTimePersonalBest)) + " " + "[PER]";
+    const QString infoLapTimeAbsoluteBest = isAbsoluteBest ? "ABSOLUTE BEST" : "+" + Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(qAbs(lapTime - lapTimeAbsoluteBest)) + " " + "[ABS]";
     // emit signal to the HUD
     emit signalLapInformation(isPersonalBest, isAbsoluteBest, infoLapTime, infoLapTimePersonalBest, infoLapTimeAbsoluteBest);
 }
 
-void ApplicationDatabase::getLapTimePersonalBestAndLapTimeAbsoluteBest(int64_t &_lapTimePersonalBest, int64_t &_lapTimeAbsoluteBest) const {
-    // we need valid pointers for the current driver, the current session, and the current run
-    if(!currentDriver) return;
-    if(!currentSession) return;
-    if(!currentRun) return;
+void ApplicationDatabase::getLapTimePersonalBestAndLapTimeAbsoluteBest(qint64 &_lapTimePersonalBest, qint64 &_lapTimeAbsoluteBest) {
+    // we need valid variables for the current driver, the current session, and the current run
+    if(currentDriver.isEmpty()) return;
+    if(currentSession.isEmpty()) return;
+    if(currentRun.isEmpty()) return;
     // initialize result variables
     _lapTimePersonalBest = 0;
     _lapTimeAbsoluteBest = 0;
-    // these variables will hold potential results (if any)
-    QVector<const Lap*> vectorLapsPersonalBest;
-    QVector<const Lap*> vectorLapsAbsoluteBest;
-    // go through all laps, runs, and sessions
-    foreach(const Lap *lap, mapLaps.values()) {
-        if(lap) {
-            foreach(const Run *run, mapRuns.values()) {
-                if(run && run->identifier == lap->identifierRun) {
-                    // ignore runs with the wrong criteria
-                    if(run->nameFrontTireCompound != currentRun->nameFrontTireCompound) continue;
-                    if(run->nameRearTireCompound != currentRun->nameRearTireCompound) continue;
-                    foreach(const Session *session, mapSessions.values()) {
-                        if(session && session->identifier == run->identifierSession) {
-                            // ignore sessions with the wrong criteria
-                            if(session->nameTrack != currentSession->nameTrack) continue;
-                            if(session->nameCar != currentSession->nameCar) continue;
-                            // try to extract potential personal best lap
-                            if(currentDriver->identifier == run->identifierDriver) {
-                                vectorLapsPersonalBest.push_back(lap);
-                            }
-                            // try to extract potential absolute best lap
-                            vectorLapsAbsoluteBest.push_back(lap);
-                        }
+    // manually update the records model, but don't apply any filtering (sorting is applied implicitly)
+    emit signalUpdateRecords(false, false, false);
+    // now go through the model and extract what we need
+    for(int indexRowRecord=0; indexRowRecord<modelRecords->rowCount(); indexRowRecord++) {
+        const QSqlRecord recordRecord = modelRecords->record(indexRowRecord);
+        const QVariantMap record = Utilities::Database::convertSqlRecordToVariantMap(recordRecord);
+        if(_lapTimePersonalBest == 0) {
+            if(record.value("NameDriver").toString() == currentDriver.value("Name").toString()) {
+                if(record.value("NameTrack").toString() == currentSession.value("NameTrack").toString()) {
+                    if(record.value("NameCar").toString() == currentSession.value("NameCar").toString()) {
+                        _lapTimePersonalBest = record.value("Time").toLongLong();
                     }
                 }
             }
         }
-    }
-    // sort both vectors
-    qSort(vectorLapsPersonalBest.begin(), vectorLapsPersonalBest.end(), Lap::lessThanPointers);
-    qSort(vectorLapsAbsoluteBest.begin(), vectorLapsAbsoluteBest.end(), Lap::lessThanPointers);
-    // try to assign result variables
-    if(!vectorLapsPersonalBest.isEmpty()) {
-        const Lap *lap = vectorLapsPersonalBest.first();
-        if(lap) {
-            _lapTimePersonalBest = lap->time;
-        }
-    }
-    if(!vectorLapsAbsoluteBest.isEmpty()) {
-        const Lap *lap = vectorLapsAbsoluteBest.first();
-        if(lap) {
-            _lapTimeAbsoluteBest = lap->time;
-        }
-    }
-}
-
-void ApplicationDatabase::setCurrentDriver(const QString &_name) {
-    for(QMap<int64_t, Driver*>::const_iterator iter=mapDrivers.begin(); iter!=mapDrivers.end(); iter++) {
-        Driver *driver = iter.value();
-        if(driver) {
-            if(driver->name == _name) {
-                currentDriver = driver;
-            }
-        }
-    }
-}
-
-QString ApplicationDatabase::getCurrentTrackName() const {
-    QString trackName;
-    if(currentSession) {
-        if(!currentSession->nameTrack.isEmpty()) {
-            trackName = currentSession->nameTrack;
-        }
-    }
-    return trackName;
-}
-
-QVector<Record> ApplicationDatabase::getVectorRecordsUnsortedAndUnfiltered() const {
-    QVector<Record> vectorRecords;
-    for(QMap<int64_t, Lap*>::const_iterator iter=mapLaps.begin(); iter!=mapLaps.end(); iter++) {
-        Lap *lap = iter.value();
-        if(lap) {
-            Run *run = mapRuns.value(lap->identifierRun);
-            if(run) {
-                Driver *driver = mapDrivers.value(run->identifierDriver);
-                Session *session = mapSessions.value(run->identifierSession);
-                if(driver && session) {
-                    Record record;
-                    record.time = lap->time;
-                    record.date = run->timeFinish;
-                    record.track = session->nameTrack;
-                    record.driver = driver->name;
-                    record.car = session->nameCar;
-                    record.frontTireCompound = run->nameFrontTireCompound;
-                    record.rearTireCompound = run->nameRearTireCompound;
-                    vectorRecords.push_back(record);
+        if(_lapTimeAbsoluteBest == 0) {
+            if(record.value("NameTrack").toString() == currentSession.value("NameTrack").toString()) {
+                if(record.value("NameCar").toString() == currentSession.value("NameCar").toString()) {
+                    _lapTimeAbsoluteBest = record.value("Time").toLongLong();
                 }
             }
         }
     }
-    return vectorRecords;
-}
-
-bool ApplicationDatabase::createDriver(const QString &_name) {
-    // don't allow empty driver names
-    if(_name.isEmpty()) {
-        return false;
-    }
-    // don't allow duplicate driver names
-    foreach(const Driver *driver, mapDrivers.values()) {
-        if(driver) {
-            if(driver->name == _name) {
-                return false;
-            }
-        }
-    }
-    // create a new driver, and add it to the database
-    Driver *driver = new Driver();
-    driver->identifier = Utilities::Containers::getSmallestAvailableIdentifier<qint64, Driver>(mapDrivers);
-    driver->name = _name;
-    mapDrivers.insert(driver->identifier, driver);
-    return true;
-}
-
-bool ApplicationDatabase::deleteDriver(const QString &_name) {
-    // when deleting a driver we need to be careful not just to delete
-    // the driver, but we also want to delete any laps and runs which
-    // are associated with the driver
-    Driver *driverToBeDeleted = 0;
-    QVector<Run*> vectorRunsToBeDeleted;
-    QVector<Lap*> vectorLapsToBeDeleted;
-    // find the driver, the runs, and the laps to be deleted
-    foreach(Driver *driver, mapDrivers.values()) {
-        if(driver) {
-            if(driver->name == _name) {
-                driverToBeDeleted = driver;
-                foreach(Run *run, mapRuns.values()) {
-                    if(run) {
-                        if(run->identifierDriver == driverToBeDeleted->identifier) {
-                            foreach(Lap *lap, mapLaps.values()) {
-                                if(lap) {
-                                    if(lap->identifierRun == run->identifier) {
-                                        vectorRunsToBeDeleted.push_back(run);
-                                        vectorLapsToBeDeleted.push_back(lap);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    // delete the driver, runs, and laps if required
-    if(driverToBeDeleted) {
-        mapDrivers.remove(driverToBeDeleted->identifier);
-        delete driverToBeDeleted;
-        foreach(const Run *run, vectorRunsToBeDeleted) {
-            if(run) {
-                mapRuns.remove(run->identifier);
-                delete run;
-            }
-        }
-        foreach(const Lap *lap, vectorLapsToBeDeleted) {
-            if(lap) {
-                mapLaps.remove(lap->identifier);
-                delete lap;
-            }
-        }
-        return true;
-    }
-    return false;
 }

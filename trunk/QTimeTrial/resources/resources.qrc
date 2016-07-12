@@ -7,10 +7,30 @@
         <file alias="led_yellow.png">png/led_yellow.png</file>
         <file alias="logo.png">png/logo.png</file>
     </qresource>
-    <qresource prefix="/fonts">
-        <file alias="Bitwise.ttf">fonts/Bitwise.ttf</file>
-    </qresource>
     <qresource prefix="/qml">
         <file alias="application.qml">qml/application.qml</file>
+        <file alias="applicationstyle.qml">qml/applicationstyle.qml</file>
+        <file alias="qmldir">qml/qmldir</file>
+    </qresource>
+    <qresource prefix="/qml/components">
+        <file alias="WidgetTitle.qml">qml/components/WidgetTitle.qml</file>
+        <file alias="WidgetText.qml">qml/components/WidgetText.qml</file>
+        <file alias="WidgetTextInput.qml">qml/components/WidgetTextInput.qml</file>
+        <file alias="WidgetButton.qml">qml/components/WidgetButton.qml</file>
+        <file alias="WidgetCheckBox.qml">qml/components/WidgetCheckBox.qml</file>
+    </qresource>
+    <qresource prefix="/qml/widgets">
+        <file alias="Widget.qml">qml/widgets/Widget.qml</file>
+        <file alias="WidgetMenu.qml">qml/widgets/WidgetMenu.qml</file>
+        <file alias="WidgetAbout.qml">qml/widgets/WidgetAbout.qml</file>
+        <file alias="WidgetDrivers.qml">qml/widgets/WidgetDrivers.qml</file>
+        <file alias="WidgetRecords.qml">qml/widgets/WidgetRecords.qml</file>
+        <file alias="WidgetOptions.qml">qml/widgets/WidgetOptions.qml</file>
+        <file alias="WidgetHud.qml">qml/widgets/WidgetHud.qml</file>
+    </qresource>
+    <qresource prefix="/ttf">
+        <file alias="Bitwise.ttf">ttf/Bitwise.ttf</file>
+        <file alias="Copperplate.ttf">ttf/Copperplate.ttf</file>
+        <file alias="Typewriter.ttf">ttf/Typewriter.ttf</file>
     </qresource>
 </RCC>
