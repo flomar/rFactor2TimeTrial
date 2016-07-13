@@ -15,6 +15,7 @@ Item {
     property var gui: QTimeTrialApplicationGui
     // visual properties
     property string text
+    property real textAngle: 0.0
     property string linkText
     property real fontPixelSize
     property color fontColor
@@ -33,5 +34,10 @@ Item {
         horizontalAlignment: idItemRoot.fontHorizontalAlignment ? idItemRoot.fontHorizontalAlignment : Qt.AlignLeft
         verticalAlignment: idItemRoot.fontVerticalAlignment ? idItemRoot.fontVerticalAlignment : Qt.AlignTop
         wrapMode: Text.WordWrap
+        transform: Rotation {
+            origin.x: idText.width / 2
+            origin.y: idText.height / 2
+            angle: idItemRoot.textAngle
+        }
     }
 }
