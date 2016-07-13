@@ -16,6 +16,7 @@ ApplicationGui::ApplicationGui(Application *_application) :
     showWidgetOptions(false),
     showHud(false),
     stringDriver(QString::null),
+    stringCar(QString::null),
     stringSessionTime(QString::null),
     stringRunTime(QString::null),
     stringLapTime(QString::null),
@@ -167,6 +168,7 @@ void ApplicationGui::processMessageUpdateTelemetry(const ClientServerMessage &_m
     const int64_t localLapTimeAbsoluteBest = applicationDatabase->getLapTimeAbsoluteBest();
     // set properties
     setStringDriver(driver.value("Name").toString());
+    setStringCar(session.value("NameCar").toString());
     setStringSessionTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localSessionTime));
     setStringRunTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localRunTime));
     setStringLapTime(Utilities::Core::timeInMillisecondsToStringInMinutesSecondsMilliseconds(localLapTime));

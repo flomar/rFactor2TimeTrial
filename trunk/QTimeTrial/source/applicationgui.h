@@ -19,6 +19,7 @@ class ApplicationGui : public QObject {
     Q_PROPERTY(bool showHud READ getShowHud WRITE setShowHud NOTIFY signalChangedShowHud)
     // HUD properties / TELEMETRY properties
     Q_PROPERTY(QString stringDriver READ getStringDriver WRITE setStringDriver NOTIFY signalChangedStringDriver)
+    Q_PROPERTY(QString stringCar READ getStringCar WRITE setStringCar NOTIFY signalChangedStringCar)
     Q_PROPERTY(QString stringSessionTime READ getStringSessionTime WRITE setStringSessionTime NOTIFY signalChangedStringSessionTime)
     Q_PROPERTY(QString stringRunTime READ getStringRunTime WRITE setStringRunTime NOTIFY signalChangedStringRunTime)
     Q_PROPERTY(QString stringLapTime READ getStringLapTime WRITE setStringLapTime NOTIFY signalChangedStringLapTime)
@@ -129,6 +130,7 @@ private slots:
     void slotWidgetMenuClickedButtonQuit();
 private:
     QString stringDriver;
+    QString stringCar;
     QString stringSessionTime;
     QString stringRunTime;
     QString stringLapTime;
@@ -156,6 +158,7 @@ private:
     bool boolSpeedLimiterActive;
 public:
     const QString &getStringDriver() const { return stringDriver; }
+    const QString &getStringCar() const { return stringCar; }
     const QString &getStringSessionTime() const { return stringSessionTime; }
     const QString &getStringRunTime() const { return stringRunTime; }
     const QString &getStringLapTime() const { return stringLapTime; }
@@ -182,6 +185,7 @@ public:
     int getIntSpeed() const { return intSpeed; }
     bool getBoolSpeedLimiterActive() const { return boolSpeedLimiterActive; }
     void setStringDriver(const QString &_stringDriver) { stringDriver = _stringDriver; emit signalChangedStringDriver(); }
+    void setStringCar(const QString &_stringCar) { stringCar = _stringCar; emit signalChangedStringCar(); }
     void setStringSessionTime(const QString &_stringSessionTime) { stringSessionTime = _stringSessionTime; emit signalChangedStringSessionTime(); }
     void setStringRunTime(const QString &_stringRunTime) { stringRunTime = _stringRunTime; emit signalChangedStringRunTime(); }
     void setStringLapTime(const QString &_stringLapTime) { stringLapTime = _stringLapTime; emit signalChangedStringLapTime(); }
@@ -209,6 +213,7 @@ public:
     void setBoolSpeedLimiterActive(const bool _boolSpeedLimiterActive) { boolSpeedLimiterActive = _boolSpeedLimiterActive; emit signalChangedBoolSpeedLimiterActive(); }
 signals:
     void signalChangedStringDriver();
+    void signalChangedStringCar();
     void signalChangedStringSessionTime();
     void signalChangedStringRunTime();
     void signalChangedStringLapTime();

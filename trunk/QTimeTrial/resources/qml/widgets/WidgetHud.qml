@@ -59,7 +59,7 @@ Item {
         Item {
             id: idItemDriver
             x: 810 * gui.guiScale
-            y: 8 * gui.guiScale
+            y: 16 * gui.guiScale
             width: 300 * gui.guiScale
             height: 40 * gui.guiScale
             Text {
@@ -70,7 +70,7 @@ Item {
                 verticalAlignment: Qt.AlignVCenter
                 color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
                 font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 36 * gui.guiScale
+                font.pixelSize: 40 * gui.guiScale
             }
         }
         Item {
@@ -191,6 +191,23 @@ Item {
             }
         }
         Item {
+            id: idItemCar
+            x: 810 * gui.guiScale
+            y: 1056 * gui.guiScale
+            width: 300 * gui.guiScale
+            height: 20 * gui.guiScale
+            Text {
+                id: idTextItemCar
+                anchors.fill: parent
+                text: gui.stringCar
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                color: Qt.rgba(1.0, 1.0, 1.0, 0.5)
+                font.family: ApplicationStyle.fontBitwise.name
+                font.pixelSize: 16 * gui.guiScale
+            }
+        }
+        Item {
             id: idItemBrakes
             x: 1600 * gui.guiScale
             y: 1054 * gui.guiScale
@@ -238,14 +255,16 @@ Item {
         }
         Item {
             id: idItemRPMLEDs
-            x: 662 * gui.guiScale
-            y: 934 * gui.guiScale
-            width: 596 * gui.guiScale
-            height: 16 * gui.guiScale
+            x: 660 * gui.guiScale
+            y: 948 - sizeLEDs * gui.guiScale
+            width: 600 * gui.guiScale
+            height: sizeLEDs * gui.guiScale
             // the number of LEDs to be displayed
-            property int countLEDs: 30
-            // the RPM bandwidth to be covered by the LEDs (0-100)
-            property int bandwidthLEDs: 100
+            property int countLEDs: 45
+            // the RPM bandwidth to be covered by the LEDs (0-100);
+            // if, for example, the bandwidth is 75, the LEDs don't
+            // start lighting up until the engine RPMs are at 25%
+            property int bandwidthLEDs: 75
             // internal properties
             readonly property real spaceLEDs: 2 * gui.guiScale
             readonly property real sizeLEDs: (width - (countLEDs - 1) * spaceLEDs) / countLEDs
