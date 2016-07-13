@@ -57,7 +57,7 @@ Item {
             Item {
                 id: idItemListViewRecords
                 Layout.preferredWidth: parent.width
-                Layout.preferredHeight: parent.height * 0.8
+                Layout.preferredHeight: parent.height * (QTimeTrialApplicationDatabase.currentSession["Identifier"] ? 0.8 : 1.0)
                 ListView {
                     id: idListViewRecords
                     anchors.fill: parent
