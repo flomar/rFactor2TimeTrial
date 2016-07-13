@@ -242,304 +242,35 @@ Item {
             y: 934 * gui.guiScale
             width: 596 * gui.guiScale
             height: 16 * gui.guiScale
-            Image {
-                x: 20 * gui.guiScale * 0
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 0) return "/png/led_green.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 1
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 1) return "/png/led_green.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 2
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 2) return "/png/led_green.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 3
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 3) return "/png/led_green.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 4
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 4) return "/png/led_green.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 5
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 5) return "/png/led_green.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 6
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 6) return "/png/led_green.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 7
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 7) return "/png/led_green.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 8
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 8) return "/png/led_green.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 9
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 9) return "/png/led_green.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 10
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 10) return "/png/led_yellow.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 11
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 11) return "/png/led_yellow.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 12
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 12) return "/png/led_yellow.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 13
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 13) return "/png/led_yellow.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 14
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 14) return "/png/led_yellow.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 15
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 15) return "/png/led_yellow.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 16
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 16) return "/png/led_yellow.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 17
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 17) return "/png/led_yellow.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 18
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 18) return "/png/led_yellow.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 19
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 19) return "/png/led_yellow.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 20
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 20) return "/png/led_red.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 21
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 21) return "/png/led_red.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 22
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 22) return "/png/led_red.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 23
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 23) return "/png/led_red.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 24
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 24) return "/png/led_red.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 25
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 25) return "/png/led_red.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 26
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 26) return "/png/led_red.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 27
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 27) return "/png/led_red.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 28
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 28) return "/png/led_red.png"
-                    return "/png/led_off.png"
-                }
-            }
-            Image {
-                x: 20 * gui.guiScale * 29
-                y: 0
-                width: 16 * gui.guiScale
-                height: 16 * gui.guiScale
-                source: {
-                    if(gui.intEngineRPMPercentage >= 50 + 50 / 30 * 29) return "/png/led_red.png"
-                    return "/png/led_off.png"
+            // the number of LEDs to be displayed
+            property int countLEDs: 30
+            // the RPM bandwidth to be covered by the LEDs (0-100)
+            property int bandwidthLEDs: 100
+            // internal properties
+            readonly property real spaceLEDs: 2 * gui.guiScale
+            readonly property real sizeLEDs: (width - (countLEDs - 1) * spaceLEDs) / countLEDs
+            Repeater {
+                model: idItemRPMLEDs.countLEDs
+                Image {
+                    x: (idItemRPMLEDs.sizeLEDs + idItemRPMLEDs.spaceLEDs) * index
+                    y: 0
+                    width: idItemRPMLEDs.sizeLEDs
+                    height: idItemRPMLEDs.sizeLEDs
+                    source: {
+                        var bandwidth = idItemRPMLEDs.bandwidthLEDs
+                        var bandwidthInverse = 100 - bandwidth
+                        var percentageRPM = gui.intEngineRPMPercentage
+                        var percentageLED = (index + 1) / idItemRPMLEDs.countLEDs * 100
+                        var percentage = percentageRPM < bandwidthInverse ? 0 : (percentageRPM - bandwidthInverse) / bandwidth * 100
+                        // calculate which LED color to display
+                        var image
+                        if(percentageLED >= 2/3 * 100) image = "/png/led_red.png"
+                        else if(percentageLED >= 1/3 * 100) image = "/png/led_yellow.png"
+                        else image = "/png/led_green.png"
+                        // calculate whether to display the LED as ON or OFF
+                        if(percentage >= percentageLED) return image
+                        else return "/png/led_off.png"
+                    }
                 }
             }
         }
