@@ -205,9 +205,11 @@ Item {
                 }
             }
             Item {
-                id: idItemCheckBoxRecords
+                id: idItemCheckBoxesRecords
                 Layout.preferredWidth: parent.width
                 Layout.preferredHeight: parent.height * 0.2
+                // the check boxes for filtering should be visible only if there is a valid session
+                visible: QTimeTrialApplicationDatabase.currentSession["Identifier"] ? QTimeTrialApplicationDatabase.currentSession["Identifier"] !== 0 : false
                 ColumnLayout {
                     anchors.fill: parent
                     anchors.margins: 5.0 * gui.guiScale

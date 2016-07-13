@@ -15,7 +15,7 @@ Item {
     // buttons and application name
     Rectangle {
         anchors.fill: parent
-        color: Qt.rgba(0.0, 0.0, 0.0, 0.5)
+        color: Qt.rgba(0.0, 0.0, 0.0, 1.0)
         ColumnLayout {
             anchors.fill: parent
             anchors.margins: 5.0 * gui.guiScale
@@ -58,7 +58,7 @@ Item {
                     anchors.fill: parent
                     text: "QTimeTrial"
                     textAngle: -90
-                    fontPixelSize: parent.width * 0.75
+                    fontPixelSize: parent.width * 0.5
                     fontColor: Qt.rgba(1.0, 1.0, 1.0, 0.5)
                     fontHorizontalAlignment: Qt.AlignHCenter
                     fontVerticalAlignment: Qt.AlignVCenter

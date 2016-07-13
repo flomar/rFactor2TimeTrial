@@ -22,12 +22,61 @@ Item {
             anchors.fill: idWidget.containerTitle
             text: "/ About"
         }
-        WidgetText {
+        ColumnLayout {
+            id: idColumnLayoutAbout
             anchors.fill: idWidget.containerContent
-            text: "<b>QTimeTrial (C) 2016 flomar</b><br><br>The QTimeTrial application is part of the rFactor2TimeTrial project.<br><br>Please refer to the project documentation for detailed information:<br><br><a href=\"https://github.com/flomar/rFactor2TimeTrial\">https://github.com/flomar/rFactor2TimeTrial</a>"
-            linkText: "https://github.com/flomar/rFactor2TimeTrial"
-            fontPixelSize: 24 * gui.guiScale
-            fontColor: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+            spacing: 10.0 * gui.guiScale
+            Item {
+                id: idItemWidgetTextApplicationName
+                Layout.preferredWidth: parent.width
+                Layout.preferredHeight: parent.height * 0.05
+                WidgetText {
+                    text: "QTimeTrial"
+                    fontPixelSize: 32 * gui.guiScale
+                    fontColor: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    fontHorizontalAlignment: Qt.AlignHCenter
+                    fontVerticalAlignment: Qt.AlignVCenter
+                }
+            }
+            Item {
+                id: idItemWidgetTextApplicationCopyright
+                Layout.preferredWidth: parent.width
+                Layout.preferredHeight: parent.height * 0.05
+                WidgetText {
+                    text: "(C) 2016 flomar"
+                    fontPixelSize: 16 * gui.guiScale
+                    fontColor: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    fontHorizontalAlignment: Qt.AlignHCenter
+                    fontVerticalAlignment: Qt.AlignVCenter
+                }
+            }
+            Item {
+                id: idItemImageApplicationLogo
+                Layout.preferredWidth: parent.width
+                Layout.preferredHeight: parent.height * 0.25
+                Image {
+                    anchors.centerIn: parent
+                    width: parent.height
+                    height: parent.height
+                    source: "/png/logo.png"
+                }
+            }
+            Item {
+                id: idItemWidgetTextProjectInformation
+                Layout.preferredWidth: parent.width
+                Layout.preferredHeight: parent.height * 0.25
+                WidgetText {
+                    text: "The QTimeTrial application is part of the rFactor2TimeTrial project.<br><br>Please refer to the project documentation for detailed information:<br><br><a href=\"https://github.com/flomar/rFactor2TimeTrial\">https://github.com/flomar/rFactor2TimeTrial</a>"
+                    linkText: "https://github.com/flomar/rFactor2TimeTrial"
+                    fontPixelSize: 24 * gui.guiScale
+                    fontColor: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    fontHorizontalAlignment: Qt.AlignHCenter
+                    fontVerticalAlignment: Qt.AlignVCenter
+                }
+            }
+            Item {
+                Layout.fillHeight: true
+            }
         }
     }
 }
