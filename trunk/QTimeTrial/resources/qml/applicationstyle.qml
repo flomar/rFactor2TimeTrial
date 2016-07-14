@@ -34,6 +34,12 @@ Item {
     // common
     readonly property real commonSizeBorder: 3.0 * gui.guiScale
 
+    // Hud
+    readonly property color hudColorBackground: Qt.rgba(0.0, 0.0, 0.0, 0.5)
+    readonly property color hudColorForeground: Qt.rgba(0.0, 0.0, 0.0, 1.0)
+    readonly property color hudColorTextStatic: Qt.rgba(0.8, 0.8, 0.8, 1.0)
+    readonly property color hudColorTextDynamic: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+
     // Widget
     readonly property color widgetColorBackground: Qt.rgba(0.0, 0.0, 0.0, 0.85)
     readonly property color widgetColorForeground: Qt.rgba(1.0, 1.0, 1.0, 1.0)

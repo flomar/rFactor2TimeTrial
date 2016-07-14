@@ -17,6 +17,7 @@ Item {
     Item {
         id: idItemHud
         anchors.fill: parent
+        // background
         Item {
             id: idItemHudBackground
             anchors.fill: parent
@@ -27,7 +28,10 @@ Item {
                 onPaint: {
                     var ctx = getContext("2d")
                     // top
-                    ctx.fillStyle = idItemHudBackground.colorBackground
+                    ctx.fillStyle = ApplicationStyle.hudColorBackground
+                    ctx.strokeStyle = ApplicationStyle.hudColorForeground
+                    ctx.lineWidth = ApplicationStyle.commonSizeBorder
+                    ctx.lineJoin = "round"
                     ctx.beginPath()
                     ctx.moveTo(0 * gui.guiScale, 32 * gui.guiScale)
                     ctx.lineTo(678 * gui.guiScale, 32 * gui.guiScale)
@@ -40,9 +44,6 @@ Item {
                     ctx.lineTo(0 * gui.guiScale, 32 * gui.guiScale)
                     ctx.closePath()
                     ctx.fill()
-                    ctx.strokeStyle = idItemHudBackground.colorForeground
-                    ctx.lineWidth = 2 * gui.guiScale
-                    ctx.lineJoin = "round"
                     ctx.beginPath()
                     ctx.moveTo(0 * gui.guiScale, 32 * gui.guiScale)
                     ctx.lineTo(678 * gui.guiScale, 32 * gui.guiScale)
@@ -58,7 +59,6 @@ Item {
                     ctx.closePath()
                     ctx.stroke()
                     // bottom
-                    ctx.fillStyle = idItemHudBackground.colorBackground
                     ctx.beginPath()
                     ctx.moveTo(0 * gui.guiScale, 1048 * gui.guiScale)
                     ctx.lineTo(564 * gui.guiScale, 1048 * gui.guiScale)
@@ -71,9 +71,6 @@ Item {
                     ctx.lineTo(0 * gui.guiScale, 1048 * gui.guiScale)
                     ctx.closePath()
                     ctx.fill()
-                    ctx.strokeStyle = idItemHudBackground.colorForeground
-                    ctx.lineWidth = 2 * gui.guiScale
-                    ctx.lineJoin = "round"
                     ctx.beginPath()
                     ctx.moveTo(0 * gui.guiScale, 1048 * gui.guiScale)
                     ctx.lineTo(564 * gui.guiScale, 1048 * gui.guiScale)
@@ -91,245 +88,190 @@ Item {
                 }
             }
         }
+        // top (LAP, LST, DRIVER, PER, ABS)
         Item {
-            id: idItemLap
-            x: 68 * gui.guiScale
-            y: 8 * gui.guiScale
-            width: 150 * gui.guiScale
-            height: 20 * gui.guiScale
-            Text {
-                id: idTextItemLap
+            id: idItemHudTop
+            anchors.fill: parent
+            anchors.bottomMargin: parent.height - 64 * gui.guiScale
+            RowLayout {
                 anchors.fill: parent
-                text: gui.stringLapTime
-                horizontalAlignment: Qt.AlignLeft
-                verticalAlignment: Qt.AlignVCenter
-                color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 20 * gui.guiScale
+                spacing: 0
+                Item {
+                    id: idItemHudTopLap
+                    Layout.preferredWidth: (parent.width - 564 * gui.guiScale) / 4
+                    Layout.preferredHeight: parent.height
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.topMargin: 4 * gui.guiScale
+                        anchors.bottomMargin: 32 * gui.guiScale
+                        spacing: 10 * gui.guiScale
+                        Item {
+                            id: idItemHudTopLapStatic
+                            Layout.preferredWidth: parent.width * 1 / 3
+                            Layout.preferredHeight: parent.height
+                            WidgetText {
+                                id: idWidgetTextHudTopLapStatic
+                                text: "LAP"
+                                fontColor: ApplicationStyle.hudColorTextStatic
+                                fontPixelSize: parent.height * 0.8
+                                fontHorizontalAlignment: Qt.AlignRight
+                                fontVerticalAlignment: Qt.AlignVCenter
+                            }
+                        }
+                        Item {
+                            id: idItemHudTopLapDynamic
+                            Layout.preferredWidth: parent.width * 2 / 3
+                            Layout.preferredHeight: parent.height
+                            WidgetText {
+                                id: idWidgetTextHudTopLapDynamic
+                                text: gui.stringLapTime
+                                fontColor: ApplicationStyle.hudColorTextDynamic
+                                fontPixelSize: parent.height * 0.8
+                                fontHorizontalAlignment: Qt.AlignLeft
+                                fontVerticalAlignment: Qt.AlignVCenter
+                            }
+                        }
+                    }
+                }
+                Item {
+                    id: idItemHudTopLst
+                    Layout.preferredWidth: (parent.width - 564 * gui.guiScale) / 4
+                    Layout.preferredHeight: parent.height
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.topMargin: 4 * gui.guiScale
+                        anchors.bottomMargin: 32 * gui.guiScale
+                        spacing: 10 * gui.guiScale
+                        Item {
+                            id: idItemHudTopLstStatic
+                            Layout.preferredWidth: parent.width * 1 / 3
+                            Layout.preferredHeight: parent.height
+                            WidgetText {
+                                id: idWidgetTextHudTopLstStatic
+                                text: "LST"
+                                fontColor: ApplicationStyle.hudColorTextStatic
+                                fontPixelSize: parent.height * 0.8
+                                fontHorizontalAlignment: Qt.AlignRight
+                                fontVerticalAlignment: Qt.AlignVCenter
+                            }
+                        }
+                        Item {
+                            id: idItemHudTopLstDynamic
+                            Layout.preferredWidth: parent.width * 2 / 3
+                            Layout.preferredHeight: parent.height
+                            WidgetText {
+                                id: idWidgetTextHudTopLstDynamic
+                                text: gui.stringLapTimeLast
+                                fontColor: ApplicationStyle.hudColorTextDynamic
+                                fontPixelSize: parent.height * 0.8
+                                fontHorizontalAlignment: Qt.AlignLeft
+                                fontVerticalAlignment: Qt.AlignVCenter
+                            }
+                        }
+                    }
+                }
+                Item {
+                    id: idItemHudTopDriver
+                    Layout.preferredWidth: 500 * gui.guiScale
+                    Layout.preferredHeight: parent.height
+                    Item {
+                        id: idItemHudTopDriverName
+                        anchors.fill: parent
+                        anchors.topMargin: 4 * gui.guiScale
+                        WidgetText {
+                            text: gui.stringDriver
+                            fontColor: ApplicationStyle.hudColorTextDynamic
+                            fontPixelSize: parent.height * 0.8
+                            fontHorizontalAlignment: Qt.AlignHCenter
+                            fontVerticalAlignment: Qt.AlignVCenter
+                        }
+                    }
+                }
+                Item {
+                    id: idItemHudTopPer
+                    Layout.preferredWidth: (parent.width - 564 * gui.guiScale) / 4
+                    Layout.preferredHeight: parent.height
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.topMargin: 4 * gui.guiScale
+                        anchors.bottomMargin: 32 * gui.guiScale
+                        spacing: 10 * gui.guiScale
+                        Item {
+                            id: idItemHudTopPerDynamic
+                            Layout.preferredWidth: parent.width * 2 / 3
+                            Layout.preferredHeight: parent.height
+                            WidgetText {
+                                id: idWidgetTextHudTopPerDynamic
+                                text: gui.stringLapTimePersonalBest
+                                fontColor: ApplicationStyle.hudColorTextDynamic
+                                fontPixelSize: parent.height * 0.8
+                                fontHorizontalAlignment: Qt.AlignRight
+                                fontVerticalAlignment: Qt.AlignVCenter
+                            }
+                        }
+                        Item {
+                            id: idItemHudTopPerStatic
+                            Layout.preferredWidth: parent.width * 1 / 3
+                            Layout.preferredHeight: parent.height
+                            WidgetText {
+                                id: idWidgetTextHudTopPerStatic
+                                text: "PER"
+                                fontColor: ApplicationStyle.hudColorTextStatic
+                                fontPixelSize: parent.height * 0.8
+                                fontHorizontalAlignment: Qt.AlignLeft
+                                fontVerticalAlignment: Qt.AlignVCenter
+                            }
+                        }
+                    }
+                }
+                Item {
+                    id: idItemHudTopAbs
+                    Layout.preferredWidth: (parent.width - 564 * gui.guiScale) / 4
+                    Layout.preferredHeight: parent.height
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.topMargin: 4 * gui.guiScale
+                        anchors.bottomMargin: 32 * gui.guiScale
+                        spacing: 10 * gui.guiScale
+                        Item {
+                            id: idItemHudTopAbsDynamic
+                            Layout.preferredWidth: parent.width * 2 / 3
+                            Layout.preferredHeight: parent.height
+                            WidgetText {
+                                id: idWidgetTextHudTopAbsDynamic
+                                text: gui.stringLapTimeAbsoluteBest
+                                fontColor: ApplicationStyle.hudColorTextDynamic
+                                fontPixelSize: parent.height * 0.8
+                                fontHorizontalAlignment: Qt.AlignRight
+                                fontVerticalAlignment: Qt.AlignVCenter
+                            }
+                        }
+                        Item {
+                            id: idItemHudTopAbsStatic
+                            Layout.preferredWidth: parent.width * 1 / 3
+                            Layout.preferredHeight: parent.height
+                            WidgetText {
+                                id: idWidgetTextHudTopAbsStatic
+                                text: "ABS"
+                                fontColor: ApplicationStyle.hudColorTextStatic
+                                fontPixelSize: parent.height * 0.8
+                                fontHorizontalAlignment: Qt.AlignLeft
+                                fontVerticalAlignment: Qt.AlignVCenter
+                            }
+                        }
+                    }
+                }
             }
         }
+        // bottom (RPMLEDs)
         Item {
-            id: idItemLapTimeLast
-            x: 360 * gui.guiScale
-            y: 8 * gui.guiScale
-            width: 150 * gui.guiScale
-            height: 20 * gui.guiScale
-            Text {
-                id: idTextItemLapTimeLast
-                anchors.fill: parent
-                text: gui.stringLapTimeLast
-                horizontalAlignment: Qt.AlignLeft
-                verticalAlignment: Qt.AlignVCenter
-                color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 20 * gui.guiScale
-            }
-        }
-        Item {
-            id: idItemDriver
-            x: 810 * gui.guiScale
-            y: 16 * gui.guiScale
-            width: 300 * gui.guiScale
-            height: 40 * gui.guiScale
-            Text {
-                id: idTextItemDriver
-                anchors.fill: parent
-                text: gui.stringDriver
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 40 * gui.guiScale
-            }
-        }
-        Item {
-            id: idItemLapTimePersonalBest
-            x: 1410 * gui.guiScale
-            y: 8 * gui.guiScale
-            width: 150 * gui.guiScale
-            height: 20 * gui.guiScale
-            Text {
-                id: idTextItemLapTimePersonalBest
-                anchors.fill: parent
-                text: gui.stringLapTimePersonalBest
-                horizontalAlignment: Qt.AlignRight
-                verticalAlignment: Qt.AlignVCenter
-                color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 20 * gui.guiScale
-            }
-        }
-        Item {
-            id: idItemLapTimeAbsoluteBest
-            x: 1702 * gui.guiScale
-            y: 8 * gui.guiScale
-            width: 150 * gui.guiScale
-            height: 20 * gui.guiScale
-            Text {
-                id: idTextItemLapTimeAbsoluteBest
-                anchors.fill: parent
-                text: gui.stringLapTimeAbsoluteBest
-                horizontalAlignment: Qt.AlignRight
-                verticalAlignment: Qt.AlignVCenter
-                color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 20 * gui.guiScale
-            }
-        }
-        Item {
-            id: idItemRPM
+            id: idItemHudBottomRPMLEDs
             x: 660 * gui.guiScale
-            y: 966 * gui.guiScale
-            width: 200 * gui.guiScale
-            height: 100 * gui.guiScale
-            Text {
-                id: idTextItemRPM
-                anchors.fill: parent
-                text: gui.intEngineRPMCurrent
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 48 * gui.guiScale
-            }
-        }
-        Item {
-            id: idItemGear
-            x: 910 * gui.guiScale
-            y: 966 * gui.guiScale
-            width: 100 * gui.guiScale
-            height: 100 * gui.guiScale
-            Text {
-                id: idTextItemGear
-                anchors.fill: parent
-                text: gui.stringGear
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                color: Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 60 * gui.guiScale
-            }
-        }
-        Item {
-            id: idItemSpeed
-            x: 1060 * gui.guiScale
-            y: 966 * gui.guiScale
-            width: 200 * gui.guiScale
-            height: 100 * gui.guiScale
-            Text {
-                id: idTextItemSpeed
-                anchors.fill: parent
-                text: gui.intSpeed
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                color: gui.boolSpeedLimiterActive ? Qt.rgba(1.0, 0.0, 0.0, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
-                font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 48 * gui.guiScale
-            }
-        }
-        Item {
-            id: idItemFuel
-            x: 8 * gui.guiScale
-            y: 1054 * gui.guiScale
-            width: 20 * gui.guiScale
-            height: 20 * gui.guiScale
-            Image {
-                anchors.fill: parent
-                source: {
-                    var fuel = gui.intFuelCurrent / gui.intFuelMaximum
-                    var limitRed = 0.10
-                    if(fuel < limitRed) return "/png/led_red.png"
-                    var limitYellow = 0.50
-                    if(fuel < limitYellow) return "/png/led_yellow.png"
-                    return "/png/led_off.png"
-                }
-            }
-        }
-        Item {
-            id: idItemEngine
-            x: 300 * gui.guiScale
-            y: 1054 * gui.guiScale
-            width: 20 * gui.guiScale
-            height: 20 * gui.guiScale
-            Image {
-                anchors.fill: parent
-                source: {
-                    if(gui.boolEngineOverheating) return "/png/led_red.png"
-                    return "/png/led_off.png"
-                }
-            }
-        }
-        Item {
-            id: idItemCar
-            x: 810 * gui.guiScale
-            y: 1056 * gui.guiScale
-            width: 300 * gui.guiScale
-            height: 20 * gui.guiScale
-            Text {
-                id: idTextItemCar
-                anchors.fill: parent
-                text: gui.stringCar
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                color: Qt.rgba(1.0, 1.0, 1.0, 0.5)
-                font.family: ApplicationStyle.fontBitwise.name
-                font.pixelSize: 16 * gui.guiScale
-            }
-        }
-        Item {
-            id: idItemBrakes
-            x: 1600 * gui.guiScale
-            y: 1054 * gui.guiScale
-            width: 20 * gui.guiScale
-            height: 20 * gui.guiScale
-            Image {
-                anchors.fill: parent
-                source: {
-                    var limitRed = 750.0
-                    if(gui.intBrakeTemperatureFrontLeft > limitRed) return "/png/led_red.png"
-                    if(gui.intBrakeTemperatureFrontRight > limitRed) return "/png/led_red.png"
-                    if(gui.intBrakeTemperatureRearLeft > limitRed) return "/png/led_red.png"
-                    if(gui.intBrakeTemperatureRearRight > limitRed) return "/png/led_red.png"
-                    var limitYellow = 500.0
-                    if(gui.intBrakeTemperatureFrontLeft > limitYellow) return "/png/led_yellow.png"
-                    if(gui.intBrakeTemperatureFrontRight > limitYellow) return "/png/led_yellow.png"
-                    if(gui.intBrakeTemperatureRearLeft > limitYellow) return "/png/led_yellow.png"
-                    if(gui.intBrakeTemperatureRearRight > limitYellow) return "/png/led_yellow.png"
-                    return "/png/led_off.png"
-                }
-            }
-        }
-        Item {
-            id: idItemTires
-            x: 1892 * gui.guiScale
-            y: 1054 * gui.guiScale
-            width: 20 * gui.guiScale
-            height: 20 * gui.guiScale
-            Image {
-                anchors.fill: parent
-                source: {
-                    var limitRed = 10.0
-                    if(gui.intTireWearFrontLeft < limitRed) return "/png/led_red.png"
-                    if(gui.intTireWearFrontRight < limitRed) return "/png/led_red.png"
-                    if(gui.intTireWearRearLeft < limitRed) return "/png/led_red.png"
-                    if(gui.intTireWearRearRight < limitRed) return "/png/led_red.png"
-                    var limitYellow = 50.0
-                    if(gui.intTireWearFrontLeft < limitYellow) return "/png/led_yellow.png"
-                    if(gui.intTireWearFrontRight < limitYellow) return "/png/led_yellow.png"
-                    if(gui.intTireWearRearLeft < limitYellow) return "/png/led_yellow.png"
-                    if(gui.intTireWearRearRight < limitYellow) return "/png/led_yellow.png"
-                    return "/png/led_off.png"
-                }
-            }
-        }
-        Item {
-            id: idItemRPMLEDs
-            x: 660 * gui.guiScale
-            y: 948 - sizeLEDs * gui.guiScale
+            y: 952 * gui.guiScale - 4 * gui.guiScale - sizeLEDs
             width: 600 * gui.guiScale
             height: sizeLEDs * gui.guiScale
             // the number of LEDs to be displayed
-            property int countLEDs: 45
+            property int countLEDs: 30
             // the RPM bandwidth to be covered by the LEDs (0-100);
             // if, for example, the bandwidth is 75, the LEDs don't
             // start lighting up until the engine RPMs are at 25%
@@ -338,17 +280,17 @@ Item {
             readonly property real spaceLEDs: 2 * gui.guiScale
             readonly property real sizeLEDs: (width - (countLEDs - 1) * spaceLEDs) / countLEDs
             Repeater {
-                model: idItemRPMLEDs.countLEDs
+                model: idItemHudBottomRPMLEDs.countLEDs
                 Image {
-                    x: (idItemRPMLEDs.sizeLEDs + idItemRPMLEDs.spaceLEDs) * index
+                    x: (idItemHudBottomRPMLEDs.sizeLEDs + idItemHudBottomRPMLEDs.spaceLEDs) * index
                     y: 0
-                    width: idItemRPMLEDs.sizeLEDs
-                    height: idItemRPMLEDs.sizeLEDs
+                    width: idItemHudBottomRPMLEDs.sizeLEDs
+                    height: idItemHudBottomRPMLEDs.sizeLEDs
                     source: {
-                        var bandwidth = idItemRPMLEDs.bandwidthLEDs
+                        var bandwidth = idItemHudBottomRPMLEDs.bandwidthLEDs
                         var bandwidthInverse = 100 - bandwidth
                         var percentageRPM = gui.intEngineRPMPercentage
-                        var percentageLED = (index + 1) / idItemRPMLEDs.countLEDs * 100
+                        var percentageLED = (index + 1) / idItemHudBottomRPMLEDs.countLEDs * 100
                         var percentage = percentageRPM < bandwidthInverse ? 0 : (percentageRPM - bandwidthInverse) / bandwidth * 100
                         // calculate which LED color to display
                         var image
@@ -362,6 +304,270 @@ Item {
                 }
             }
         }
+        // bottom (RPM, GEAR, SPEED, FUEL, ENGINE, BRAKES, TIRES)
+        Item {
+            id: idItemHudBottom
+            anchors.fill: parent
+            anchors.topMargin: parent.height - 128 * gui.guiScale
+            RowLayout {
+                anchors.fill: parent
+                anchors.topMargin: 24 * gui.guiScale
+                anchors.bottomMargin: 32 * gui.guiScale
+                spacing: 0
+                Item {
+                    Layout.fillWidth: true
+                }
+                Item {
+                    id: idItemHudBottomRPMDynamic
+                    Layout.preferredWidth: parent.width * 0.15
+                    Layout.preferredHeight: parent.height
+                    WidgetText {
+                        id: idWidgetTextHudBottomRPMDynamic
+                        text: gui.intEngineRPMCurrent
+                        fontColor: ApplicationStyle.hudColorTextDynamic
+                        fontPixelSize: parent.height * 0.75
+                        fontHorizontalAlignment: Qt.AlignRight
+                        fontVerticalAlignment: Qt.AlignVCenter
+                    }
+                }
+                Item {
+                    id: idItemHudBottomGearDynamic
+                    Layout.preferredWidth: parent.width * 0.15
+                    Layout.preferredHeight: parent.height
+                    WidgetText {
+                        id: idWidgetTextHudBottomGearDynamic
+                        text: gui.stringGear
+                        fontColor: ApplicationStyle.hudColorTextDynamic
+                        fontPixelSize: parent.height * 0.85
+                        fontHorizontalAlignment: Qt.AlignHCenter
+                        fontVerticalAlignment: Qt.AlignVCenter
+                    }
+                }
+                Item {
+                    id: idItemHudBottomSpeedDynamic
+                    Layout.preferredWidth: parent.width * 0.15
+                    Layout.preferredHeight: parent.height
+                    WidgetText {
+                        id: idWidgetTextHudBottomSpeedDynamic
+                        text: gui.intSpeed
+                        fontColor: ApplicationStyle.hudColorTextDynamic
+                        fontPixelSize: parent.height * 0.75
+                        fontHorizontalAlignment: Qt.AlignLeft
+                        fontVerticalAlignment: Qt.AlignVCenter
+                    }
+                }
+                Item {
+                    Layout.fillWidth: true
+                }
+            }
+            RowLayout {
+                anchors.fill: parent
+                spacing: 0
+                Item {
+                    id: idItemHudBottomFuel
+                    Layout.preferredWidth: (parent.width - 792 * gui.guiScale) / 4
+                    Layout.preferredHeight: parent.height
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.topMargin: 102 * gui.guiScale
+                        anchors.bottomMargin: 2 * gui.guiScale
+                        spacing: 10 * gui.guiScale
+                        Item {
+                            id: idItemHudBottomFuelStatic
+                            Layout.preferredWidth: parent.width * 2 / 3
+                            Layout.preferredHeight: parent.height
+                            WidgetText {
+                                id: idWidgetTextHudBottomFuelStatic
+                                text: "FUEL"
+                                fontColor: ApplicationStyle.hudColorTextStatic
+                                fontPixelSize: parent.height * 0.8
+                                fontHorizontalAlignment: Qt.AlignRight
+                                fontVerticalAlignment: Qt.AlignVCenter
+                            }
+                        }
+                        Item {
+                            id: idItemHudBottomFuelDynamic
+                            Layout.preferredWidth: parent.height
+                            Layout.preferredHeight: parent.height
+                            Image {
+                                width: parent.height
+                                height: parent.height
+                                source: {
+                                    var fuel = gui.intFuelCurrent / gui.intFuelMaximum
+                                    var limitRed = 0.10
+                                    if(fuel < limitRed) return "/png/led_red.png"
+                                    var limitYellow = 0.50
+                                    if(fuel < limitYellow) return "/png/led_yellow.png"
+                                    return "/png/led_off.png"
+                                }
+                            }
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                    }
+                }
+                Item {
+                    id: idItemHudBottomEngine
+                    Layout.preferredWidth: (parent.width - 792 * gui.guiScale) / 4
+                    Layout.preferredHeight: parent.height
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.topMargin: 100 * gui.guiScale
+                        anchors.bottomMargin: 4 * gui.guiScale
+                        spacing: 10 * gui.guiScale
+                        Item {
+                            id: idItemHudBottomEngineStatic
+                            Layout.preferredWidth: parent.width * 2 / 3
+                            Layout.preferredHeight: parent.height
+                            WidgetText {
+                                id: idWidgetTextHudBottomEngineStatic
+                                text: "ENGINE"
+                                fontColor: ApplicationStyle.hudColorTextStatic
+                                fontPixelSize: parent.height * 0.8
+                                fontHorizontalAlignment: Qt.AlignRight
+                                fontVerticalAlignment: Qt.AlignVCenter
+                            }
+                        }
+                        Item {
+                            id: idItemHudBottomEngineDynamic
+                            Layout.preferredWidth: parent.height
+                            Layout.preferredHeight: parent.height
+                            Image {
+                                width: parent.height
+                                height: parent.height
+                                source: {
+                                    if(gui.boolEngineOverheating) return "/png/led_red.png"
+                                    return "/png/led_off.png"
+                                }
+                            }
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                    }
+                }
+                Item {
+                    Layout.fillWidth: true
+                }
+                Item {
+                    id: idItemHudBottomBrakes
+                    Layout.preferredWidth: (parent.width - 792 * gui.guiScale) / 4
+                    Layout.preferredHeight: parent.height
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.topMargin: 100 * gui.guiScale
+                        anchors.bottomMargin: 4 * gui.guiScale
+                        spacing: 10 * gui.guiScale
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        Item {
+                            id: idItemHudBottomBrakesDynamic
+                            Layout.preferredWidth: parent.height
+                            Layout.preferredHeight: parent.height
+                            Image {
+                                width: parent.height
+                                height: parent.height
+                                source: {
+                                    var limitRed = 750.0
+                                    if(gui.intBrakeTemperatureFrontLeft > limitRed) return "/png/led_red.png"
+                                    if(gui.intBrakeTemperatureFrontRight > limitRed) return "/png/led_red.png"
+                                    if(gui.intBrakeTemperatureRearLeft > limitRed) return "/png/led_red.png"
+                                    if(gui.intBrakeTemperatureRearRight > limitRed) return "/png/led_red.png"
+                                    var limitYellow = 500.0
+                                    if(gui.intBrakeTemperatureFrontLeft > limitYellow) return "/png/led_yellow.png"
+                                    if(gui.intBrakeTemperatureFrontRight > limitYellow) return "/png/led_yellow.png"
+                                    if(gui.intBrakeTemperatureRearLeft > limitYellow) return "/png/led_yellow.png"
+                                    if(gui.intBrakeTemperatureRearRight > limitYellow) return "/png/led_yellow.png"
+                                    return "/png/led_off.png"
+                                }
+                            }
+                        }
+                        Item {
+                            id: idItemHudBottomBrakesStatic
+                            Layout.preferredWidth: parent.width * 2 / 3
+                            Layout.preferredHeight: parent.height
+                            WidgetText {
+                                id: idWidgetTextHudBottomBrakesStatic
+                                text: "BRAKES"
+                                fontColor: ApplicationStyle.hudColorTextStatic
+                                fontPixelSize: parent.height * 0.8
+                                fontHorizontalAlignment: Qt.AlignLeft
+                                fontVerticalAlignment: Qt.AlignVCenter
+                            }
+                        }
+                    }
+                }
+                Item {
+                    id: idItemHudBottomTires
+                    Layout.preferredWidth: (parent.width - 792 * gui.guiScale) / 4
+                    Layout.preferredHeight: parent.height
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.topMargin: 100 * gui.guiScale
+                        anchors.bottomMargin: 4 * gui.guiScale
+                        spacing: 10 * gui.guiScale
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        Item {
+                            id: idItemHudBottomTiresDynamic
+                            Layout.preferredWidth: parent.height
+                            Layout.preferredHeight: parent.height
+                            Image {
+                                width: parent.height
+                                height: parent.height
+                                source: {
+                                    var limitRed = 10.0
+                                    if(gui.intTireWearFrontLeft < limitRed) return "/png/led_red.png"
+                                    if(gui.intTireWearFrontRight < limitRed) return "/png/led_red.png"
+                                    if(gui.intTireWearRearLeft < limitRed) return "/png/led_red.png"
+                                    if(gui.intTireWearRearRight < limitRed) return "/png/led_red.png"
+                                    var limitYellow = 50.0
+                                    if(gui.intTireWearFrontLeft < limitYellow) return "/png/led_yellow.png"
+                                    if(gui.intTireWearFrontRight < limitYellow) return "/png/led_yellow.png"
+                                    if(gui.intTireWearRearLeft < limitYellow) return "/png/led_yellow.png"
+                                    if(gui.intTireWearRearRight < limitYellow) return "/png/led_yellow.png"
+                                    return "/png/led_off.png"
+                                }
+                            }
+                        }
+                        Item {
+                            id: idItemHudBottomTiresStatic
+                            Layout.preferredWidth: parent.width * 2 / 3
+                            Layout.preferredHeight: parent.height
+                            WidgetText {
+                                id: idWidgetTextHudBottomTiresStatic
+                                text: "TIRES"
+                                fontColor: ApplicationStyle.hudColorTextStatic
+                                fontPixelSize: parent.height * 0.8
+                                fontHorizontalAlignment: Qt.AlignLeft
+                                fontVerticalAlignment: Qt.AlignVCenter
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // bottom (CAR)
+        Item {
+            id: idItemHudBottomCar
+            anchors.fill: parent
+            anchors.topMargin: parent.height - 32 * gui.guiScale
+            Item {
+                id: idItemHudBottomCarName
+                anchors.fill: parent
+                WidgetText {
+                    text: gui.stringCar
+                    fontColor: ApplicationStyle.hudColorTextStatic
+                    fontPixelSize: parent.height * 0.5
+                    fontHorizontalAlignment: Qt.AlignHCenter
+                    fontVerticalAlignment: Qt.AlignVCenter
+                }
+            }
+        }
+        // center (LAP INFORMATION)
         Item {
             id: idItemLapInformation
             anchors.centerIn: parent
@@ -453,17 +659,15 @@ Item {
                 id: idSequentialAnimationPersonalBest
                 alwaysRunToEnd: true
                 PropertyAnimation {
-                    target: idTextItemLapTimePersonalBest
-                    properties: "color"
-                    from: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    target: idWidgetTextHudTopPerDynamic
+                    properties: "fontColor"
                     to: Qt.rgba(0.0, 1.0, 0.0, 1.0)
                     duration: idItemLapInformationAnimations.durationFadeIn
                 }
                 PropertyAnimation {
-                    target: idTextItemLapTimePersonalBest
-                    properties: "color"
-                    from: Qt.rgba(0.0, 1.0, 0.0, 1.0)
-                    to: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    target: idWidgetTextHudTopPerDynamic
+                    properties: "fontColor"
+                    to: ApplicationStyle.hudColorTextDynamic
                     duration: idItemLapInformationAnimations.durationFadeOut
                 }
             }
@@ -471,17 +675,15 @@ Item {
                 id: idSequentialAnimationAbsoluteBest
                 alwaysRunToEnd: true
                 PropertyAnimation {
-                    target: idTextItemLapTimeAbsoluteBest
-                    properties: "color"
-                    from: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    target: idWidgetTextHudTopAbsDynamic
+                    properties: "fontColor"
                     to: Qt.rgba(0.0, 1.0, 0.0, 1.0)
                     duration: idItemLapInformationAnimations.durationFadeIn
                 }
                 PropertyAnimation {
-                    target: idTextItemLapTimeAbsoluteBest
-                    properties: "color"
-                    from: Qt.rgba(0.0, 1.0, 0.0, 1.0)
-                    to: Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                    target: idWidgetTextHudTopAbsDynamic
+                    properties: "fontColor"
+                    to: ApplicationStyle.hudColorTextDynamic
                     duration: idItemLapInformationAnimations.durationFadeOut
                 }
             }
