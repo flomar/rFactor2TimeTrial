@@ -11,6 +11,7 @@ import "qrc:/qml/components"
 Item {
     id: idItemRoot
     // references
+    property var db: QTimeTrialApplicationDatabase
     property var gui: QTimeTrialApplicationGui
     // buttons and application name
     Rectangle {
@@ -73,7 +74,7 @@ Item {
                 onSignalClicked: gui.signalWidgetMenuClickedButtonQuit()
                 // in order to not introduce database inconsistencies, the
                 // quit button must not be pressed while a session is running
-                enabled: QTimeTrialApplicationDatabase.currentSession["Identifier"] ? QTimeTrialApplicationDatabase.currentSession["Identifier"] === 0 : true
+                enabled: db.currentSession["Identifier"] ? db.currentSession["Identifier"] === 0 : true
             }
         }
     }

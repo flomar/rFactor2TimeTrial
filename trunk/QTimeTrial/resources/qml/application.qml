@@ -13,6 +13,7 @@ import "qrc:/qml/components"
 ApplicationWindow {
     id: idWindowRoot
     // references
+    property var db: QTimeTrialApplicationDatabase
     property var gui: QTimeTrialApplicationGui
     visible: true
     flags: Qt.Tool | Qt.FramelessWindowHint | Qt.WindowTransparentForInput

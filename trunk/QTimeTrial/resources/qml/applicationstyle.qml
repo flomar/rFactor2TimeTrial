@@ -9,6 +9,7 @@ import QtQuick.Layouts 1.0
 Item {
 
     // references
+    readonly property var db: QTimeTrialApplicationDatabase
     readonly property var gui: QTimeTrialApplicationGui
 
     // load some fonts

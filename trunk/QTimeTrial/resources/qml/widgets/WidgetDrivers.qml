@@ -11,6 +11,7 @@ import "qrc:/qml/components"
 Item {
     id: idItemRoot
     // references
+    property var db: QTimeTrialApplicationDatabase
     property var gui: QTimeTrialApplicationGui
     // properties
     visible: gui.showWidgetDrivers
@@ -49,8 +50,8 @@ Item {
                 Layout.preferredHeight: parent.height
                 text: "Delete"
                 onSignalClicked: {
-                    QTimeTrialApplicationDatabase.signalDeleteDriver(idListViewDrivers.identifierSelectedDriver)
-                    QTimeTrialApplicationDatabase.signalUpdateDrivers()
+                    db.signalDeleteDriver(idListViewDrivers.identifierSelectedDriver)
+                    db.signalUpdateDrivers()
                     idListViewDrivers.currentIndex = -1
                 }
                 enabled: idListViewDrivers.currentIndex != -1
@@ -72,7 +73,7 @@ Item {
                 delegate: Rectangle {
                     width: idListViewDrivers.width
                     height: idListViewDrivers.height / 10
-                    color: QTimeTrialApplicationDatabase.currentDriver["Identifier"] === model.Identifier ? Qt.rgba(1.0, 1.0, 0.0, 0.1) : Qt.rgba(1.0, 1.0, 1.0, 0.1)
+                    color: db.currentDriver["Identifier"] === model.Identifier ? Qt.rgba(1.0, 1.0, 0.0, 0.1) : Qt.rgba(1.0, 1.0, 1.0, 0.1)
                     Item {
                         id: idItemDriver
                         anchors.fill: parent
@@ -81,7 +82,7 @@ Item {
                             anchors.fill: parent
                             text: model.Name ? model.Name : ""
                             fontPixelSize: parent.height * 0.9
-                            fontColor: QTimeTrialApplicationDatabase.currentDriver["Identifier"] === model.Identifier ? Qt.rgba(1.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
+                            fontColor: db.currentDriver["Identifier"] === model.Identifier ? Qt.rgba(1.0, 1.0, 0.0, 1.0) : Qt.rgba(1.0, 1.0, 1.0, 1.0)
                             fontHorizontalAlignment: Qt.AlignLeft
                             fontVerticalAlignment: Qt.AlignVCenter
                         }
@@ -91,7 +92,7 @@ Item {
                         onClicked: {
                             idListViewDrivers.currentIndex = model.index
                             idListViewDrivers.identifierSelectedDriver = model.Identifier
-                            QTimeTrialApplicationDatabase.signalSelectCurrentDriver(model.Identifier)
+                            db.signalSelectCurrentDriver(model.Identifier)
                         }
                     }
                 }
@@ -123,8 +124,8 @@ Item {
                 Layout.preferredHeight: parent.height
                 text: "OK"
                 onSignalClicked: {
-                    QTimeTrialApplicationDatabase.signalCreateDriver(idWidgetTextInputCreateDriver.text)
-                    QTimeTrialApplicationDatabase.signalUpdateDrivers()
+                    db.signalCreateDriver(idWidgetTextInputCreateDriver.text)
+                    db.signalUpdateDrivers()
                     idWidgetCreateDriver.visible = false
                 }
             }

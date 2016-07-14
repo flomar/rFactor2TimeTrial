@@ -12,6 +12,7 @@ Item {
     id: idItemRoot
     anchors.fill: parent
     // references
+    property var db: QTimeTrialApplicationDatabase
     property var gui: QTimeTrialApplicationGui
     // visual properties
     property string text

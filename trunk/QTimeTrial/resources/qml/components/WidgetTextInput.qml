@@ -11,6 +11,7 @@ import "qrc:/qml/components"
 Item {
     id: idItemRoot
     // references
+    property var db: QTimeTrialApplicationDatabase
     property var gui: QTimeTrialApplicationGui
     // visual properties
     property alias text: idText.text

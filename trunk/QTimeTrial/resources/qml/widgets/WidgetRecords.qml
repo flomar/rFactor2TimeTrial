@@ -11,6 +11,7 @@ import "qrc:/qml/components"
 Item {
     id: idItemRoot
     // references
+    property var db: QTimeTrialApplicationDatabase
     property var gui: QTimeTrialApplicationGui
     // properties
     visible: gui.showWidgetRecords
@@ -20,7 +21,7 @@ Item {
         idWidgetCheckBoxRecordsDriver.checked = false
         idWidgetCheckBoxRecordsTrack.checked = true
         idWidgetCheckBoxRecordsCar.checked = false
-        QTimeTrialApplicationDatabase.signalUpdateRecords(idWidgetCheckBoxRecordsDriver.checked, idWidgetCheckBoxRecordsTrack.checked, idWidgetCheckBoxRecordsCar.checked)
+        db.signalUpdateRecords(idWidgetCheckBoxRecordsDriver.checked, idWidgetCheckBoxRecordsTrack.checked, idWidgetCheckBoxRecordsCar.checked)
     }
     // visuals
     Widget {
@@ -43,8 +44,8 @@ Item {
                 Layout.preferredHeight: parent.height
                 text: "Delete"
                 onSignalClicked: {
-                    QTimeTrialApplicationDatabase.signalDeleteRecord(idListViewRecords.identifierSelectedRecord)
-                    QTimeTrialApplicationDatabase.signalUpdateRecords(idWidgetCheckBoxRecordsDriver.checked, idWidgetCheckBoxRecordsTrack.checked, idWidgetCheckBoxRecordsCar.checked)
+                    db.signalDeleteRecord(idListViewRecords.identifierSelectedRecord)
+                    db.signalUpdateRecords(idWidgetCheckBoxRecordsDriver.checked, idWidgetCheckBoxRecordsTrack.checked, idWidgetCheckBoxRecordsCar.checked)
                     idListViewRecords.currentIndex = -1
                 }
                 enabled: idListViewRecords.currentIndex != -1
@@ -57,7 +58,7 @@ Item {
             Item {
                 id: idItemListViewRecords
                 Layout.preferredWidth: parent.width
-                Layout.preferredHeight: parent.height * (QTimeTrialApplicationDatabase.currentSession["Identifier"] ? 0.8 : 1.0)
+                Layout.preferredHeight: parent.height * (db.currentSession["Identifier"] ? 0.8 : 1.0)
                 ListView {
                     id: idListViewRecords
                     anchors.fill: parent
@@ -209,7 +210,7 @@ Item {
                 Layout.preferredWidth: parent.width
                 Layout.preferredHeight: parent.height * 0.2
                 // the check boxes for filtering should be visible only if there is a valid session
-                visible: QTimeTrialApplicationDatabase.currentSession["Identifier"] ? QTimeTrialApplicationDatabase.currentSession["Identifier"] !== 0 : false
+                visible: db.currentSession["Identifier"] ? db.currentSession["Identifier"] !== 0 : false
                 ColumnLayout {
                     anchors.fill: parent
                     anchors.margins: 5.0 * gui.guiScale
@@ -219,21 +220,21 @@ Item {
                         Layout.preferredWidth: parent.width
                         Layout.preferredHeight: parent.height / 3
                         text: "Show current driver only"
-                        onSignalClicked: QTimeTrialApplicationDatabase.signalUpdateRecords(idWidgetCheckBoxRecordsDriver.checked, idWidgetCheckBoxRecordsTrack.checked, idWidgetCheckBoxRecordsCar.checked)
+                        onSignalClicked: db.signalUpdateRecords(idWidgetCheckBoxRecordsDriver.checked, idWidgetCheckBoxRecordsTrack.checked, idWidgetCheckBoxRecordsCar.checked)
                     }
                     WidgetCheckBox {
                         id: idWidgetCheckBoxRecordsTrack
                         Layout.preferredWidth: parent.width
                         Layout.preferredHeight: parent.height / 3
                         text: "Show current track only"
-                        onSignalClicked: QTimeTrialApplicationDatabase.signalUpdateRecords(idWidgetCheckBoxRecordsDriver.checked, idWidgetCheckBoxRecordsTrack.checked, idWidgetCheckBoxRecordsCar.checked)
+                        onSignalClicked: db.signalUpdateRecords(idWidgetCheckBoxRecordsDriver.checked, idWidgetCheckBoxRecordsTrack.checked, idWidgetCheckBoxRecordsCar.checked)
                     }
                     WidgetCheckBox {
                         id: idWidgetCheckBoxRecordsCar
                         Layout.preferredWidth: parent.width
                         Layout.preferredHeight: parent.height / 3
                         text: "Show current car only"
-                        onSignalClicked: QTimeTrialApplicationDatabase.signalUpdateRecords(idWidgetCheckBoxRecordsDriver.checked, idWidgetCheckBoxRecordsTrack.checked, idWidgetCheckBoxRecordsCar.checked)
+                        onSignalClicked: db.signalUpdateRecords(idWidgetCheckBoxRecordsDriver.checked, idWidgetCheckBoxRecordsTrack.checked, idWidgetCheckBoxRecordsCar.checked)
                     }
                 }
             }
