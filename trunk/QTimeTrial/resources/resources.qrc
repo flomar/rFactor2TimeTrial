@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/png">
-        <file alias="hud.png">png/hud.png</file>
         <file alias="led_green.png">png/led_green.png</file>
         <file alias="led_off.png">png/led_off.png</file>
         <file alias="led_red.png">png/led_red.png</file>

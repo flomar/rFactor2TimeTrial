@@ -17,10 +17,79 @@ Item {
     Item {
         id: idItemHud
         anchors.fill: parent
-        Image {
-            id: idImageHud
+        Item {
+            id: idItemHudBackground
             anchors.fill: parent
-            source: "/png/hud.png"
+            property color colorBackground: Qt.rgba(0.0, 0.0, 0.0, 0.25)
+            property color colorForeground: Qt.rgba(colorBackground.r, colorBackground.g, colorBackground.b, 1.0)
+            Canvas {
+                anchors.fill: parent
+                onPaint: {
+                    var ctx = getContext("2d")
+                    // top
+                    ctx.fillStyle = idItemHudBackground.colorBackground
+                    ctx.beginPath()
+                    ctx.moveTo(0 * gui.guiScale, 32 * gui.guiScale)
+                    ctx.lineTo(678 * gui.guiScale, 32 * gui.guiScale)
+                    ctx.lineTo(710 * gui.guiScale, 64 * gui.guiScale)
+                    ctx.lineTo(1210 * gui.guiScale, 64 * gui.guiScale)
+                    ctx.lineTo(1242 * gui.guiScale, 32 * gui.guiScale)
+                    ctx.lineTo(1920 * gui.guiScale, 32 * gui.guiScale)
+                    ctx.lineTo(1920 * gui.guiScale, 0 * gui.guiScale)
+                    ctx.lineTo(0 * gui.guiScale, 0 * gui.guiScale)
+                    ctx.lineTo(0 * gui.guiScale, 32 * gui.guiScale)
+                    ctx.closePath()
+                    ctx.fill()
+                    ctx.strokeStyle = idItemHudBackground.colorForeground
+                    ctx.lineWidth = 2 * gui.guiScale
+                    ctx.lineJoin = "round"
+                    ctx.beginPath()
+                    ctx.moveTo(0 * gui.guiScale, 32 * gui.guiScale)
+                    ctx.lineTo(678 * gui.guiScale, 32 * gui.guiScale)
+                    ctx.lineTo(710 * gui.guiScale, 64 * gui.guiScale)
+                    ctx.lineTo(1210 * gui.guiScale, 64 * gui.guiScale)
+                    ctx.lineTo(1242 * gui.guiScale, 32 * gui.guiScale)
+                    ctx.lineTo(1920 * gui.guiScale, 32 * gui.guiScale)
+                    ctx.moveTo(1242 * gui.guiScale, 32 * gui.guiScale)
+                    ctx.moveTo(1210 * gui.guiScale, 64 * gui.guiScale)
+                    ctx.moveTo(710 * gui.guiScale, 64 * gui.guiScale)
+                    ctx.moveTo(678 * gui.guiScale, 32 * gui.guiScale)
+                    ctx.moveTo(0 * gui.guiScale, 32 * gui.guiScale)
+                    ctx.closePath()
+                    ctx.stroke()
+                    // bottom
+                    ctx.fillStyle = idItemHudBackground.colorBackground
+                    ctx.beginPath()
+                    ctx.moveTo(0 * gui.guiScale, 1048 * gui.guiScale)
+                    ctx.lineTo(564 * gui.guiScale, 1048 * gui.guiScale)
+                    ctx.lineTo(660 * gui.guiScale, 952 * gui.guiScale)
+                    ctx.lineTo(1260 * gui.guiScale, 952 * gui.guiScale)
+                    ctx.lineTo(1356 * gui.guiScale, 1048 * gui.guiScale)
+                    ctx.lineTo(1920 * gui.guiScale, 1048 * gui.guiScale)
+                    ctx.lineTo(1920 * gui.guiScale, 1080 * gui.guiScale)
+                    ctx.lineTo(0 * gui.guiScale, 1080 * gui.guiScale)
+                    ctx.lineTo(0 * gui.guiScale, 1048 * gui.guiScale)
+                    ctx.closePath()
+                    ctx.fill()
+                    ctx.strokeStyle = idItemHudBackground.colorForeground
+                    ctx.lineWidth = 2 * gui.guiScale
+                    ctx.lineJoin = "round"
+                    ctx.beginPath()
+                    ctx.moveTo(0 * gui.guiScale, 1048 * gui.guiScale)
+                    ctx.lineTo(564 * gui.guiScale, 1048 * gui.guiScale)
+                    ctx.lineTo(660 * gui.guiScale, 952 * gui.guiScale)
+                    ctx.lineTo(1260 * gui.guiScale, 952 * gui.guiScale)
+                    ctx.lineTo(1356 * gui.guiScale, 1048 * gui.guiScale)
+                    ctx.lineTo(1920 * gui.guiScale, 1048 * gui.guiScale)
+                    ctx.moveTo(1356 * gui.guiScale, 1048 * gui.guiScale)
+                    ctx.moveTo(1260 * gui.guiScale, 952 * gui.guiScale)
+                    ctx.moveTo(660 * gui.guiScale, 952 * gui.guiScale)
+                    ctx.moveTo(564 * gui.guiScale, 1048 * gui.guiScale)
+                    ctx.moveTo(0 * gui.guiScale, 1048 * gui.guiScale)
+                    ctx.closePath()
+                    ctx.stroke()
+                }
+            }
         }
         Item {
             id: idItemLap
