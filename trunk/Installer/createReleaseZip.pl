@@ -18,6 +18,12 @@ use POSIX;
 use File::Copy;
 use File::Find;
 
+my $WINDEPLOYQT = $ENV{'WINDEPLOYQT'} or undef;
+if(not defined $WINDEPLOYQT) {
+    print("Please make sure there is an environment variable 'WINDEPLOYQT' pointing to the 'windeployqt.exe' delivered with your Qt installation.\n");
+    exit(0);
+}
+
 sleep(1);
 
 # create a name for the release (depends on the current time only)
@@ -40,18 +46,8 @@ copy("INSTALL", "$releaseFolder");
 copy("README", "$releaseFolder");
 
 # copy QTimeTrial files
-my @dllFiles = ();
-find(\&findDllFile, "../QTimeTrial/bin");
-sub findDllFile {
-    my $dllFile = $_;
-    if($dllFile =~ m/.+\.dll/) {
-        push(@dllFiles, $dllFile);
-    }
-}
-foreach my $dllFile (@dllFiles) {
-    copy("../QTimeTrial/bin/$dllFile", "$releaseFolder/QTimeTrial/win32");
-}
 copy("../QTimeTrial/build/release/release/QTimeTrial.exe", "$releaseFolder/QTimeTrial/win32");
+system("$WINDEPLOYQT --qmldir ../QTimeTrial/resources/qml $releaseFolder/QTimeTrial/win32/QTimeTrial.exe");
 copy("../QTimeTrial/QTimeTrial.sqlite", "$releaseFolder/QTimeTrial");
 copy("QTimeTrial/QTimeTrial.bat", "$releaseFolder/QTimeTrial");
 
